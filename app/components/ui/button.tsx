@@ -23,7 +23,7 @@ export function Button({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         "disabled:pointer-events-none disabled:opacity-50",
         variant === "primary" &&
-          "bg-secondary text-primary-foreground hover:opacity-90 py-[12px] px-[72px]",
+          "bg-secondary text-foreground hover:opacity-90 py-[12px] px-[72px]",
         variant === "secondary" &&
           "bg-transparent text-secondary border-[1.5px] border-solid border-secondary hover:opacity-90 py-[12px] px-[141px]",
         className,
