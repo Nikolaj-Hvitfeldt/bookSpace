@@ -1,6 +1,7 @@
 import { Form, redirect } from "react-router";
 import type { Route } from "./+types/login";
 import { authenticator } from "../services/auth.server";
+import { Button } from "../components/ui/button";
 
 
 export default function Login({actionData}: Route.ComponentProps) {
@@ -35,9 +36,14 @@ export default function Login({actionData}: Route.ComponentProps) {
           </div>
         ) : null}
         <div className="flex justify-center">
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">
-            Log in
-          </button>
+          <Button type="submit">
+            Primary Button
+          </Button>
+        </div>
+        <div className="flex justify-center">
+          <Button type="submit" variant="secondary">
+            Secondary Button
+          </Button>
         </div>
       </Form>
         </div>
