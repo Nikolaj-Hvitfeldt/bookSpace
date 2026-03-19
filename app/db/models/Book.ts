@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, Types, type InferSchemaType} from "mongoose";
+import { Schema, model, Types, type InferSchemaType} from "mongoose";
 
 const coverImageSchema = new Schema({
     url: { 
