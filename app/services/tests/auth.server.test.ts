@@ -1,7 +1,6 @@
 import { describe, it, expect, afterAll } from "vitest";
 import User from "../../db/models/User";
 import { verifyUser } from "../auth.server";
-import bcrypt from "bcryptjs";
 
 const testPassword = "authTestpassword";
 const testEmail1 = `authTest${Date.now()}1@example.com`;
