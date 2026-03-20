@@ -3,8 +3,8 @@ import User from "../models/User";
 import bcrypt from "bcryptjs";
 
 //Integration tests for the User model
-const testEmail = `test${Date.now()}@example.com`;
-const testPassword = "testpassword";
+const testEmail = `userTest${Date.now()}@example.com`;
+const testPassword = "userTestpassword";
 
 describe("User model", () => {
     afterEach(async () => {
@@ -57,7 +57,7 @@ describe("User model", () => {
           password: testPassword,
           displayName: "Test User",
         });
-        const user = await User.findOne({ testEmail }).select("+password"); //+password is used because of "select: false" in the User model
+        const user = await User.findOne({ email: testEmail }).select("+password"); //+password is used because of "select: false" in the User model
         expect(user).not.toBeNull();
         expect(user!.password).toMatch(/^\$2/); //Regex for bcrypt hashes (they start with $2)
         const matches = await bcrypt.compare(testPassword, user!.password);

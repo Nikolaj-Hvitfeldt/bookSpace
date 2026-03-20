@@ -23,7 +23,7 @@ authenticator.use(
         }), "form"
     );
 
-    async function verifyUser(email: string, password: string){
+    export async function verifyUser(email: string, password: string){
         const user = await User.findOne({ email }).select("+password");
         if(!user){
             throw new Error("User not found");
