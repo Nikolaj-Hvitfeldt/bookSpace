@@ -10,12 +10,8 @@ const heading = "Dive in with Book Space,\nwhere books meet\nconnection";
 export default function GetStartedStep({ onNext, books }: GetStartedStepProps) {
   return (
     <>
-      {/* Text */}
-      <div className="w-full text-left mt-[clamp(20px,4vh,32px)]">
-        <h1 className="onboarding-title whitespace-pre-line">{heading}</h1>
-      </div>
       {/* Book covers */}
-      <div className="w-full text-right mt-[clamp(20px,4vh,32px)]">
+      <div className="w-full text-right mt-[clamp(14px,2vh,28px)]">
         <div className="flex flex-wrap gap-2">
           {books.map((book) => (
             <img
@@ -24,6 +20,11 @@ export default function GetStartedStep({ onNext, books }: GetStartedStepProps) {
               className="w-24 h-32 object-cover"
             />
           ))}
+        </div>
+
+        {/* Text */}
+        <div className="w-full text-left mt-[clamp(36px,4vh,72px)]">
+          <h1 className="onboarding-title whitespace-pre-line">{heading}</h1>
         </div>
       </div>
     </>
