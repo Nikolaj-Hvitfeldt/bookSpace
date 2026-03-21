@@ -1,14 +1,14 @@
-import * as React from "react"
+import * as React from "react";
 
 function cn(...classes: Array<string | false | undefined>) {
-  return classes.filter(Boolean).join(" ")
+  return classes.filter(Boolean).join(" ");
 }
 
-export type ButtonVariant = "primary" | "secondary"
+export type ButtonVariant = "primary" | "secondary";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: ButtonVariant
-}
+  variant?: ButtonVariant;
+};
 
 export function Button({
   className,
@@ -18,7 +18,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "flex w-[350px] h-[55px] items-center justify-center gap[10px] whitespace-nowrap rounded-[10px] transition-opacity",
+        "flex w-[350px] h-[55px] items-center justify-center gap-[10px] whitespace-nowrap rounded-[10px] transition-opacity",
         "text-[16px] font-medium",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         "disabled:pointer-events-none disabled:opacity-50",
@@ -30,5 +30,5 @@ export function Button({
       )}
       {...props}
     />
-  )
+  );
 }
