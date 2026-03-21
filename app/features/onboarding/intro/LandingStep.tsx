@@ -8,13 +8,13 @@ export default function LandingStep({ onNext }: LandingStepProps) {
   return (
     <>
       {/* Text (left aligned) */}
-      <div className="w-full text-left mt-3">
+      <div className="w-full text-left mt-[clamp(20px,4vh,32px)]">
         <h1 className="onboarding-title whitespace-pre-line">{text}</h1>
       </div>
 
       {/* Icons */}
       <div className="mt-[clamp(40px,8vh,80px)] flex w-full justify-center">
-        <div className="relative h-[190px] w-[253px]">
+        <div className="relative h-[190px] w-[253px] mr-[clamp(26px,4vh,52px)]">
           {/* Book Text Icon */}
           <img
             src="/logos/Book-text-icon.svg"
