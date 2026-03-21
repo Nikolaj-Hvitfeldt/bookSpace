@@ -2,14 +2,14 @@ import { Form, redirect } from "react-router";
 import type { Route } from "./+types/login";
 import { authenticator } from "../services/auth.server";
 import { Button } from "../components/ui/button";
+import { SearchBar } from "../components/ui/searchbar";
 
+export default function Login({ actionData }: Route.ComponentProps) {
+  return (
+    <div>
+      <h1>Login</h1>
 
-export default function Login({actionData}: Route.ComponentProps) {
-    return (
-        <div>
-            <h1>Login</h1>
-
-            <Form method="post" className="flex flex-col space-y-4">
+      <Form method="post" className="flex flex-col space-y-4">
         <label className="block" htmlFor="email">
           Email
           <input
@@ -36,9 +36,7 @@ export default function Login({actionData}: Route.ComponentProps) {
           </div>
         ) : null}
         <div className="flex justify-center">
-          <Button type="submit">
-            Primary Button
-          </Button>
+          <Button type="submit">Primary Button</Button>
         </div>
         <div className="flex justify-center">
           <Button type="submit" variant="secondary">
@@ -46,20 +44,21 @@ export default function Login({actionData}: Route.ComponentProps) {
           </Button>
         </div>
       </Form>
-        </div>
-    );
+
+      <SearchBar placeholder="Search..." />
+    </div>
+  );
 }
 
-    export async function action({ request }:  Route.ActionArgs) {
-        try{
-            const user = await authenticator.authenticate("form", request);
-            if(!user){
-                return redirect("/login");
-            }
-
-            return redirect("/");
-        }
-        catch(error){
-            return { error: "Invalid email or password" };
-        }
+export async function action({ request }: Route.ActionArgs) {
+  try {
+    const user = await authenticator.authenticate("form", request);
+    if (!user) {
+      return redirect("/login");
     }
+
+    return redirect("/");
+  } catch (error) {
+    return { error: "Invalid email or password" };
+  }
+}
