@@ -4,7 +4,7 @@ import {
   getPreviousStepPath,
   onboardingSteps,
   getNextStepPath,
-} from "~/features/onboarding/stepsConfig";
+} from "~/components/onboarding/stepsConfig";
 import { Button } from "~/components/ui/button";
 
 //export async function loader({ request }: Route.LoaderArgs) {

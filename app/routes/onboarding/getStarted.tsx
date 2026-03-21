@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router";
 import type { Route } from "./+types/getStarted";
-import GetStartedStep from "~/features/onboarding/intro/GetStartedStep";
-import { getNextStepPath } from "~/features/onboarding/stepsConfig";
+import GetStartedStep from "~/components/onboarding/intro/GetStartedStep";
+import { getNextStepPath } from "~/components/onboarding/stepsConfig";
 import { getBookCovers } from "~/db/queries/books";
 
 export async function loader(_args: Route.LoaderArgs) {

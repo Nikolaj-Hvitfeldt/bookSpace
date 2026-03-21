@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router";
-import CommunityStep from "~/features/onboarding/intro/CommunityStep";
-import { getNextStepPath } from "~/features/onboarding/stepsConfig";
+import CommunityStep from "~/components/onboarding/intro/CommunityStep";
+import { getNextStepPath } from "~/components/onboarding/stepsConfig";
 
 export default function CommunityRoute() {
   const navigate = useNavigate();

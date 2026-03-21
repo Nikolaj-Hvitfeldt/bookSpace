@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router";
-import RecommendationStep from "~/features/onboarding/intro/RecommendationStep";
-import { getNextStepPath } from "~/features/onboarding/stepsConfig";
+import RecommendationStep from "~/components/onboarding/intro/RecommendationStep";
+import { getNextStepPath } from "~/components/onboarding/stepsConfig";
 
 export default function RecommendationRoute() {
   const navigate = useNavigate();
