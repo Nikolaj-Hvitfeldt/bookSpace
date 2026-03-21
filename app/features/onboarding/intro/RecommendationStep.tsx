@@ -1,5 +1,3 @@
-import { Button } from "../../../components/ui/button";
-
 type RecommendationStepProps = {
   onNext: () => void;
 };
@@ -15,11 +13,13 @@ export default function RecommendationStep({
     <>
       {/* Image */}
       <div className="flex flex-col">
-        <img
-          src="/onboardingImages/studying-image.avif"
-          alt="image of a person studying"
-          className="w-full h-auto"
-        />
+        <div className="relative mx-auto w-full max-w-[360px] aspect-360/290">
+          <img
+            src="/onboardingImages/studying-image.avif"
+            alt="Person reading and receiving recommendations"
+            className="absolute inset-0 h-full w-full object-contain"
+          />
+        </div>
 
         <div className="mt-6">
           {/* heading */}
