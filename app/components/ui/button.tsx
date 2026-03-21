@@ -8,6 +8,7 @@ export type ButtonVariant = "primary" | "secondary";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
+  size?: "small" | "default";
 };
 
 export function Button({
