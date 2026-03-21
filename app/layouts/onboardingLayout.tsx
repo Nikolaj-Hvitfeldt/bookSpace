@@ -32,9 +32,9 @@ export default function OnboardingLayout() {
 
   return (
     <main className="min-h-dvh bg-secondary-eggshell">
-      <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(16px,4vh,32px)] pb-12">
-        {showHeader && (
-          <header className="mb-6 flex w-full items-center justify-between">
+      <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(32px,8vh,64px)] pb-12">
+        {showHeader ? (
+          <header className="mb-[clamp(16px,3vh,32px)] flex w-full items-center justify-between">
             <button
               type="button"
               className="h-[25px] w-[25px]"
@@ -47,6 +47,8 @@ export default function OnboardingLayout() {
 
             <Link to={skipPath}>Skip</Link>
           </header>
+        ) : (
+          <div className="mb-[clamp(16px,3vh,32px)] h-[25px] w-[25px]" />
         )}
 
         <Outlet />
