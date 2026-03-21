@@ -22,6 +22,19 @@ export const onboardingSteps: onboardingStep[] = [
       variant: "secondary",
     },
   },
+  {
+    id: "community",
+    path: "/onboarding/community",
+    showHeader: true,
+    progressBar: {
+      total: 3,
+      current: 2,
+    },
+    button: {
+      label: "Next",
+      variant: "secondary",
+    },
+  },
 ];
 
 type progressBarStep = {

@@ -36,8 +36,8 @@ export default function OnboardingLayout() {
   const nextStepPath = getNextStepPath(location.pathname);
 
   return (
-    <main className="min-h-dvh bg-secondary-eggshell">
-      <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(32px,8vh,64px)] pb-12">
+    <main className="bg-secondary-eggshell">
+      <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(32px,8vh,64px)] pb-[clamp(10px,2vh,20px)]">
         {showHeader ? (
           <header className="mb-[clamp(16px,4vh,32px)] flex w-full items-center justify-between">
             <button
