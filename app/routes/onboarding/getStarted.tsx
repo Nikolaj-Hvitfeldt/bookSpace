@@ -1,12 +1,24 @@
 import { useLocation, useNavigate } from "react-router";
+import type { Route } from "./+types/getStarted";
 import GetStartedStep from "~/features/onboarding/intro/GetStartedStep";
 import { getNextStepPath } from "~/features/onboarding/stepsConfig";
+import { getBookCovers } from "~/db/queries/books";
 
-export default function GetStartedRoute() {
+export async function loader(_args: Route.LoaderArgs) {
+  const books = await getBookCovers();
+  return { books };
+}
+
+export default function GetStartedRoute({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const nextPath = getNextStepPath(location.pathname) ?? "/login";
 
-  return <GetStartedStep onNext={() => navigate(nextPath)} />;
+  return (
+    <GetStartedStep
+      onNext={() => navigate(nextPath)}
+      books={loaderData.books}
+    />
+  );
 }
