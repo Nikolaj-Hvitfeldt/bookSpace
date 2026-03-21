@@ -15,5 +15,6 @@ export default [
     route("onboarding/landing", "routes/onboarding/landing.tsx"),
     route("onboarding/recommendation", "routes/onboarding/recommendation.tsx"),
     route("onboarding/community", "routes/onboarding/community.tsx"),
+    route("onboarding/tracking", "routes/onboarding/tracking.tsx"),
   ]),
 ] satisfies RouteConfig;
