@@ -109,7 +109,7 @@ export default function OnboardingLayout() {
                 type="button"
                 className="w-full"
                 variant={currentStep.buttons[0].variant}
-                onClick={() => navigate("/login")} // Change to register / sign up when implemented
+                onClick={() => navigate(nextStepPath ?? "/login")}
               >
                 {currentStep?.buttons[0]?.label}
               </Button>

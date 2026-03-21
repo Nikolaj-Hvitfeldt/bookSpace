@@ -30,8 +30,8 @@ export const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
     return (
       <div
         className={cn(
-          "flex w-full max-w-[360px] items-center gap-2 rounded-[12px] border border-transparent bg-input px-3 py-2",
-          "text-secondary transition-[box-shadow,border-color] has-focus-visible:border-ring has-focus-visible:ring-2 has-focus-visible:ring-ring/30",
+          "flex w-full max-w-[360px] items-center gap-2 rounded-[10px] border border-primary-brown bg-transparent px-3 py-2",
+          "text-secondary transition-[box-shadow,border-color] has-focus-visible:border-primary-brown has-focus-visible:ring-2 has-focus-visible:ring-primary-brown/40",
           className,
         )}
       >
@@ -41,7 +41,7 @@ export const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
           placeholder={placeholder}
           className={cn(
             "min-w-0 flex-1 bg-transparent text-[16px] font-medium text-secondary outline-none",
-            "placeholder:text-secondary/50",
+            "caret-primary-brown placeholder:text-secondary/50",
           )}
           {...inputProps}
         />

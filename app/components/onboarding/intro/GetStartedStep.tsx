@@ -17,7 +17,7 @@ export default function GetStartedStep({ onNext, books }: GetStartedStepProps) {
             <img
               key={book.id}
               src={book.coverUrl}
-              className="w-24 h-32 object-cover"
+              className="w-24 h-32 rounded-[10px] shadow-lg"
             />
           ))}
         </div>

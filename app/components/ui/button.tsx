@@ -24,7 +24,7 @@ export function Button({
       className={cn(
         "flex items-center justify-center gap-[10px] whitespace-nowrap rounded-[10px] transition-opacity",
         "text-[16px] font-medium",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-brown/40",
         "disabled:pointer-events-none disabled:opacity-50",
         isSmall ? "w-[130px] h-[40px]" : "w-[350px] h-[55px]",
         variant === "primary" &&
