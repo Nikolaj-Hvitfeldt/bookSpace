@@ -1,34 +1,56 @@
-import { Outlet, redirect, useLocation } from "react-router";
+import { Outlet, useLocation, useNavigate, Link } from "react-router";
 import type { Route } from "./+types/onboardingLayout";
-import User from "../db/models/User";
-import { requireUser, getUserData } from "~/services/auth.server";
+import {
+  getPreviousStepPath,
+  onboardingSteps,
+} from "~/features/onboarding/stepsConfig";
 
-export async function loader({ request }: Route.LoaderArgs) {
-   // const user = await requireUser(request);
-  
-   // const currentUser = await User.findById(user._id);
-   // if (!currentUser) {
-   //   return redirect("/login");
-   // }
-  
-   // if (currentUser.onboardingComplete) {
-   //   return redirect("/");
-   // }
+//export async function loader({ request }: Route.LoaderArgs) {
+// const user = await requireUser(request);
 
-  // Temporary fix for requireUser not working. Revisit when implementing register/sign up
-   const user = await getUserData(request);
-   if (user) {
-       return redirect("/onboarding/landing");
-   }
+// const currentUser = await User.findById(user._id);
+// if (!currentUser) {
+//   return redirect("/login");
+// }
+
+// if (currentUser.onboardingComplete) {
+//   return redirect("/");
+// }
+//}
+
+export default function OnboardingLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const currentStep = onboardingSteps.find(
+    (step) => step.path === location.pathname,
+  );
+  const showHeader = currentStep?.showHeader ?? true;
+
+  const previousStepPath = getPreviousStepPath(location.pathname);
+  const skipPath = "/login";
+
+  return (
+    <main className="min-h-dvh bg-secondary-eggshell">
+      <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(16px,4vh,32px)] pb-12">
+        {showHeader && (
+          <header className="mb-6 flex w-full items-center justify-between">
+            <button
+              type="button"
+              className="h-[25px] w-[25px]"
+              onClick={() =>
+                previousStepPath ? navigate(previousStepPath) : navigate(-1)
+              }
+            >
+              <img src="/onboardingImages/back-button.avif" alt="Go back" />
+            </button>
+
+            <Link to={skipPath}>Skip</Link>
+          </header>
+        )}
+
+        <Outlet />
+      </div>
+    </main>
+  );
 }
-  
-    export default function OnboardingLayout() {
-      return (
-        <main className="min-h-dvh bg-secondary-eggshell">
-          <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(84px,12vh,168px)] pb-12">
-            <Outlet />
-          </div>
-        </main>
-      );
-    }
-  
