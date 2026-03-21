@@ -30,6 +30,7 @@ export default function OnboardingLayout() {
 
   const showHeader = currentStep?.showHeader ?? true;
   const progressBar = currentStep?.progressBar;
+  const isGetStarted = currentStep?.id === "get-started";
 
   const previousStepPath = getPreviousStepPath(location.pathname);
   const skipPath = "/login";
@@ -38,7 +39,20 @@ export default function OnboardingLayout() {
   return (
     <main className="bg-secondary-eggshell">
       <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(32px,8vh,64px)] pb-[clamp(10px,2vh,20px)]">
-        {showHeader ? (
+        {/* Headers*/}
+        {isGetStarted ? (
+          <header className="mb-[clamp(16px,4vh,32px)] flex w-full items-center justify-between">
+            <div className="mb-[clamp(16px,4vh,32px)] h-[25px] w-[25px]" />
+            <Button
+              size="small"
+              type="button"
+              variant="secondary"
+              onClick={() => navigate("/login")}
+            >
+              Log in
+            </Button>
+          </header>
+        ) : showHeader ? (
           <header className="mb-[clamp(16px,4vh,32px)] flex w-full items-center justify-between">
             <button
               type="button"
@@ -88,14 +102,33 @@ export default function OnboardingLayout() {
             <div className="mb-4 flex w-full gap-3" />
           )}
 
-          {/* Button */}
-          {currentStep?.buttons ? (
+          {/* Buttons */}
+          {isGetStarted && currentStep && currentStep.buttons.length >= 2 ? (
+            <div className="flex flex-col w-full gap-3 ">
+              <Button
+                type="button"
+                className="w-full"
+                variant={currentStep.buttons[0].variant}
+                onClick={() => navigate("/login")} // Change to register / sign up when implemented
+              >
+                {currentStep?.buttons[0]?.label}
+              </Button>
+              <Button
+                type="button"
+                className="w-full"
+                variant={currentStep.buttons[1].variant}
+                onClick={() => navigate("/")} // navigates to index / home page
+              >
+                {currentStep?.buttons[1]?.label}
+              </Button>
+            </div>
+          ) : currentStep?.buttons ? (
             <div className="flex w-full justify-center">
               <Button
                 type="button"
                 className="w-full"
                 variant={currentStep?.buttons[0]?.variant}
-                onClick={() => navigate(nextStepPath ?? "/login")}
+                onClick={() => navigate(nextStepPath ?? "/login")} // navigates to next step or falls back to login page
               >
                 {currentStep?.buttons[0]?.label}
               </Button>

@@ -62,10 +62,6 @@ export const onboardingSteps: onboardingStep[] = [
     showHeader: false,
     buttons: [
       {
-        label: "Log in",
-        variant: "secondary",
-      },
-      {
         label: "Create an account",
         variant: "primary",
       },
