@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router";
-import TrackingStep from "~/features/onboarding/intro/TrackingStep";
-import { getNextStepPath } from "~/features/onboarding/stepsConfig";
+import TrackingStep from "~/components/onboarding/intro/TrackingStep";
+import { getNextStepPath } from "~/components/onboarding/stepsConfig";
 
 export default function TrackingRoute() {
   const navigate = useNavigate();
