@@ -7,7 +7,7 @@ export default function RecommendationRoute() {
   const location = useLocation();
 
   //Will eventually point to the next step when implemented
-  const nextPath = getNextStepPath(location.pathname) ?? "/onboarding/TBD";
+  const nextPath = getNextStepPath(location.pathname) ?? "/";
 
   return <RecommendationStep onNext={() => navigate(nextPath)} />;
 }

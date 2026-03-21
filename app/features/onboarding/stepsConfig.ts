@@ -1,20 +1,46 @@
 //Maybe add progress bar status or something later
-export const onboardingSteps = [
+export const onboardingSteps: onboardingStep[] = [
   {
     id: "landing",
     path: "/onboarding/landing",
     showHeader: false,
+    button: {
+      label: "Get started",
+      variant: "primary",
+    },
   },
   {
     id: "recommendation",
     path: "/onboarding/recommendation",
     showHeader: true,
-  },
-  {
-    id: "Etc etc etc",
-    path: "/onboarding/etcetcetc",
+    progressBar: {
+      total: 3,
+      current: 1,
+    },
+    button: {
+      label: "Next",
+      variant: "secondary",
+    },
   },
 ];
+
+type progressBarStep = {
+  total: number;
+  current: number;
+};
+
+type onboardingStep = {
+  id: string;
+  path: string;
+  showHeader: boolean;
+  progressBar?: progressBarStep;
+  button: buttonConfig;
+};
+
+type buttonConfig = {
+  label: string;
+  variant: "primary" | "secondary";
+};
 
 export type OnboardingStep = (typeof onboardingSteps)[number];
 

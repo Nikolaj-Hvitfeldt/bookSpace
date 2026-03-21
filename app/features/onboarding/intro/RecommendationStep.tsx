@@ -29,18 +29,6 @@ export default function RecommendationStep({
           <p className="mt-4 whitespace-pre-line">{text}</p>
         </div>
       </div>
-
-      {/* Button */}
-      <div className="mt-auto flex w-full justify-center">
-        <Button
-          type="button"
-          className="w-full"
-          variant="secondary"
-          onClick={onNext}
-        >
-          Next
-        </Button>
-      </div>
     </>
   );
 }
