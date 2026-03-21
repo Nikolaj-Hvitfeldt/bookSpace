@@ -1,15 +1,16 @@
-import { useNavigate } from "react-router";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../../components/ui/button";
+
+// Will point to the next page when implemented
+type LandingStepProps = {
+    onNext: () => void;
+  };
 
 const text = "Dive in with Book Space,\nwhere books meet\nconnection";
 
-export default function OnboardingLanding() {
-  const navigate = useNavigate();
+export default function LandingStep({onNext}: LandingStepProps) {
 
   return (
-    <div className="min-h-dvh bg-secondary-eggshell">
-      <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col items-center justify-start px-[clamp(16px,4vw,24px)] pt-[clamp(84px,12vh,168px)] pb-12">
-
+    <>
         {/* Text (left aligned) */}
         <div className="w-full text-left">
           <h1 className="onboarding-title whitespace-pre-line">
@@ -53,11 +54,10 @@ export default function OnboardingLanding() {
                 type="button"
                 className="w-full"
                 variant="primary" 
-                onClick={() => navigate("/")}>
-                Get started
-            </Button>
+                onClick={onNext}
+                >Get started
+                </Button>
         </div>
-      </div>
-    </div>
+    </>
   );
 }
