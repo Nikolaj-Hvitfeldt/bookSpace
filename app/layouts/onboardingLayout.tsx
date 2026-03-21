@@ -89,15 +89,15 @@ export default function OnboardingLayout() {
           )}
 
           {/* Button */}
-          {currentStep?.button ? (
+          {currentStep?.buttons ? (
             <div className="flex w-full justify-center">
               <Button
                 type="button"
                 className="w-full"
-                variant={currentStep?.button?.variant}
+                variant={currentStep?.buttons[0]?.variant}
                 onClick={() => navigate(nextStepPath ?? "/login")}
               >
-                {currentStep?.button?.label}
+                {currentStep?.buttons[0]?.label}
               </Button>
             </div>
           ) : (
