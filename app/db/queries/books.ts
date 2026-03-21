@@ -6,10 +6,14 @@ export type BookCovers = {
   coverUrl: string;
 };
 
-export async function getBookCovers(): Promise<BookCovers[]> {
+const defaultLimit = 6;
+
+export async function getBookCovers(
+  limit = defaultLimit,
+): Promise<BookCovers[]> {
   await connectDb();
 
-  const books = await Book.find().select({ coverImage: 1 }).lean();
+  const books = await Book.find().select({ coverImage: 1 }).limit(limit).lean();
 
   return books.map((book) => ({
     id: book._id.toString(),
