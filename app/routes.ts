@@ -8,5 +8,6 @@ export default [
   ]),
   layout("layouts/onboardingLayout.tsx", [
     route("onboarding/landing", "routes/onboarding/landing.tsx"),
+    route("onboarding/recommendation", "routes/onboarding/recommendation.tsx"),
   ]),
 ] satisfies RouteConfig;
