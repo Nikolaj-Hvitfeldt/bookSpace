@@ -23,6 +23,10 @@ const userSchema = new Schema({
         trim: true,
         maxlength: [30, "Display name must be less than 30 characters long"],
     },
+    onboardingComplete: {
+        type: Boolean,
+        default: false,
+    },
 },
  {timestamps: true}
 );
@@ -39,6 +43,8 @@ userSchema.pre("save", async function() {
 
 });
 
-export type UserType = InferSchemaType<typeof userSchema> & { _id: Types.ObjectId };
+export type UserType = InferSchemaType<typeof userSchema> & {
+    _id: Types.ObjectId;
+  };
 
 export default model<UserType>("User", userSchema);
