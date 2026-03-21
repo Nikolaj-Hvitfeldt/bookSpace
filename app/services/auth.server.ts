@@ -58,12 +58,31 @@ type SessionUser = {
   }
 
 
+// Cache to store user activity timestamps
+const userActivityCache = new Map<string, number>();
+//Rate limit for user activity
+const THROTTLE_INTERVAL = 1000 * 60 * 360; // Every sixth hour
+
+
  export async function getUserData(request: Request): Promise<UserData | null> {
     const userFromSession = await getUser(request);
 
     if(!userFromSession || !userFromSession._id) {
         return null;
     }
+
+     // THROTTLE START
+  const userId = userFromSession._id;
+  const now = Date.now();
+  const lastUpdated = userActivityCache.get(userId) || 0;
+
+  if (now - lastUpdated > THROTTLE_INTERVAL) {
+    await User.findByIdAndUpdate(userId, {
+      lastActive: now,
+    });
+    userActivityCache.set(userId, now);
+  }
+  // THROTTLE END
         
     const user = await User.findById(userFromSession._id)
     .select("_id email displayName")
