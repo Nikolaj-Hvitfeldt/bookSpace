@@ -16,5 +16,6 @@ export default [
     route("onboarding/recommendation", "routes/onboarding/recommendation.tsx"),
     route("onboarding/community", "routes/onboarding/community.tsx"),
     route("onboarding/tracking", "routes/onboarding/tracking.tsx"),
+    route("onboarding/get-started", "routes/onboarding/getStarted.tsx"),
   ]),
 ] satisfies RouteConfig;

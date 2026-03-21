@@ -4,10 +4,12 @@ export const onboardingSteps: onboardingStep[] = [
     id: "landing",
     path: "/onboarding/landing",
     showHeader: false,
-    button: {
-      label: "Get started",
-      variant: "primary",
-    },
+    buttons: [
+      {
+        label: "Get started",
+        variant: "primary",
+      },
+    ],
   },
   {
     id: "recommendation",
@@ -17,10 +19,12 @@ export const onboardingSteps: onboardingStep[] = [
       total: 3,
       current: 1,
     },
-    button: {
-      label: "Next",
-      variant: "secondary",
-    },
+    buttons: [
+      {
+        label: "Next",
+        variant: "secondary",
+      },
+    ],
   },
   {
     id: "community",
@@ -30,10 +34,12 @@ export const onboardingSteps: onboardingStep[] = [
       total: 3,
       current: 2,
     },
-    button: {
-      label: "Next",
-      variant: "secondary",
-    },
+    buttons: [
+      {
+        label: "Next",
+        variant: "secondary",
+      },
+    ],
   },
   {
     id: "tracking",
@@ -43,10 +49,27 @@ export const onboardingSteps: onboardingStep[] = [
       total: 3,
       current: 3,
     },
-    button: {
-      label: "Get started",
-      variant: "primary",
-    },
+    buttons: [
+      {
+        label: "Get started",
+        variant: "primary",
+      },
+    ],
+  },
+  {
+    id: "get-started",
+    path: "/onboarding/get-started",
+    showHeader: false,
+    buttons: [
+      {
+        label: "Create an account",
+        variant: "primary",
+      },
+      {
+        label: "Explore the app first",
+        variant: "secondary",
+      },
+    ],
   },
 ];
 
@@ -60,7 +83,7 @@ type onboardingStep = {
   path: string;
   showHeader: boolean;
   progressBar?: progressBarStep;
-  button: buttonConfig;
+  buttons: buttonConfig[];
 };
 
 type buttonConfig = {
