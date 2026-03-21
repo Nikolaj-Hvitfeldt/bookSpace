@@ -41,6 +41,16 @@ h1 {
   font-weight: 600;
 }
 
+/* For text on the onboarding landing page */
+.onboarding-title {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 32px;
+  color: black;
+  margin: 0;
+}
+
 /* Subheading */
 h2 {
   font-size: 18px;
