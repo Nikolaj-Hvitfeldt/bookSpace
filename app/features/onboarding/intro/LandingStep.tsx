@@ -1,6 +1,5 @@
 import { Button } from "../../../components/ui/button";
 
-// Will point to the next page when implemented
 type LandingStepProps = {
   onNext: () => void;
 };
@@ -42,18 +41,6 @@ export default function LandingStep({ onNext }: LandingStepProps) {
             aria-hidden={true}
           />
         </div>
-      </div>
-
-      {/* Get started button */}
-      <div className="mt-auto flex w-full justify-center">
-        <Button
-          type="button"
-          className="w-full"
-          variant="primary"
-          onClick={onNext}
-        >
-          Get started
-        </Button>
       </div>
     </>
   );
