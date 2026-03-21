@@ -1,34 +1,110 @@
-import { Outlet, redirect, useLocation } from "react-router";
+import { Outlet, useLocation, useNavigate, Link } from "react-router";
 import type { Route } from "./+types/onboardingLayout";
-import User from "../db/models/User";
-import { requireUser, getUserData } from "~/services/auth.server";
+import {
+  getPreviousStepPath,
+  onboardingSteps,
+  getNextStepPath,
+} from "~/features/onboarding/stepsConfig";
+import { Button } from "~/components/ui/button";
 
-export async function loader({ request }: Route.LoaderArgs) {
-   // const user = await requireUser(request);
-  
-   // const currentUser = await User.findById(user._id);
-   // if (!currentUser) {
-   //   return redirect("/login");
-   // }
-  
-   // if (currentUser.onboardingComplete) {
-   //   return redirect("/");
-   // }
+//export async function loader({ request }: Route.LoaderArgs) {
+// const user = await requireUser(request);
 
-  // Temporary fix for requireUser not working. Revisit when implementing register/sign up
-   const user = await getUserData(request);
-   if (user) {
-       return redirect("/onboarding/landing");
-   }
+// const currentUser = await User.findById(user._id);
+// if (!currentUser) {
+//   return redirect("/login");
+// }
+
+// if (currentUser.onboardingComplete) {
+//   return redirect("/");
+// }
+//}
+
+export default function OnboardingLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const currentStep = onboardingSteps.find(
+    (step) => step.path === location.pathname,
+  );
+
+  const showHeader = currentStep?.showHeader ?? true;
+  const progressBar = currentStep?.progressBar;
+
+  const previousStepPath = getPreviousStepPath(location.pathname);
+  const skipPath = "/login";
+  const nextStepPath = getNextStepPath(location.pathname);
+
+  return (
+    <main className="min-h-dvh bg-secondary-eggshell">
+      <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(32px,8vh,64px)] pb-12">
+        {showHeader ? (
+          <header className="mb-[clamp(16px,4vh,32px)] flex w-full items-center justify-between">
+            <button
+              type="button"
+              className="h-[25px] w-[25px]"
+              onClick={() =>
+                previousStepPath ? navigate(previousStepPath) : navigate(-1)
+              }
+            >
+              <img src="/onboardingImages/back-button.avif" alt="Go back" />
+            </button>
+
+            <Link to={skipPath}>Skip</Link>
+          </header>
+        ) : (
+          <div className="mb-[clamp(16px,4vh,32px)] h-[25px] w-[25px]" />
+        )}
+
+        <Outlet />
+
+        <div className="mt-auto flex w-full flex-col gap-4">
+          {/* Progress Bar */}
+          {progressBar ? (
+            <div
+              className="flex w-full gap-3"
+              role="progressbar"
+              aria-label="Onboarding progress"
+              //Accessibility for screen readers
+              aria-valuemin={1}
+              aria-valuemax={progressBar.total}
+              aria-valuenow={progressBar.current}
+            >
+              {Array.from({ length: progressBar.total }, (_, index) => {
+                const filled = index === progressBar.current - 1; //Arrays are index based hence we need to subtract 1
+                return (
+                  <div
+                    key={index}
+                    className={[
+                      "h-[4px] flex-1 rounded-full",
+                      filled ? "bg-primary-brown" : "bg-secondary-gainsboro",
+                    ].join(" ")} // Needs to join to pass as a string isntead of an array - className wants a string
+                    aria-hidden="true"
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <div className="mb-4 flex w-full gap-3" />
+          )}
+
+          {/* Button */}
+          {currentStep?.button ? (
+            <div className="flex w-full justify-center">
+              <Button
+                type="button"
+                className="w-full"
+                variant={currentStep?.button?.variant}
+                onClick={() => navigate(nextStepPath ?? "/login")}
+              >
+                {currentStep?.button?.label}
+              </Button>
+            </div>
+          ) : (
+            <div className="mt-auto flex w-full flex-col gap-4" />
+          )}
+        </div>
+      </div>
+    </main>
+  );
 }
-  
-    export default function OnboardingLayout() {
-      return (
-        <main className="min-h-dvh bg-secondary-eggshell">
-          <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(84px,12vh,168px)] pb-12">
-            <Outlet />
-          </div>
-        </main>
-      );
-    }
-  
