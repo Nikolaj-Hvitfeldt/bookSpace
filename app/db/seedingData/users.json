@@ -1,12 +1,20 @@
 [
-    {
-        "email": "test@test.com",
-        "password": "test1234",
-        "displayName": "Jürgen"
-    },
-    {
-        "email": "test2@test.com",
-        "password": "test1234",
-        "displayName": "BoBo"
-    }
+  {
+    "email": "test@test.com",
+    "password": "test1234",
+    "displayName": "Jürgen",
+    "favoriteAuthors": [],
+    "favoriteGenres": [],
+    "favoriteBooks": [],
+    "onboardingComplete": true
+  },
+  {
+    "email": "test2@test.com",
+    "password": "test1234",
+    "displayName": "BoBo",
+    "favoriteAuthors": [],
+    "favoriteGenres": [],
+    "favoriteBooks": [],
+    "onboardingComplete": false
+  }
 ]

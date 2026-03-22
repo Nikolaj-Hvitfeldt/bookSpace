@@ -26,9 +26,8 @@ const bookSchema = new Schema(
       required: [true, "Title is required"],
     },
     author: {
-      type: [String],
-      trim: true,
-      required: [true, "Author(s) is required"],
+      type: [{ type: Types.ObjectId, ref: "Author" }],
+      default: [],
     },
     description: {
       type: String,
@@ -74,7 +73,6 @@ const bookSchema = new Schema(
       type: [String],
       default: [],
     },
-    //same as above above
     genres: {
       type: [{ type: Types.ObjectId, ref: "Genre" }],
       default: [],
