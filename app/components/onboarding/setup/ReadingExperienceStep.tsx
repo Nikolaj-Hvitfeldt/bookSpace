@@ -1,4 +1,5 @@
 import { Button } from "~/components/ui/button";
+import { useState } from "react";
 
 type ReadingExperienceStepProps = {
   onNext: () => void;
@@ -11,6 +12,8 @@ const text =
 export default function ReadingExperienceStep({
   onNext,
 }: ReadingExperienceStepProps) {
+  const [selectedExperience, setSelectedExperience] = useState<string>("");
+
   return (
     <>
       {/* Image */}
@@ -25,32 +28,86 @@ export default function ReadingExperienceStep({
 
         {/* Buttons */}
         <div className="mt-6 flex flex-col gap-[10px]">
-          <Button type="button" variant="secondary">
+          <Button
+            type="button"
+            variant={
+              selectedExperience === "beginner" ? "primary" : "secondary"
+            }
+            onClick={() => setSelectedExperience("beginner")}
+          >
             <div className="flex flex-col items-start mr-[80px]">
-              <div className="text-[16px] font-semibold leading-normal text-black">
+              <div
+                className={
+                  selectedExperience === "beginner"
+                    ? "text-white text-[16px] font-semibold leading-normal"
+                    : "text-black text-[16px] font-semibold leading-normal"
+                }
+              >
                 Beginner
               </div>
-              <div className="text-[14px] font-normal leading-normal text-black">
+              <div
+                className={
+                  selectedExperience === "beginner"
+                    ? "text-white text-[14px] font-normal leading-normal"
+                    : "text-black text-[14px] font-normal leading-normal"
+                }
+              >
                 I'm just starting my reading journey.
               </div>
             </div>
           </Button>
-          <Button type="button" variant="secondary">
+          <Button
+            type="button"
+            variant={
+              selectedExperience === "intermediate" ? "primary" : "secondary"
+            }
+            onClick={() => setSelectedExperience("intermediate")}
+          >
             <div className="flex flex-col items-start mr-[20px]">
-              <div className="text-[16px] font-semibold leading-normal text-black">
+              <div
+                className={
+                  selectedExperience === "intermediate"
+                    ? "text-white text-[16px] font-semibold leading-normal"
+                    : "text-black text-[16px] font-semibold leading-normal"
+                }
+              >
                 Intermediate
               </div>
-              <div className="text-[14px] font-normal leading-normal text-black">
+              <div
+                className={
+                  selectedExperience === "intermediate"
+                    ? "text-white text-[14px] font-normal leading-normal"
+                    : "text-black text-[14px] font-normal leading-normal"
+                }
+              >
                 I read occasionally and want to explore more.
               </div>
             </div>
           </Button>
-          <Button type="button" variant="secondary">
+          <Button
+            type="button"
+            variant={
+              selectedExperience === "advanced" ? "primary" : "secondary"
+            }
+            onClick={() => setSelectedExperience("advanced")}
+          >
             <div className="flex flex-col items-start ml-[10px]">
-              <div className="text-[16px] font-semibold leading-normal text-black">
+              <div
+                className={
+                  selectedExperience === "advanced"
+                    ? "text-white text-[16px] font-semibold leading-normal"
+                    : "text-black text-[16px] font-semibold leading-normal"
+                }
+              >
                 Advanced
               </div>
-              <div className="text-[14px] font-normal leading-normal text-black">
+              <div
+                className={
+                  selectedExperience === "advanced"
+                    ? "text-white text-[14px] font-normal leading-normal"
+                    : "text-black text-[14px] font-normal leading-normal"
+                }
+              >
                 I'm a seasoned reader looking for new challenges.
               </div>
             </div>
