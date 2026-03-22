@@ -86,6 +86,21 @@ export const onboardingSteps: onboardingStep[] = [
       },
     ],
   },
+  {
+    id: "favorite-genres",
+    path: "/onboarding/favorite-genres",
+    showHeader: true,
+    progressBar: {
+      total: 5,
+      current: 2,
+    },
+    buttons: [
+      {
+        label: "Next",
+        variant: "secondary",
+      },
+    ],
+  },
 ];
 
 type progressBarStep = {
