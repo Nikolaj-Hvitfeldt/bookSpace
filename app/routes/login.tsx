@@ -57,7 +57,7 @@ export default function Login({ actionData }: Route.ComponentProps) {
       <SearchBar placeholder="Search..." />
 
       <DropdownMenu
-        className="mt-2"
+        className="mt-2 ml-2"
         options={options}
         value={chosenValue}
         onChange={setChosenValue}

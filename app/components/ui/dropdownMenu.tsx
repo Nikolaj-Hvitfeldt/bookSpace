@@ -53,39 +53,53 @@ export function DropdownMenu({
         <button
           type="button"
           className={cn(
-            "flex w-[110px] items-center justify-between rounded-[10px] border-[0.5px] border-solid border-black/20 p-[10px]",
+            "group flex w-[110px] items-center justify-between rounded-[10px] border-[0.5px] border-solid border-black/20 p-[10px]",
             "text-left font-normal text-[14px] transition-[box-shadow,border-color]",
             "focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
-            isPlaceholder && "text-black/50",
+            isPlaceholder ? "text-black/50" : "text-black",
             className,
           )}
         >
-          <div className="min-w-0 flex-1 whitespace-nowrap overflow-hidden text-ellipsis leading-[20px] text-black">
+          <div className="w-[80px] shrink-0 whitespace-nowrap overflow-hidden text-ellipsis leading-[20px] text-inherit">
             {triggerText}
           </div>
-          <ChevronDownIcon className="w-[80px]shrink-0 whitespace-nowrap overflow-hidden text-ellipsis" />
+          <ChevronDownIcon className="shrink-0 text-black transition-transform duration-300 group-data-[state=open]:rotate-180" />
         </button>
       </DropdownMenuRadix.Trigger>
 
       <DropdownMenuRadix.Portal>
         <DropdownMenuRadix.Content
-          sideOffset={4}
           align="start"
           className={cn(
-            "overflow-hidden rounded-[10px] border-[0.5px] border-solid border-secondary/20 bg-white p-[10px] shadow-md",
+            "overflow-hidden rounded-[10px] border-[0.5px] border-solid border-black/20 bg-white p-[10px] shadow-md",
           )}
         >
-          {options.map((option) => (
-            <DropdownMenuRadix.Item
-              key={option.value}
-              className={cn(
-                "w-[80px] text-left shrink-0 align-stretch cursor-pointer rounded-[6px] px-2 py-2 font-normal text-[14px] outline-none select-none text-black",
-              )}
-              onSelect={() => onChange(option.value)}
-            >
-              {option.label}
-            </DropdownMenuRadix.Item>
-          ))}
+          {options.map((option) => {
+            const isSelected = option.value === value;
+
+            return (
+              <DropdownMenuRadix.Item
+                key={option.value}
+                className={cn(
+                  "relative cursor-pointer rounded-[6px] pr-2 py-2 pl-3 font-normal",
+                  "text-left font-normal text-[14px] leading-[20px] outline-none select-none",
+                  "before:pointer-events-none before:absolute before:left-1 before:top-2 before:bottom-2 before:w-px before:content-['']",
+                  isSelected
+                    ? cn(
+                        "text-black before:bg-black",
+                        "data-highlighted:bg-neutral-100",
+                      )
+                    : cn(
+                        "text-black before:bg-transparent",
+                        "data-highlighted:bg-neutral-100 data-highlighted:text-neutral-500",
+                      ),
+                )}
+                onSelect={() => onChange(option.value)}
+              >
+                {option.label}
+              </DropdownMenuRadix.Item>
+            );
+          })}
         </DropdownMenuRadix.Content>
       </DropdownMenuRadix.Portal>
     </DropdownMenuRadix.Root>
