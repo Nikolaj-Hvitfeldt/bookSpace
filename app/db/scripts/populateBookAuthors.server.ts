@@ -1,25 +1,25 @@
 import connectDb from "../db.server";
 import Book from "../models/Book";
-import Genre from "../models/Genre";
-import booksWithGenres from "../seedingData/books-with-genres-and-authors.json";
+import Author from "../models/author";
+import booksWithAuthors from "../seedingData/books-with-genres-and-authors.json";
 
-type BookWithGenres = {
+type BookWithAuthors = {
   slug: string;
-  genres: string[];
+  author: string[];
 };
 
-export default async function populateBookGenres() {
+export default async function populateBookAuthors() {
   await connectDb();
 
-  const genres = await Genre.find().lean();
-  const nameToId = new Map(genres.map((genre) => [genre.name, genre._id]));
+  const authors = await Author.find().lean();
+  const nameToId = new Map(authors.map((author) => [author.name, author._id]));
 
-  const books = booksWithGenres as BookWithGenres[];
+  const books = booksWithAuthors as BookWithAuthors[];
 
   try {
     for (const book of books) {
       const seen = new Set<string>(); // Makes an unique Set so we don't add the same genre twice
-      const genreIds = (book.genres ?? [])
+      const authorIds = (book.author ?? [])
         .map((name) => nameToId.get(name))
         .filter((id): id is NonNullable<typeof id> => {
           // Filters out any null values by returning either true or false per each id
@@ -30,12 +30,15 @@ export default async function populateBookGenres() {
           return true;
         });
 
-      await Book.updateOne({ slug: book.slug }, { $set: { genres: genreIds } });
+      await Book.updateOne(
+        { slug: book.slug },
+        { $set: { author: authorIds } },
+      );
     }
 
-    console.log("Populated book with genres successfully");
+    console.log("Populated book with authors successfully");
   } catch (error) {
-    console.error("Error populating book with genres:", error);
+    console.error("Error populating book with authors:", error);
     throw error;
   }
 }
