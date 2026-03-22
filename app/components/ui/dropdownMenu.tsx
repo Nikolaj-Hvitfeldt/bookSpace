@@ -82,16 +82,18 @@ export function DropdownMenu({
                 key={option.value}
                 className={cn(
                   "relative cursor-pointer rounded-[6px] pr-2 py-2 pl-3 font-normal",
-                  "text-left font-normal text-[14px] leading-[20px] outline-none select-none",
+                  "text-left font-normal text-[14px] leading-[20px] outline-none select-none transition-colors duration-150",
                   "before:pointer-events-none before:absolute before:left-1 before:top-2 before:bottom-2 before:w-px before:content-['']",
                   isSelected
                     ? cn(
                         "text-black before:bg-black",
-                        "data-highlighted:bg-neutral-100",
+                        "data-highlighted:bg-input",
+                        "data-highlighted:text-black",
                       )
                     : cn(
                         "text-black before:bg-transparent",
-                        "data-highlighted:bg-neutral-100 data-highlighted:text-neutral-500",
+                        "data-highlighted:bg-input/40",
+                        "data-highlighted:text-neutral-500",
                       ),
                 )}
                 onSelect={() => onChange(option.value)}

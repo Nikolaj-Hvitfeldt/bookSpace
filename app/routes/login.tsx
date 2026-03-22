@@ -10,8 +10,8 @@ export default function Login({ actionData }: Route.ComponentProps) {
   const [chosenValue, setChosenValue] = useState("");
 
   const options = [
-    { label: "test1", value: "test1" },
-    { label: "test2", value: "test2" },
+    { label: "Minutes", value: "Minutes" },
+    { label: "Hours", value: "Hours" },
   ];
 
   return (
