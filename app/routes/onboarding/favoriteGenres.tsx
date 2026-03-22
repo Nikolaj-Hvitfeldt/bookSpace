@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from "react-router";
-import type { Route } from "./+types/getStarted";
+import type { Route } from "./+types/favoriteGenres";
 import FavoriteGenresStep from "~/components/onboarding/setup/FavoriteGenresStep";
 import { getNextStepPath } from "~/components/onboarding/stepsConfig";
-import { getGenres } from "~/db/queries/books";
+import { getGenres } from "~/db/queries/genre";
 
 export async function loader(_args: Route.LoaderArgs) {
   const genres = await getGenres();

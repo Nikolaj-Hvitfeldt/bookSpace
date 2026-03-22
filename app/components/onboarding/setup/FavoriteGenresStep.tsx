@@ -1,9 +1,10 @@
 import { Button } from "~/components/ui/button";
 import { SearchBar } from "~/components/ui/searchbar";
+import type { Genres } from "~/db/queries/genre";
 
 type FavoriteGenresStepProps = {
   onNext: () => void;
-  genres: genres[];
+  genres: Genres[];
 };
 
 const heading = "What’s Your Favorite\nGenres?";
