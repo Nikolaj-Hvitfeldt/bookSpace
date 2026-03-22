@@ -6,10 +6,12 @@ export type Genres = {
   name: string;
 };
 
-export async function getGenres(): Promise<Genres[]> {
+const defaultLimit = 20;
+
+export async function getGenres(limit = defaultLimit): Promise<Genres[]> {
   await connectDb();
 
-  const genres = await Genre.find().select({ name: 1 }).lean();
+  const genres = await Genre.find().select({ name: 1 }).limit(limit).lean();
 
   return genres.map((genre) => ({
     id: genre._id.toString(),
