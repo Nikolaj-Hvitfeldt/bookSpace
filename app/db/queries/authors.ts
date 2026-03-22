@@ -1,5 +1,5 @@
 import connectDb from "../db.server";
-import Author from "../models/author";
+import Author from "../models/Author";
 
 export type Authors = {
   id: string;

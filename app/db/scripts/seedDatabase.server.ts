@@ -5,9 +5,8 @@ import users from "../seedingData/users.json";
 import Genre from "../models/Genre";
 import genres from "../seedingData/genres.json";
 import authors from "../seedingData/authors.json";
-import populateBookGenres from "./populateBookGenres.server";
-import Author from "../models/author";
-import populateBookAuthors from "./populateBookAuthors.server";
+import Author from "../models/Author";
+import populateBookRelations from "./populateBookRelations.server";
 
 export default async function seedDatabase() {
   try {
@@ -15,8 +14,7 @@ export default async function seedDatabase() {
     await seedAuthors();
     await seedBooks();
     await seedUsers();
-    await populateBookGenres();
-    await populateBookAuthors();
+    await populateBookRelations();
     console.log("Database seeded successfully");
   } catch (error) {
     console.error("Error seeding database:", error);
