@@ -24,15 +24,36 @@ export default function ReadingExperienceStep({
         </div>
 
         {/* Buttons */}
-        <div className="mt-6 flex flex-col gap-2">
+        <div className="mt-6 flex flex-col gap-[10px]">
           <Button type="button" variant="secondary">
-            Beginnder
+            <div className="flex flex-col items-start mr-[80px]">
+              <div className="text-[16px] font-semibold leading-normal text-black">
+                Beginner
+              </div>
+              <div className="text-[14px] font-normal leading-normal text-black">
+                I'm just starting my reading journey.
+              </div>
+            </div>
           </Button>
           <Button type="button" variant="secondary">
-            Intermediate
+            <div className="flex flex-col items-start mr-[20px]">
+              <div className="text-[16px] font-semibold leading-normal text-black">
+                Intermediate
+              </div>
+              <div className="text-[14px] font-normal leading-normal text-black">
+                I read occasionally and want to explore more.
+              </div>
+            </div>
           </Button>
           <Button type="button" variant="secondary">
-            Advanced
+            <div className="flex flex-col items-start ml-[10px]">
+              <div className="text-[16px] font-semibold leading-normal text-black">
+                Advanced
+              </div>
+              <div className="text-[14px] font-normal leading-normal text-black">
+                I'm a seasoned reader looking for new challenges.
+              </div>
+            </div>
           </Button>
         </div>
       </div>
