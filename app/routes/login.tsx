@@ -7,16 +7,12 @@ import { DropdownMenu } from "../components/ui/dropdownMenu";
 import { useState } from "react";
 
 export default function Login({ actionData }: Route.ComponentProps) {
-  const [chosenLabel, setChosenLabel] = useState<string | null>(null);
+  const [chosenValue, setChosenValue] = useState("");
 
   const options = [
     { label: "test1", value: "test1" },
     { label: "test2", value: "test2" },
   ];
-
-  const testLabel = options.find(
-    (option) => option.value === chosenLabel,
-  )?.label;
 
   return (
     <div>
@@ -61,10 +57,11 @@ export default function Login({ actionData }: Route.ComponentProps) {
       <SearchBar placeholder="Search..." />
 
       <DropdownMenu
+        className="mt-2"
         options={options}
-        value={chosenLabel || "Select an option"}
-        onChange={setChosenLabel}
-        label={testLabel || ""}
+        value={chosenValue}
+        onChange={setChosenValue}
+        placeholder="Select an option"
       />
     </div>
   );
