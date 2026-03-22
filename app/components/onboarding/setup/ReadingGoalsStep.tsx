@@ -170,7 +170,7 @@ export default function ReadingGoalsStep({ onNext }: ReadingGoalsStepProps) {
       <p className="mt-4 whitespace-pre-line">{text}</p>
 
       {/* Reading Goals Picker Content */}
-      <div className="w-full mt-[clamp(14px,2vh,28px)] flex justify-center">
+      <div className="w-full mt-[clamp(42px,6vh,84px)] flex justify-center">
         <ReadingGoalPicker
           amount={amount}
           unit={unit}
