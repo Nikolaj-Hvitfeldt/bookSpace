@@ -15,7 +15,7 @@ export default function FavoriteGenresRoute({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const nextPath = getNextStepPath(location.pathname) ?? "/login";
+  const nextPath = getNextStepPath(location.pathname) ?? "/favorite-authors";
 
   return (
     <FavoriteGenresStep

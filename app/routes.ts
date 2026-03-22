@@ -19,5 +19,9 @@ export default [
     route("onboarding/get-started", "routes/onboarding/getStarted.tsx"),
     route("onboarding/favorite-books", "routes/onboarding/favoriteBooks.tsx"),
     route("onboarding/favorite-genres", "routes/onboarding/favoriteGenres.tsx"),
+    route(
+      "onboarding/favorite-authors",
+      "routes/onboarding/favoriteAuthors.tsx",
+    ),
   ]),
 ] satisfies RouteConfig;

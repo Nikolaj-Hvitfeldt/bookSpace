@@ -101,6 +101,21 @@ export const onboardingSteps: onboardingStep[] = [
       },
     ],
   },
+  {
+    id: "favorite-authors",
+    path: "/onboarding/favorite-authors",
+    showHeader: true,
+    progressBar: {
+      total: 5,
+      current: 3,
+    },
+    buttons: [
+      {
+        label: "Next",
+        variant: "secondary",
+      },
+    ],
+  },
 ];
 
 type progressBarStep = {
