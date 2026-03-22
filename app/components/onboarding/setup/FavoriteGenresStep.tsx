@@ -1,7 +1,7 @@
 import { Button } from "~/components/ui/button";
 import { SearchBar } from "~/components/ui/searchbar";
 import type { Genres } from "~/db/queries/genre";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 type FavoriteGenresStepProps = {
   onNext: () => void;
@@ -36,6 +36,14 @@ export default function FavoriteGenresStep({
     );
   };
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredGenres = useMemo(() => {
+    if (!searchQuery.trim()) return genres;
+
+    const query = searchQuery.toLowerCase().trim();
+    return genres.filter((genre) => genre.name.toLowerCase().includes(query));
+  }, [genres, searchQuery]);
+
   useEffect(() => {
     sessionStorage.setItem(favoriteGenresKey, JSON.stringify(selectedIds));
   }, [selectedIds]);
@@ -50,12 +58,17 @@ export default function FavoriteGenresStep({
       {/* Text */}
       <p className="mt-4 whitespace-pre-line">{text}</p>
 
-      <SearchBar placeholder="Search..." className="mt-[clamp(8px,2vh,16px)]" />
+      <SearchBar
+        placeholder="Search..."
+        className="mt-[clamp(8px,2vh,16px)]"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
 
       {/* Genres */}
       <div className="w-full text-right mt-[clamp(14px,2vh,28px)]">
         <div className="flex flex-wrap gap-2 w-full">
-          {genres.map((genre) => {
+          {filteredGenres.map((genre) => {
             const isSelected = selectedIds.includes(genre.id);
             return (
               <Button
