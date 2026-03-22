@@ -1,0 +1,382 @@
+[
+  {
+    "name": "Adrian Tchaikovsky",
+    "slug": "adrian-tchaikovsky"
+  },
+  {
+    "name": "Alan Moore",
+    "slug": "alan-moore"
+  },
+  {
+    "name": "Alice Oseman",
+    "slug": "alice-oseman"
+  },
+  {
+    "name": "Amor Towles",
+    "slug": "amor-towles"
+  },
+  {
+    "name": "Andrzej Sapkowski",
+    "slug": "andrzej-sapkowski"
+  },
+  {
+    "name": "Angie Thomas",
+    "slug": "angie-thomas"
+  },
+  {
+    "name": "Anthony Doerr",
+    "slug": "anthony-doerr"
+  },
+  {
+    "name": "Barbara Kingsolver",
+    "slug": "barbara-kingsolver"
+  },
+  {
+    "name": "Becky Chambers",
+    "slug": "becky-chambers"
+  },
+  {
+    "name": "Benjamin Alire Sáenz",
+    "slug": "benjamin-alire-saenz"
+  },
+  {
+    "name": "Blake Crouch",
+    "slug": "blake-crouch"
+  },
+  {
+    "name": "Bonnie Garmus",
+    "slug": "bonnie-garmus"
+  },
+  {
+    "name": "Brandon Sanderson",
+    "slug": "brandon-sanderson"
+  },
+  {
+    "name": "Brit Bennett",
+    "slug": "brit-bennett"
+  },
+  {
+    "name": "Carlos Ruiz Zafón",
+    "slug": "carlos-ruiz-zafon"
+  },
+  {
+    "name": "Casey McQuiston",
+    "slug": "casey-mcquiston"
+  },
+  {
+    "name": "Celeste Ng",
+    "slug": "celeste-ng"
+  },
+  {
+    "name": "Chris Riddell",
+    "slug": "chris-riddell"
+  },
+  {
+    "name": "Chuck Palahniuk",
+    "slug": "chuck-palahniuk"
+  },
+  {
+    "name": "Cixin Liu",
+    "slug": "cixin-liu"
+  },
+  {
+    "name": "Cormac McCarthy",
+    "slug": "cormac-mccarthy"
+  },
+  {
+    "name": "Dan Simmons",
+    "slug": "dan-simmons"
+  },
+  {
+    "name": "Dave Gibbons",
+    "slug": "dave-gibbons"
+  },
+  {
+    "name": "Delia Owens",
+    "slug": "delia-owens"
+  },
+  {
+    "name": "Dennis E. Taylor",
+    "slug": "dennis-e-taylor"
+  },
+  {
+    "name": "Diana Wynne Jones",
+    "slug": "diana-wynne-jones"
+  },
+  {
+    "name": "Donna Tartt",
+    "slug": "donna-tartt"
+  },
+  {
+    "name": "Emily Henry",
+    "slug": "emily-henry"
+  },
+  {
+    "name": "Emily St. John Mandel",
+    "slug": "emily-st-john-mandel"
+  },
+  {
+    "name": "Fonda Lee",
+    "slug": "fonda-lee"
+  },
+  {
+    "name": "Fredrik Backman",
+    "slug": "fredrik-backman"
+  },
+  {
+    "name": "Gabriel García Márquez",
+    "slug": "gabriel-garcia-marquez"
+  },
+  {
+    "name": "Gail Honeyman",
+    "slug": "gail-honeyman"
+  },
+  {
+    "name": "George R.R. Martin",
+    "slug": "george-r-r-martin"
+  },
+  {
+    "name": "Gregory Rabassa",
+    "slug": "gregory-rabassa"
+  },
+  {
+    "name": "Hanya Yanagihara",
+    "slug": "hanya-yanagihara"
+  },
+  {
+    "name": "Heather Fawcett",
+    "slug": "heather-fawcett"
+  },
+  {
+    "name": "Henning Koch",
+    "slug": "henning-koch"
+  },
+  {
+    "name": "Holly Jackson",
+    "slug": "holly-jackson"
+  },
+  {
+    "name": "Howard Lyon",
+    "slug": "howard-lyon"
+  },
+  {
+    "name": "Hugh Howey",
+    "slug": "hugh-howey"
+  },
+  {
+    "name": "James Islington",
+    "slug": "james-islington"
+  },
+  {
+    "name": "James S. A. Corey",
+    "slug": "james-s-a-corey"
+  },
+  {
+    "name": "Jelena Katić Živanović",
+    "slug": "jelena-katic-zivanovic"
+  },
+  {
+    "name": "Joe Abercrombie",
+    "slug": "joe-abercrombie"
+  },
+  {
+    "name": "Joel Martinsen",
+    "slug": "joel-martinsen"
+  },
+  {
+    "name": "John    Higgins",
+    "slug": "john-higgins"
+  },
+  {
+    "name": "John Gwynne",
+    "slug": "john-gwynne"
+  },
+  {
+    "name": "John Scalzi",
+    "slug": "john-scalzi"
+  },
+  {
+    "name": "Katherine Arden",
+    "slug": "katherine-arden"
+  },
+  {
+    "name": "Kathryn Stockett",
+    "slug": "kathryn-stockett"
+  },
+  {
+    "name": "Kevin R. Free",
+    "slug": "kevin-r-free"
+  },
+  {
+    "name": "Khaled Hosseini",
+    "slug": "khaled-hosseini"
+  },
+  {
+    "name": "Kristin Hannah",
+    "slug": "kristin-hannah"
+  },
+  {
+    "name": "Kurt Vonnegut",
+    "slug": "kurt-vonnegut"
+  },
+  {
+    "name": "Leigh Bardugo",
+    "slug": "leigh-bardugo"
+  },
+  {
+    "name": "Lois Lowry",
+    "slug": "lois-lowry"
+  },
+  {
+    "name": "Lucia Graves",
+    "slug": "lucia-graves"
+  },
+  {
+    "name": "M.L. Wang",
+    "slug": "m-l-wang"
+  },
+  {
+    "name": "Mark Z. Danielewski",
+    "slug": "mark-z-danielewski"
+  },
+  {
+    "name": "Martha Wells",
+    "slug": "martha-wells"
+  },
+  {
+    "name": "Michael Crichton",
+    "slug": "michael-crichton"
+  },
+  {
+    "name": "Min Jin Lee",
+    "slug": "min-jin-lee"
+  },
+  {
+    "name": "N.K. Jemisin",
+    "slug": "n-k-jemisin"
+  },
+  {
+    "name": "Neal Shusterman",
+    "slug": "neal-shusterman"
+  },
+  {
+    "name": "Neil   Smith",
+    "slug": "neil-smith"
+  },
+  {
+    "name": "Neil Gaiman",
+    "slug": "neil-gaiman"
+  },
+  {
+    "name": "Octavia E. Butler",
+    "slug": "octavia-e-butler"
+  },
+  {
+    "name": "Philip Pullman",
+    "slug": "philip-pullman"
+  },
+  {
+    "name": "Pierce Brown",
+    "slug": "pierce-brown"
+  },
+  {
+    "name": "R. F. Kuang",
+    "slug": "r-f-kuang"
+  },
+  {
+    "name": "Rebecca Ross",
+    "slug": "rebecca-ross"
+  },
+  {
+    "name": "Rebecca Yarros",
+    "slug": "rebecca-yarros"
+  },
+  {
+    "name": "Rick Riordan",
+    "slug": "rick-riordan"
+  },
+  {
+    "name": "Robert Jordan",
+    "slug": "robert-jordan"
+  },
+  {
+    "name": "S. A. Chakraborty",
+    "slug": "s-a-chakraborty"
+  },
+  {
+    "name": "Samantha Shannon",
+    "slug": "samantha-shannon"
+  },
+  {
+    "name": "Sangu Mandanna",
+    "slug": "sangu-mandanna"
+  },
+  {
+    "name": "Sarah J. Maas",
+    "slug": "sarah-j-maas"
+  },
+  {
+    "name": "Scott Lynch",
+    "slug": "scott-lynch"
+  },
+  {
+    "name": "Shelby Van Pelt",
+    "slug": "shelby-van-pelt"
+  },
+  {
+    "name": "Stephen Chbosky",
+    "slug": "stephen-chbosky"
+  },
+  {
+    "name": "Stephen King",
+    "slug": "stephen-king"
+  },
+  {
+    "name": "Stieg Larsson",
+    "slug": "stieg-larsson"
+  },
+  {
+    "name": "T. Kingfisher",
+    "slug": "t-kingfisher"
+  },
+  {
+    "name": "Tamsyn Muir",
+    "slug": "tamsyn-muir"
+  },
+  {
+    "name": "Tara Westover",
+    "slug": "tara-westover"
+  },
+  {
+    "name": "Taylor Jenkins Reid",
+    "slug": "taylor-jenkins-reid"
+  },
+  {
+    "name": "Ted Chiang",
+    "slug": "ted-chiang"
+  },
+  {
+    "name": "Terry Pratchett",
+    "slug": "terry-pratchett"
+  },
+  {
+    "name": "TJ Klune",
+    "slug": "tj-klune"
+  },
+  {
+    "name": "Travis Baldree",
+    "slug": "travis-baldree"
+  },
+  {
+    "name": "Ursula K. Le Guin",
+    "slug": "ursula-k-le-guin"
+  },
+  {
+    "name": "V. E. Schwab",
+    "slug": "v-e-schwab"
+  },
+  {
+    "name": "William Goldman",
+    "slug": "william-goldman"
+  }
+]
