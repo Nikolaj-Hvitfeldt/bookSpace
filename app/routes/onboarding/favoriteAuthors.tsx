@@ -15,7 +15,8 @@ export default function FavoriteAuthorsRoute({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const nextPath = getNextStepPath(location.pathname) ?? "/login";
+  const nextPath =
+    getNextStepPath(location.pathname) ?? "/onboarding/reading-goals";
 
   return (
     <FavoriteAuthorsStep
