@@ -116,6 +116,21 @@ export const onboardingSteps: onboardingStep[] = [
       },
     ],
   },
+  {
+    id: "reading-goals",
+    path: "/onboarding/reading-goals",
+    showHeader: true,
+    progressBar: {
+      total: 5,
+      current: 4,
+    },
+    buttons: [
+      {
+        label: "Next",
+        variant: "secondary",
+      },
+    ],
+  },
 ];
 
 type progressBarStep = {

@@ -23,5 +23,6 @@ export default [
       "onboarding/favorite-authors",
       "routes/onboarding/favoriteAuthors.tsx",
     ),
+    route("onboarding/reading-goals", "routes/onboarding/readingGoals.tsx"),
   ]),
 ] satisfies RouteConfig;
