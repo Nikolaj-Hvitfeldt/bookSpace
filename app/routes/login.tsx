@@ -2,8 +2,8 @@ import { Form, redirect } from "react-router";
 import type { Route } from "./+types/login";
 import { authenticator } from "../services/auth.server";
 import { Button } from "../components/ui/button";
-import { SearchBar } from "../components/ui/searchbar";
 import { Input } from "../components/ui/input";
+import { useNavigate } from "react-router";
 
 export async function action({ request }: Route.ActionArgs) {
   try {
@@ -21,21 +21,22 @@ export async function action({ request }: Route.ActionArgs) {
 const text = "Welcome,\nLog in to continue";
 
 export default function Login({ actionData }: Route.ComponentProps) {
+  const navigate = useNavigate();
   return (
-    <div>
+    <div className="flex flex-1 flex-col min-h-0">
       <div className="w-full text-left mt-[clamp(20px,4vh,32px)]">
         <h1 className="onboarding-title whitespace-pre-line">{text}</h1>
       </div>
 
-      <div className="flex flex-col mt-[clamp(20px,4vh,32px)]">
-        <Form method="post" className="flex flex-col space-y-4">
+      <div className="flex flex-1 mt-[clamp(20px,4vh,32px)]">
+        <Form method="post" className="flex flex-col flex-1 gap-4">
           <Input
             label="Email"
             id="email"
             type="email"
             name="email"
             placeholder="Email"
-            className="border border-gray-300 rounded-md p-2"
+            className="flex min-h-0"
           />
           <Input
             label="Password"
@@ -43,8 +44,18 @@ export default function Login({ actionData }: Route.ComponentProps) {
             type="password"
             name="password"
             placeholder="Password"
-            className="border border-gray-300 rounded-md p-2"
+            className="min-h-0"
           />
+
+          <div className="flex w-full justify-center mt-auto gap-4">
+            <Button
+              type="submit"
+              className="w-full"
+              onClick={() => navigate("/")}
+            >
+              Log in
+            </Button>
+          </div>
         </Form>
       </div>
     </div>

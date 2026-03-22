@@ -29,15 +29,6 @@ export default function AuthLayout() {
           </button>
         </header>
         <Outlet />
-        <div className="flex w-full justify-center mt-auto gap-4">
-          <Button
-            type="submit"
-            className="w-full"
-            onClick={() => navigate("/")}
-          >
-            {buttonLabel}
-          </Button>
-        </div>
       </div>
     </main>
   );
