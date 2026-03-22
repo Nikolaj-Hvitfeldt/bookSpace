@@ -3,8 +3,21 @@ import type { Route } from "./+types/login";
 import { authenticator } from "../services/auth.server";
 import { Button } from "../components/ui/button";
 import { SearchBar } from "../components/ui/searchbar";
+import { DropdownMenu } from "../components/ui/dropdownMenu";
+import { useState } from "react";
 
 export default function Login({ actionData }: Route.ComponentProps) {
+  const [chosenLabel, setChosenLabel] = useState<string | null>(null);
+
+  const options = [
+    { label: "test1", value: "test1" },
+    { label: "test2", value: "test2" },
+  ];
+
+  const testLabel = options.find(
+    (option) => option.value === chosenLabel,
+  )?.label;
+
   return (
     <div>
       <h1>Login</h1>
@@ -46,6 +59,13 @@ export default function Login({ actionData }: Route.ComponentProps) {
       </Form>
 
       <SearchBar placeholder="Search..." />
+
+      <DropdownMenu
+        options={options}
+        value={chosenLabel || "Select an option"}
+        onChange={setChosenLabel}
+        label={testLabel || ""}
+      />
     </div>
   );
 }
