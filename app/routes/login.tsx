@@ -3,8 +3,17 @@ import type { Route } from "./+types/login";
 import { authenticator } from "../services/auth.server";
 import { Button } from "../components/ui/button";
 import { SearchBar } from "../components/ui/searchbar";
+import { DropdownMenu } from "../components/ui/dropdownMenu";
+import { useState } from "react";
 
 export default function Login({ actionData }: Route.ComponentProps) {
+  const [chosenValue, setChosenValue] = useState("");
+
+  const options = [
+    { label: "Minutes", value: "Minutes" },
+    { label: "Hours", value: "Hours" },
+  ];
+
   return (
     <div>
       <h1>Login</h1>
@@ -46,6 +55,14 @@ export default function Login({ actionData }: Route.ComponentProps) {
       </Form>
 
       <SearchBar placeholder="Search..." />
+
+      <DropdownMenu
+        className="mt-2 ml-2"
+        options={options}
+        value={chosenValue}
+        onChange={setChosenValue}
+        placeholder="Select an option"
+      />
     </div>
   );
 }
