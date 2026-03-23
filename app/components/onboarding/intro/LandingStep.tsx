@@ -8,7 +8,7 @@ export default function LandingStep({ onNext }: LandingStepProps) {
   return (
     <>
       {/* Text (left aligned) */}
-      <div className="w-full text-left mt-[clamp(20px,4vh,32px)]">
+      <div className="w-full text-left">
         <h1 className="onboarding-title whitespace-pre-line">{text}</h1>
       </div>
 

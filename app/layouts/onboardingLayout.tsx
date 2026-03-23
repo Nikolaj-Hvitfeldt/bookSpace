@@ -164,7 +164,9 @@ export default function OnboardingLayout() {
           <div className="mb-[clamp(16px,4vh,32px)] h-[25px] w-[25px]" />
         )}
 
-        <Outlet context={{ selectedExperience, setSelectedExperience }} />
+        <div className="mt-[clamp(24px,5vh,48px)]">
+          <Outlet context={{ selectedExperience, setSelectedExperience }} />
+        </div>
 
         <div className="mt-auto flex w-full flex-col gap-4">
           {/* Progress Bar */}
