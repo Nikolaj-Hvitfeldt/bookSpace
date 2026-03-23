@@ -20,7 +20,7 @@ export const Input = React.forwardRef<
         className={cn(
           "w-full rounded-[10px] border border-primary-brown bg-transparent px-3 py-3",
           "text-[16px] font-medium text-secondary outline-none",
-          "caret-primary-brown placeholder:text-secondary-light-grey/50",
+          "caret-primary-brown placeholder:text-secondary-light-grey/",
           "focus-visible:border-primary-brown focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-brown/40",
           className,
         )}

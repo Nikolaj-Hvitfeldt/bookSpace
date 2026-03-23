@@ -6,7 +6,7 @@ export type Genres = {
   name: string;
 };
 
-const defaultLimit = 20;
+const defaultLimit = 15;
 
 export async function getGenres(limit = defaultLimit): Promise<Genres[]> {
   await connectDb();

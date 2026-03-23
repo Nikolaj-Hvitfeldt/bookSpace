@@ -1,4 +1,4 @@
-import { data, Form, redirect } from "react-router";
+import { data, Form, redirect, Link } from "react-router";
 import type { Route } from "./+types/login";
 import { authenticator } from "../services/auth.server";
 import { Button } from "../components/ui/button";
@@ -65,6 +65,18 @@ export default function Login({ actionData }: Route.ComponentProps) {
             placeholder="Password"
             className="min-h-0"
           />
+
+          <div className="w-full text-center mt-2">
+            <div className="text-[14px] text-black/70">
+              Don’t have an account yet?
+            </div>
+            <Link
+              to="/signup"
+              className="text-[14px] text-primary-brown underline"
+            >
+              Sign up
+            </Link>
+          </div>
 
           {/* Show error message if there is one - Maybe update to Toast later on. Would be sick*/}
           {actionData?.error ? (
