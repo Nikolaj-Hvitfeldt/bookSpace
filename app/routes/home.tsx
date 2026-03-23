@@ -1,16 +1,19 @@
+import { useState } from "react";
 import type { Route } from "./+types/home";
+import HomeHeader from "~/components/home/HomeHeader";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Address Book" },
-    { name: "description", content: "React Router TypeScript boilerplate" },
+    { title: "Book Space" },
+    { name: "description", content: "Your favorite reading tracker" },
   ];
 }
 
 export default function Home() {
+  const [searchValue, setSearchValue] = useState("");
   return (
     <div className="wrapper">
-      <div className="home-header" /> Search bar and banner
+      <HomeHeader searchValue={searchValue} onSearchChange={setSearchValue} />
       <div className="book-section mt-10" /> Book row Currently reading
       <div className="book-section mt-10" /> Book row Recommended
       <div className="book-section mt-10" /> Book row etc etc
