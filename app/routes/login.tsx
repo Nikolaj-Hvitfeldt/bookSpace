@@ -1,10 +1,44 @@
-import { Form, redirect } from "react-router";
+import { data, Form, redirect, Link } from "react-router";
 import type { Route } from "./+types/login";
 import { authenticator } from "../services/auth.server";
 import { Button } from "../components/ui/button";
-import { SearchBar } from "../components/ui/searchbar";
-import { DropdownMenu } from "../components/ui/dropdownMenu";
-import { useState } from "react";
+import { Input } from "../components/ui/input";
+import { sessionStorage } from "../services/session.server";
+import User from "~/db/models/User";
+
+export async function action({ request }: Route.ActionArgs) {
+  try {
+    const user = await authenticator.authenticate("form", request);
+    const onboardingCompleteData = await User.findById(user._id)
+      .select("onboardingComplete")
+      .lean();
+
+    if (!user) {
+      return redirect("/login");
+    }
+
+    const session = await sessionStorage.getSession(
+      request.headers.get("Cookie"),
+    );
+    session.set("user", user);
+
+    if (onboardingCompleteData?.onboardingComplete === true) {
+      return redirect("/", {
+        headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
+      });
+    }
+
+    return redirect("/onboarding/favorite-books", {
+      headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return data({ error: "Invalid email or password" });
+    }
+  }
+}
+
+const text = "Welcome,\nLog in to continue";
 
 export default function Login({ actionData }: Route.ComponentProps) {
   const [chosenValue, setChosenValue] = useState("");
@@ -15,67 +49,56 @@ export default function Login({ actionData }: Route.ComponentProps) {
   ];
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="flex flex-1 flex-col min-h-0">
+      <div className="w-full text-left mt-[clamp(20px,4vh,32px)]">
+        <h1 className="onboarding-title whitespace-pre-line">{text}</h1>
+      </div>
 
-      <Form method="post" className="flex flex-col space-y-4">
-        <label className="block" htmlFor="email">
-          Email
-          <input
+      <div className="flex flex-1 mt-[clamp(20px,4vh,32px)]">
+        <Form method="post" className="flex flex-col flex-1 gap-4">
+          <Input
+            label="Email"
+            id="email"
             type="email"
             name="email"
             placeholder="Email"
-            className="border border-gray-300 rounded-md p-2"
+            className="flex min-h-0"
           />
-        </label>
-        <label className="block" htmlFor="password">
-          Password
-          <input
+          <Input
+            label="Password"
+            id="password"
             type="password"
             name="password"
             placeholder="Password"
-            className="border border-gray-300 rounded-md p-2"
+            className="min-h-0"
           />
-        </label>
 
-        {/* Show error message if there is one */}
-        {actionData?.error ? (
-          <div className="text-red-600">
-            <p>{actionData?.error}</p>
+          <div className="w-full text-center mt-2">
+            <div className="text-[14px] text-black/70">
+              Don’t have an account yet?
+            </div>
+            <Link
+              to="/signup"
+              className="text-[14px] text-primary-brown underline"
+            >
+              Sign up
+            </Link>
           </div>
-        ) : null}
-        <div className="flex justify-center">
-          <Button type="submit">Primary Button</Button>
-        </div>
-        <div className="flex justify-center">
-          <Button type="submit" variant="secondary">
-            Secondary Button
-          </Button>
-        </div>
-      </Form>
 
-      <SearchBar placeholder="Search..." />
+          {/* Show error message if there is one - Maybe update to Toast later on. Would be sick*/}
+          {actionData?.error ? (
+            <p className="text-red-600!" role="alert">
+              {actionData?.error}
+            </p>
+          ) : null}
 
-      <DropdownMenu
-        className="mt-2 ml-2"
-        options={options}
-        value={chosenValue}
-        onChange={setChosenValue}
-        placeholder="Select an option"
-      />
+          <div className="flex w-full justify-center mt-auto gap-4">
+            <Button type="submit" className="w-full">
+              Log in
+            </Button>
+          </div>
+        </Form>
+      </div>
     </div>
   );
-}
-
-export async function action({ request }: Route.ActionArgs) {
-  try {
-    const user = await authenticator.authenticate("form", request);
-    if (!user) {
-      return redirect("/login");
-    }
-
-    return redirect("/");
-  } catch (error) {
-    return { error: "Invalid email or password" };
-  }
 }
