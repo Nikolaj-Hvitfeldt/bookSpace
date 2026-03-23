@@ -5,6 +5,7 @@ import {
   Link,
   useSubmit,
   redirect,
+  useNavigation,
 } from "react-router";
 import type { Route } from "./+types/onboardingLayout";
 import {
@@ -14,6 +15,12 @@ import {
 } from "~/components/onboarding/stepsConfig";
 import { Button } from "~/components/ui/button";
 import { getUserData } from "~/services/auth.server";
+import { useState, useEffect } from "react";
+
+export type OnboardingContextType = {
+  selectedExperience: string;
+  setSelectedExperience: (experience: string) => void;
+};
 
 export async function loader({ request }: Route.LoaderArgs) {
   const pathname = new URL(request.url).pathname;
@@ -50,6 +57,20 @@ export default function OnboardingLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const submit = useSubmit();
+  const navigation = useNavigation();
+
+  const [selectedExperience, setSelectedExperience] = useState("");
+
+  useEffect(() => {
+    if (location.pathname !== "/onboarding/reading-experience") {
+      return;
+    }
+    const readingExperience = sessionStorage.getItem("reading-experience");
+
+    if (readingExperience) {
+      setSelectedExperience(readingExperience);
+    }
+  }, [location.pathname]);
 
   const currentStep = onboardingSteps.find(
     (step) => step.path === location.pathname,
@@ -63,6 +84,12 @@ export default function OnboardingLayout() {
   const previousStepPath = getPreviousStepPath(location.pathname);
   const skipPath = "/login";
   const nextStepPath = getNextStepPath(location.pathname);
+
+  const isSubmitting =
+    navigation.state === "submitting" &&
+    navigation.formAction === "/onboarding/reading-experience";
+
+  const isDisabled = isFinalStep && (!selectedExperience || isSubmitting);
 
   function safeParseArray(value: string | null): unknown[] {
     if (!value) return [];
@@ -123,7 +150,7 @@ export default function OnboardingLayout() {
           <div className="mb-[clamp(16px,4vh,32px)] h-[25px] w-[25px]" />
         )}
 
-        <Outlet />
+        <Outlet context={{ selectedExperience, setSelectedExperience }} />
 
         <div className="mt-auto flex w-full flex-col gap-4">
           {/* Progress Bar */}
@@ -181,6 +208,7 @@ export default function OnboardingLayout() {
                 type="button"
                 className="w-full"
                 variant={currentStep?.buttons[0]?.variant}
+                disabled={isDisabled}
                 onClick={() => {
                   if (isFinalStep) {
                     handleSubmit();
@@ -189,7 +217,9 @@ export default function OnboardingLayout() {
                   navigate(nextStepPath ?? "/login");
                 }} // navigates to next step or falls back to login page
               >
-                {currentStep?.buttons[0]?.label}
+                {isSubmitting
+                  ? "Finalizing..."
+                  : currentStep?.buttons[0]?.label}
               </Button>
             </div>
           ) : (

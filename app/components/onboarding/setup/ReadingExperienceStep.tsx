@@ -1,12 +1,19 @@
 import { Button } from "~/components/ui/button";
-import { useState } from "react";
+import { useOutletContext } from "react-router";
+import type { OnboardingContextType } from "~/layouts/onboardingLayout";
 
 const heading = "What's Your Reading\nExperience Level?";
 const text =
   "Let us know your reading experience so we can tailor recommendations that fit your journey.";
 
 export default function ReadingExperienceStep() {
-  const [selectedExperience, setSelectedExperience] = useState<string>("");
+  const { selectedExperience, setSelectedExperience } =
+    useOutletContext<OnboardingContextType>();
+
+  function handleSelect(level: "beginner" | "intermediate" | "advanced") {
+    setSelectedExperience(level);
+    sessionStorage.setItem("reading-experience", level);
+  }
 
   return (
     <>
@@ -27,7 +34,7 @@ export default function ReadingExperienceStep() {
             variant={
               selectedExperience === "beginner" ? "primary" : "secondary"
             }
-            onClick={() => setSelectedExperience("beginner")}
+            onClick={() => handleSelect("beginner")}
           >
             <div className="flex flex-col items-start mr-[80px]">
               <div
@@ -55,7 +62,7 @@ export default function ReadingExperienceStep() {
             variant={
               selectedExperience === "intermediate" ? "primary" : "secondary"
             }
-            onClick={() => setSelectedExperience("intermediate")}
+            onClick={() => handleSelect("intermediate")}
           >
             <div className="flex flex-col items-start mr-[20px]">
               <div
@@ -83,7 +90,7 @@ export default function ReadingExperienceStep() {
             variant={
               selectedExperience === "advanced" ? "primary" : "secondary"
             }
-            onClick={() => setSelectedExperience("advanced")}
+            onClick={() => handleSelect("advanced")}
           >
             <div className="flex flex-col items-start ml-[10px]">
               <div
