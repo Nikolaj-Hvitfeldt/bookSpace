@@ -22,7 +22,7 @@ export default function Signup({ actionData }: Route.ComponentProps) {
             id="displayName"
             type="text"
             name="displayName"
-            placeholder="Display Name"
+            placeholder="Name"
             className="flex min-h-0"
           />
 
