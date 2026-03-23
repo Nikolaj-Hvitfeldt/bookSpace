@@ -1,20 +1,23 @@
-import { Outlet, redirect, useNavigate, useLocation } from "react-router";
+import { Outlet, redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/authLayout";
 import { getUserData } from "~/services/auth.server";
-import { Button } from "~/components/ui/button";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const user = await getUserData(request);
-  if (user) {
+
+  if (!user) {
+    return null;
+  }
+
+  if (user.onboardingComplete) {
     return redirect("/");
   }
+
+  return null;
 }
+
 export default function AuthLayout() {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const isLoginPage = location.pathname === "/login";
-  const buttonLabel = isLoginPage ? "Log in" : "Sign up";
 
   return (
     <main className="bg-secondary-eggshell">

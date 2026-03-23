@@ -1,4 +1,11 @@
-import { Outlet, useLocation, useNavigate, Link } from "react-router";
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  Link,
+  useFetcher,
+  useSubmit,
+} from "react-router";
 import type { Route } from "./+types/onboardingLayout";
 import {
   getPreviousStepPath,
@@ -7,22 +14,10 @@ import {
 } from "~/components/onboarding/stepsConfig";
 import { Button } from "~/components/ui/button";
 
-//export async function loader({ request }: Route.LoaderArgs) {
-// const user = await requireUser(request);
-
-// const currentUser = await User.findById(user._id);
-// if (!currentUser) {
-//   return redirect("/login");
-// }
-
-// if (currentUser.onboardingComplete) {
-//   return redirect("/");
-// }
-//}
-
 export default function OnboardingLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const submit = useSubmit();
 
   const currentStep = onboardingSteps.find(
     (step) => step.path === location.pathname,
@@ -31,10 +26,36 @@ export default function OnboardingLayout() {
   const showHeader = currentStep?.showHeader ?? true;
   const progressBar = currentStep?.progressBar;
   const isGetStarted = currentStep?.id === "get-started";
+  const isFinalStep = currentStep?.id === "reading-experience";
 
   const previousStepPath = getPreviousStepPath(location.pathname);
   const skipPath = "/login";
   const nextStepPath = getNextStepPath(location.pathname);
+
+  function safeParseArray(value: string | null): unknown[] {
+    if (!value) return [];
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function handleSubmit() {
+    const genreIds = safeParseArray(sessionStorage.getItem("favorite-genres"));
+    const authorIds = safeParseArray(
+      sessionStorage.getItem("favorite-authors"),
+    );
+
+    const formData = new FormData();
+    formData.set("payload", JSON.stringify({ genreIds, authorIds }));
+
+    submit(formData, {
+      method: "post",
+      action: "/onboarding/reading-experience",
+    });
+  }
 
   return (
     <main className="bg-secondary-eggshell">
@@ -109,7 +130,7 @@ export default function OnboardingLayout() {
                 type="button"
                 className="w-full"
                 variant={currentStep.buttons[0].variant}
-                onClick={() => navigate(nextStepPath ?? "/login")}
+                onClick={() => navigate("/signup")}
               >
                 {currentStep?.buttons[0]?.label}
               </Button>
@@ -128,7 +149,13 @@ export default function OnboardingLayout() {
                 type="button"
                 className="w-full"
                 variant={currentStep?.buttons[0]?.variant}
-                onClick={() => navigate(nextStepPath ?? "/login")} // navigates to next step or falls back to login page
+                onClick={() => {
+                  if (isFinalStep) {
+                    handleSubmit();
+                    return;
+                  }
+                  navigate(nextStepPath ?? "/login");
+                }} // navigates to next step or falls back to login page
               >
                 {currentStep?.buttons[0]?.label}
               </Button>

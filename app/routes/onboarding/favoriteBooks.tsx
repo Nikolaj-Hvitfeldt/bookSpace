@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router";
-import type { Route } from "./+types/getStarted";
+import type { Route } from "./+types/favoriteBooks";
 import FavoriteBooksStep from "~/components/onboarding/setup/FavoriteBooksStep";
 import { getNextStepPath } from "~/components/onboarding/stepsConfig";
 import { getBookCovers } from "~/db/queries/books";
