@@ -1,25 +1,21 @@
 import { Outlet, redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/authLayout";
 import { getUserData } from "~/services/auth.server";
-import User from "~/db/models/User";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const user = await getUserData(request);
 
   if (!user) {
-    return null;
+    return redirect("/login");
   }
 
-  const onboardingComplete = await User.findById(user?._id)
-    .select("onboardingComplete")
-    .lean();
-
-  if (onboardingComplete?.onboardingComplete === true) {
+  if (user.onboardingComplete) {
     return redirect("/");
   }
 
-  return redirect("/onboarding/favorite-books");
+  return null;
 }
+
 export default function AuthLayout() {
   const navigate = useNavigate();
 

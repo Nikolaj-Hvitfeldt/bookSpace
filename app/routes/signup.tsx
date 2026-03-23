@@ -88,7 +88,7 @@ export async function action({ request }: Route.ActionArgs) {
       request.headers.get("Cookie"),
     );
     session.set("user", newUser._id.toString());
-    return redirect("onboarding/favorite-books", {
+    return redirect("/onboarding/favorite-books", {
       headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
     });
   } catch (error) {

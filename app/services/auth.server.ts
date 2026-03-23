@@ -26,11 +26,7 @@ authenticator.use(
 );
 
 export async function verifyUser(email: string, password: string) {
-  const lowerCasedEmail = email.toLowerCase().trim();
-
-  const user = await User.findOne({ email: lowerCasedEmail }).select(
-    "+password",
-  );
+  const user = await User.findOne({ email }).select("+password");
   if (!user) {
     throw new Error("User not found");
   }
@@ -90,7 +86,7 @@ export async function getUserData(request: Request): Promise<UserData | null> {
   // THROTTLE END
 
   const user = await User.findById(userFromSession._id)
-    .select("_id email displayName")
+    .select("_id email displayName onboardingComplete")
     .lean();
 
   if (!user) {
