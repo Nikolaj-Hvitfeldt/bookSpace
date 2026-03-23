@@ -1,6 +1,7 @@
 import { Link, NavLink, Outlet, redirect } from "react-router";
 import type { Route } from "./+types/app";
 import { getUserData } from "~/services/auth.server";
+import Navbar from "~/components/ui/navbar";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const user = await getUserData(request);
@@ -38,6 +39,7 @@ export default function AppLayout() {
       <main className="app-main">
         <Outlet />
       </main>
+      <Navbar />
     </div>
   );
 }
