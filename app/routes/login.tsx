@@ -1,54 +1,9 @@
-import { Form, redirect } from "react-router";
+import { data, Form, redirect } from "react-router";
 import type { Route } from "./+types/login";
 import { authenticator } from "../services/auth.server";
 import { Button } from "../components/ui/button";
-import { SearchBar } from "../components/ui/searchbar";
-
-export default function Login({ actionData }: Route.ComponentProps) {
-  return (
-    <div>
-      <h1>Login</h1>
-
-      <Form method="post" className="flex flex-col space-y-4">
-        <label className="block" htmlFor="email">
-          Email
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="border border-gray-300 rounded-md p-2"
-          />
-        </label>
-        <label className="block" htmlFor="password">
-          Password
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="border border-gray-300 rounded-md p-2"
-          />
-        </label>
-
-        {/* Show error message if there is one */}
-        {actionData?.error ? (
-          <div className="text-red-600">
-            <p>{actionData?.error}</p>
-          </div>
-        ) : null}
-        <div className="flex justify-center">
-          <Button type="submit">Primary Button</Button>
-        </div>
-        <div className="flex justify-center">
-          <Button type="submit" variant="secondary">
-            Secondary Button
-          </Button>
-        </div>
-      </Form>
-
-      <SearchBar placeholder="Search..." />
-    </div>
-  );
-}
+import { Input } from "../components/ui/input";
+import { sessionStorage } from "../services/session.server";
 
 export async function action({ request }: Route.ActionArgs) {
   try {
@@ -57,8 +12,62 @@ export async function action({ request }: Route.ActionArgs) {
       return redirect("/login");
     }
 
-    return redirect("/");
+    const session = await sessionStorage.getSession(
+      request.headers.get("Cookie"),
+    );
+    session.set("user", user);
+    return redirect("/", {
+      headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
+    });
   } catch (error) {
-    return { error: "Invalid email or password" };
+    if (error instanceof Error) {
+      return data({ error: "Invalid email or password" });
+    }
   }
+}
+
+const text = "Welcome,\nLog in to continue";
+
+export default function Login({ actionData }: Route.ComponentProps) {
+  return (
+    <div className="flex flex-1 flex-col min-h-0">
+      <div className="w-full text-left mt-[clamp(20px,4vh,32px)]">
+        <h1 className="onboarding-title whitespace-pre-line">{text}</h1>
+      </div>
+
+      <div className="flex flex-1 mt-[clamp(20px,4vh,32px)]">
+        <Form method="post" className="flex flex-col flex-1 gap-4">
+          <Input
+            label="Email"
+            id="email"
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="flex min-h-0"
+          />
+          <Input
+            label="Password"
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="min-h-0"
+          />
+
+          {/* Show error message if there is one - Maybe update to Toast later on. Would be sick*/}
+          {actionData?.error ? (
+            <p className="text-red-600!" role="alert">
+              {actionData?.error}
+            </p>
+          ) : null}
+
+          <div className="flex w-full justify-center mt-auto gap-4">
+            <Button type="submit" className="w-full">
+              Log in
+            </Button>
+          </div>
+        </Form>
+      </div>
+    </div>
+  );
 }
