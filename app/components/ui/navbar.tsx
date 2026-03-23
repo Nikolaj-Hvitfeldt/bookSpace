@@ -41,11 +41,13 @@ export default function Navbar() {
         {navItems.map((item) => (
           <li key={item.navigationPath} className="flex justify-center">
             <NavLink to={item.navigationPath} className="flex justify-center">
-              <img
-                src={item.isActive}
-                alt={item.label}
-                className="w-6 h-6 object-contain"
-              />
+              {({ isActive }) => (
+                <img
+                  src={isActive ? item.isActive : item.isInactive}
+                  alt={item.label}
+                  className="w-6 h-6 object-contain"
+                />
+              )}
             </NavLink>
           </li>
         ))}
