@@ -3,8 +3,8 @@ import {
   useLocation,
   useNavigate,
   Link,
-  useFetcher,
   useSubmit,
+  redirect,
 } from "react-router";
 import type { Route } from "./+types/onboardingLayout";
 import {
@@ -13,6 +13,38 @@ import {
   getNextStepPath,
 } from "~/components/onboarding/stepsConfig";
 import { Button } from "~/components/ui/button";
+import { getUserData } from "~/services/auth.server";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const pathname = new URL(request.url).pathname;
+
+  const publicOnboardingSteps = [
+    "/onboarding/landing",
+    "/onboarding/recommendation",
+    "/onboarding/community",
+    "/onboarding/tracking",
+    "/onboarding/get-started",
+  ];
+
+  const isPublic = publicOnboardingSteps.includes(pathname);
+
+  //If the onboarding step is public it doesnt require auth
+  if (isPublic) {
+    return null;
+  }
+
+  //If the onboarding step is not public it requires auth
+  const user = await getUserData(request);
+  if (!user) {
+    return redirect("/signup");
+  }
+
+  if (user.onboardingComplete) {
+    return redirect("/");
+  }
+
+  return null;
+}
 
 export default function OnboardingLayout() {
   const navigate = useNavigate();
