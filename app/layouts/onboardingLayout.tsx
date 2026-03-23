@@ -93,6 +93,7 @@ export default function OnboardingLayout() {
   const progressBar = currentStep?.progressBar;
   const isGetStarted = currentStep?.id === "get-started";
   const isFinalStep = currentStep?.id === "reading-experience";
+  const isLandingStep = currentStep?.id === "landing";
 
   const previousStepPath = getPreviousStepPath(location.pathname);
   const skipPath = "/login";
@@ -133,7 +134,7 @@ export default function OnboardingLayout() {
     <main className="bg-secondary-eggshell">
       <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(32px,8vh,64px)] pb-[clamp(10px,2vh,20px)]">
         {/* Headers*/}
-        {isGetStarted ? (
+        {isGetStarted || isLandingStep ? (
           <header className="mb-[clamp(16px,4vh,32px)] flex w-full items-center justify-between">
             <div className="mb-[clamp(16px,4vh,32px)] h-[25px] w-[25px]" />
             <Button

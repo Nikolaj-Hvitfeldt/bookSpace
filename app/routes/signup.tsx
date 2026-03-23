@@ -1,5 +1,5 @@
 import type { Route } from "./+types/signup";
-import { data, Form, redirect } from "react-router";
+import { data, Form, redirect, Link } from "react-router";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import User from "~/db/models/User";
@@ -42,6 +42,18 @@ export default function Signup({ actionData }: Route.ComponentProps) {
             placeholder="Password"
             className="min-h-0"
           />
+
+          <div className="w-full text-center mt-2">
+            <div className="text-[14px] text-black/70">
+              Already have an account?
+            </div>
+            <Link
+              to="/login"
+              className="text-[14px] text-primary-brown underline"
+            >
+              Log in
+            </Link>
+          </div>
 
           {actionData?.error ? (
             <p className="text-red-600!" role="alert">
