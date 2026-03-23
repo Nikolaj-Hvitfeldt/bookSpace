@@ -4,10 +4,15 @@ import { authenticator } from "../services/auth.server";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { sessionStorage } from "../services/session.server";
+import User from "~/db/models/User";
 
 export async function action({ request }: Route.ActionArgs) {
   try {
     const user = await authenticator.authenticate("form", request);
+    const onboardingCompleteData = await User.findById(user._id)
+      .select("onboardingComplete")
+      .lean();
+
     if (!user) {
       return redirect("/login");
     }
@@ -16,7 +21,14 @@ export async function action({ request }: Route.ActionArgs) {
       request.headers.get("Cookie"),
     );
     session.set("user", user);
-    return redirect("/", {
+
+    if (onboardingCompleteData?.onboardingComplete === true) {
+      return redirect("/", {
+        headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
+      });
+    }
+
+    return redirect("/onboarding/favorite-books", {
       headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
     });
   } catch (error) {
