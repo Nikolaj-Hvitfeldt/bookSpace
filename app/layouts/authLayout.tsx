@@ -6,7 +6,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const user = await getUserData(request);
 
   if (!user) {
-    return redirect("/login");
+    return null;
   }
 
   if (user.onboardingComplete) {

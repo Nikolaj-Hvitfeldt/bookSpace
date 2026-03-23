@@ -87,7 +87,7 @@ export async function action({ request }: Route.ActionArgs) {
     const session = await sessionStorage.getSession(
       request.headers.get("Cookie"),
     );
-    session.set("user", newUser._id.toString());
+    session.set("user", { _id: newUser._id.toString() });
     return redirect("/onboarding/favorite-books", {
       headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
     });

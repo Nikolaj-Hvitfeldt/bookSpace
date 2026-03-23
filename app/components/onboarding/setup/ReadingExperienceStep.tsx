@@ -1,17 +1,11 @@
 import { Button } from "~/components/ui/button";
 import { useState } from "react";
 
-type ReadingExperienceStepProps = {
-  onNext: () => void;
-};
-
 const heading = "What's Your Reading\nExperience Level?";
 const text =
   "Let us know your reading experience so we can tailor recommendations that fit your journey.";
 
-export default function ReadingExperienceStep({
-  onNext,
-}: ReadingExperienceStepProps) {
+export default function ReadingExperienceStep() {
   const [selectedExperience, setSelectedExperience] = useState<string>("");
 
   return (
