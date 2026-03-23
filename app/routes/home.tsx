@@ -9,9 +9,11 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <section>
-      <h1>Address Book Boilerplate</h1>
-      <p>Project initialized with React Router framework mode and TypeScript.</p>
-    </section>
+    <div className="wrapper">
+      <div className="home-header" /> Search bar and banner
+      <div className="book-section mt-10" /> Book row Currently reading
+      <div className="book-section mt-10" /> Book row Recommended
+      <div className="book-section mt-10" /> Book row etc etc
+    </div>
   );
 }
