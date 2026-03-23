@@ -9,11 +9,11 @@ export async function loader({ request }: Route.LoaderArgs) {
     return null;
   }
 
-  if (user.onboardingComplete) {
-    return redirect("/");
+  if (!user.onboardingComplete) {
+    return redirect("/onboarding/favorite-books");
   }
 
-  return null;
+  return redirect("/");
 }
 
 export default function AuthLayout() {

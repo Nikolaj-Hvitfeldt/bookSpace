@@ -24,6 +24,7 @@ export type OnboardingContextType = {
 
 export async function loader({ request }: Route.LoaderArgs) {
   const pathname = new URL(request.url).pathname;
+  const user = await getUserData(request);
 
   const publicOnboardingSteps = [
     "/onboarding/landing",
@@ -33,20 +34,32 @@ export async function loader({ request }: Route.LoaderArgs) {
     "/onboarding/get-started",
   ];
 
-  const isPublic = publicOnboardingSteps.includes(pathname);
+  const privateOnboardingSteps = [
+    "/onboarding/favorite-books",
+    "/onboarding/favorite-genres",
+    "/onboarding/favorite-authors",
+    "/onboarding/reading-goals",
+    "/onboarding/reading-experience",
+  ];
 
-  //If the onboarding step is public it doesnt require auth
-  if (isPublic) {
-    return null;
-  }
+  const isPublicPath = publicOnboardingSteps.includes(pathname);
+  const isPrivatePath = privateOnboardingSteps.includes(pathname);
 
-  //If the onboarding step is not public it requires auth
-  const user = await getUserData(request);
+  //If user is not logged in redirect to onboarding start flow
   if (!user) {
-    return redirect("/signup");
+    if (isPublicPath) {
+      return null;
+    }
+    return redirect("/onboarding/landing");
   }
 
-  if (user.onboardingComplete) {
+  //Onboarding is not complete redirect to setup steps
+  if (user && !user.onboardingComplete && !isPrivatePath) {
+    return redirect("/onboarding/favorite-books");
+  }
+
+  //Onboarding is complete redirect to home page
+  if (user && user.onboardingComplete) {
     return redirect("/");
   }
 
