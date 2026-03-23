@@ -14,8 +14,8 @@ export default function AppLayout() {
           <NavLink to="/login" end>
             Login
           </NavLink>
-           <NavLink to="/register" end>
-            Register
+          <NavLink to="/signup" end>
+            Sign up
           </NavLink>
         </nav>
       </header>
