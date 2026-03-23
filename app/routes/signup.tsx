@@ -4,6 +4,7 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import User from "~/db/models/User";
 import { validateSignupFormData } from "~/util/validators/signupvalidators";
+import { sessionStorage } from "../services/session.server";
 
 const text = "Welcome,\nSign up to continue";
 
@@ -76,14 +77,20 @@ export async function action({ request }: Route.ActionArgs) {
       return data({ error: "User already exists" });
     }
 
-    await User.create({
+    const newUser = await User.create({
       email: userData.email as string,
       password: userData.password as string,
       displayName: userData.displayName as string,
       onboardingComplete: false,
     });
 
-    return redirect("/login");
+    const session = await sessionStorage.getSession(
+      request.headers.get("Cookie"),
+    );
+    session.set("user", newUser._id.toString());
+    return redirect("onboarding/favorite-books", {
+      headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
+    });
   } catch (error) {
     if (error instanceof Error) {
       return data({ error: error.message });
