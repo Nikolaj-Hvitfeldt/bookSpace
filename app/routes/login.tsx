@@ -1,9 +1,9 @@
-import { Form, redirect } from "react-router";
+import { data, Form, redirect } from "react-router";
 import type { Route } from "./+types/login";
 import { authenticator } from "../services/auth.server";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { useNavigate } from "react-router";
+import { sessionStorage } from "../services/session.server";
 
 export async function action({ request }: Route.ActionArgs) {
   try {
@@ -12,16 +12,23 @@ export async function action({ request }: Route.ActionArgs) {
       return redirect("/login");
     }
 
-    return redirect("/");
+    const session = await sessionStorage.getSession(
+      request.headers.get("Cookie"),
+    );
+    session.set("user", user);
+    return redirect("/", {
+      headers: { "Set-Cookie": await sessionStorage.commitSession(session) },
+    });
   } catch (error) {
-    return { error: "Invalid email or password" };
+    if (error instanceof Error) {
+      return data({ error: "Invalid email or password" });
+    }
   }
 }
 
 const text = "Welcome,\nLog in to continue";
 
 export default function Login({ actionData }: Route.ComponentProps) {
-  const navigate = useNavigate();
   return (
     <div className="flex flex-1 flex-col min-h-0">
       <div className="w-full text-left mt-[clamp(20px,4vh,32px)]">
@@ -47,12 +54,15 @@ export default function Login({ actionData }: Route.ComponentProps) {
             className="min-h-0"
           />
 
+          {/* Show error message if there is one - Maybe update to Toast later on. Would be sick*/}
+          {actionData?.error ? (
+            <p className="text-red-600!" role="alert">
+              {actionData?.error}
+            </p>
+          ) : null}
+
           <div className="flex w-full justify-center mt-auto gap-4">
-            <Button
-              type="submit"
-              className="w-full"
-              onClick={() => navigate("/")}
-            >
+            <Button type="submit" className="w-full">
               Log in
             </Button>
           </div>
