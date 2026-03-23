@@ -22,7 +22,8 @@ const userSchema = new Schema(
       type: String,
       default: "User",
       trim: true,
-      maxlength: [30, "Display name must be less than 30 characters long"],
+      minlength: [3, "Display name must be at least 3 characters long"],
+      maxlength: [20, "Display name must be less than 20 characters long"],
     },
     favoriteAuthors: {
       type: [{ type: Types.ObjectId, ref: "Author" }],

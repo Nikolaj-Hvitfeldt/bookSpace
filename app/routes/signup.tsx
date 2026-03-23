@@ -3,6 +3,7 @@ import { data, Form, redirect } from "react-router";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import User from "~/db/models/User";
+import { validateSignupFormData } from "~/util/validators/signupvalidators";
 
 const text = "Welcome,\nSign up to continue";
 
@@ -63,6 +64,12 @@ export async function action({ request }: Route.ActionArgs) {
     const formData = await request.formData();
 
     const userData = Object.fromEntries(formData);
+
+    validateSignupFormData({
+      email: userData.email as string,
+      password: userData.password as string,
+      displayName: userData.displayName as string,
+    });
 
     const existingUser = await User.findOne({ email: userData.email });
     if (existingUser) {
