@@ -41,13 +41,6 @@ export async function action({ request }: Route.ActionArgs) {
 const text = "Welcome,\nLog in to continue";
 
 export default function Login({ actionData }: Route.ComponentProps) {
-  const [chosenValue, setChosenValue] = useState("");
-
-  const options = [
-    { label: "Minutes", value: "Minutes" },
-    { label: "Hours", value: "Hours" },
-  ];
-
   return (
     <div className="flex flex-1 flex-col min-h-0">
       <div className="w-full text-left mt-[clamp(20px,4vh,32px)]">

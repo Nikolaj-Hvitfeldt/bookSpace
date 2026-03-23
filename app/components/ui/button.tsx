@@ -4,7 +4,7 @@ function cn(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
-export type ButtonVariant = "primary" | "secondary";
+export type ButtonVariant = "primary" | "secondary" | "hasDescription";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
@@ -35,6 +35,7 @@ export function Button({
           (isSmall
             ? "border-primary-brown bg-transparent text-primary-brown hover:opacity-90"
             : "bg-transparent text-primary-brown border-[1.5px] border-solid border-primary-brown hover:opacity-90 py-[12px] px-[141px]"),
+
         className,
       )}
       {...props}
