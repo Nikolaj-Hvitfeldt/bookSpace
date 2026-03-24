@@ -56,11 +56,28 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <BookSection
         sectionTitle="Currently Reading"
         books={currentlyReadingBooks}
+        morePath="/currently-reading"
       />
-      <BookSection sectionTitle="Recommended" books={recommendedBooks} />
-      <BookSection sectionTitle="Popular" books={popularBooks} />
-      <BookSection sectionTitle="Short Escapes" books={shortBooks} />
-      <BookSection sectionTitle="Epic Journeys" books={longBooks} />
+      <BookSection
+        sectionTitle="Recommended"
+        books={recommendedBooks}
+        morePath="/recommended"
+      />
+      <BookSection
+        sectionTitle="Popular"
+        books={popularBooks}
+        morePath="/popular"
+      />
+      <BookSection
+        sectionTitle="Short Escapes"
+        books={shortBooks}
+        morePath="/short-escapes"
+      />
+      <BookSection
+        sectionTitle="Epic Journeys"
+        books={longBooks}
+        morePath="/epic-journeys"
+      />
     </div>
   );
 }

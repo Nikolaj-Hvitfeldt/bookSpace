@@ -1,12 +1,18 @@
 import BookCard, { type BookCardItem } from "./BookCard";
 import useEmblaCarousel from "embla-carousel-react";
+import { Link } from "react-router";
 
 type BookSectionProps = {
   sectionTitle: string;
   books: BookCardItem[];
+  morePath: string;
 };
 
-export default function BookSection({ sectionTitle, books }: BookSectionProps) {
+export default function BookSection({
+  sectionTitle,
+  books,
+  morePath,
+}: BookSectionProps) {
   const [emblaCarousel] = useEmblaCarousel({
     dragFree: true,
     loop: false,
@@ -19,9 +25,9 @@ export default function BookSection({ sectionTitle, books }: BookSectionProps) {
         <div className="text-[18px] font-semibold leading-[22px]">
           {sectionTitle}
         </div>
-        <button type="button" className="inline-flex items-center leading-none">
-          More {<img src="/globalImages/more-arrow.svg" alt="More" />}
-        </button>
+        <Link to={morePath} className="inline-flex items-center leading-none">
+          More {<img src="/globalImages/more-arrow.svg" alt="Go to More" />}
+        </Link>
       </div>
 
       <div

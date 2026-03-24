@@ -6,7 +6,14 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  layout("layouts/app.tsx", [index("routes/home.tsx")]),
+  layout("layouts/app.tsx", [
+    index("routes/home.tsx"),
+    route("currently-reading", "routes/currentlyReading.tsx"),
+    route("recommended", "routes/recommended.tsx"),
+    route("popular", "routes/popular.tsx"),
+    route("short-escapes", "routes/shortEscapes.tsx"),
+    route("epic-journeys", "routes/epicJourneys.tsx"),
+  ]),
   layout("layouts/authLayout.tsx", [
     route("login", "routes/login.tsx"),
     route("signup", "routes/signup.tsx"),
