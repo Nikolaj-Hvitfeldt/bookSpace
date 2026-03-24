@@ -1,5 +1,6 @@
 import { SearchBar } from "~/components/ui/searchbar";
 import { useEffect, useState } from "react";
+import BookCard from "./BookCard";
 
 type HomeHeaderProps = {
   searchValue: string;
@@ -87,6 +88,8 @@ export default function HomeHeader({
       <div className="space-y-2 mt-2">
         <div className="text-[18px] font-semibold leading-[22px]">Discover</div>
         <BannerSlider />
+
+        <BookCard title="Test" coverImage="testImages/testCard.png" />
       </div>
     </header>
   );

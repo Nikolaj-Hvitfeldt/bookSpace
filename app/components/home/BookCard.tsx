@@ -1,3 +1,16 @@
-//The book card will live here
+type BookCardProps = {
+  title: string;
+  coverImage: string;
+};
 
-//Cover image and title for now - will need to think about reading progress bar later
+export default function BookCard({ title, coverImage }: BookCardProps) {
+  return (
+    <div className="flex w-[120px] flex-col flex-start gap[6px] shrink-0 gap-[10px]">
+      <img
+        src={coverImage}
+        className="h-[180ox] align-stretch rounded bg-primary-grey/50 cover no-repeat"
+      />
+      <h2>{title}</h2>
+    </div>
+  );
+}
