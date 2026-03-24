@@ -83,8 +83,6 @@ export async function getRecommendedBooks(
     .select({ favoriteBooks: 1, favoriteGenres: 1, favoriteAuthors: 1 })
     .lean();
 
-  console.log(user);
-
   //Fallback to popular books if user is not found
   if (!user) {
     return getPopularBooks(limit);
