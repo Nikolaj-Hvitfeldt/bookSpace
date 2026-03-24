@@ -1,6 +1,6 @@
 import { Button } from "~/components/ui/button";
 import { SearchBar } from "~/components/ui/searchbar";
-import type { Authors } from "~/db/queries/authors";
+import type { Authors } from "~/db/queries/authors.server";
 import { useState, useEffect, useMemo } from "react";
 
 type FavoriteAuthorsStepProps = {

@@ -15,6 +15,7 @@ export default async function seedDatabase() {
     await seedBooks();
     await seedUsers();
     await populateBookRelations();
+    await seedReadingProgress();
     console.log("Database seeded successfully");
   } catch (error) {
     console.error("Error seeding database:", error);
@@ -61,4 +62,15 @@ async function seedAuthors() {
   }
   await Author.insertMany(authors);
   console.log("Authors seeded successfully");
+}
+
+async function seedReadingProgress() {
+  const authorsCount = await Author.countDocuments();
+  if (authorsCount > 0) {
+    console.log("Authors already seeded");
+    return;
+  }
+  console.log(
+    "Seeding has to be done manually in compass with reading-progress.json file",
+  );
 }

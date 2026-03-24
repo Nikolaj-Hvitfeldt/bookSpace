@@ -2,7 +2,14 @@ import { useState } from "react";
 import type { Route } from "./+types/home";
 import HomeHeader from "~/components/home/HomeHeader";
 import BookSection from "~/components/home/BookSection";
-import { getPopularBooks } from "~/db/queries/books.server";
+import {
+  getPopularBooks,
+  getRecommendedBooks,
+  getShortBooks,
+  getLongBooks,
+  getCurrentlyReadingBooks,
+} from "~/db/queries/books.server";
+import { getUserData } from "~/services/auth.server";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,19 +18,49 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export async function loader() {
+export async function loader({ request }: Route.LoaderArgs) {
+  const user = await getUserData(request);
   const popularBooks = await getPopularBooks();
-  return { popularBooks };
+  const shortBooks = await getShortBooks();
+  const recommendedBooks = await getRecommendedBooks(
+    25,
+    user?._id.toString() || "",
+  );
+  const longBooks = await getLongBooks();
+  const currentlyReadingBooks = await getCurrentlyReadingBooks(
+    user?._id.toString() || "",
+    25,
+  );
+  return {
+    popularBooks,
+    shortBooks,
+    recommendedBooks,
+    longBooks,
+    currentlyReadingBooks,
+  };
 }
 
-export default async function Home({ loaderData }: Route.ComponentProps) {
+export default function Home({ loaderData }: Route.ComponentProps) {
   const [searchValue, setSearchValue] = useState("");
-  const { popularBooks } = loaderData;
+  const {
+    popularBooks,
+    shortBooks,
+    recommendedBooks,
+    longBooks,
+    currentlyReadingBooks,
+  } = loaderData;
 
   return (
     <div className="wrapper">
       <HomeHeader searchValue={searchValue} onSearchChange={setSearchValue} />
+      <BookSection
+        sectionTitle="Currently Reading"
+        books={currentlyReadingBooks}
+      />
+      <BookSection sectionTitle="Recommended" books={recommendedBooks} />
       <BookSection sectionTitle="Popular" books={popularBooks} />
+      <BookSection sectionTitle="Short Escapes" books={shortBooks} />
+      <BookSection sectionTitle="Epic Journeys" books={longBooks} />
     </div>
   );
 }
