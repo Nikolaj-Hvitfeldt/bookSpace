@@ -8,6 +8,7 @@ type BookListPageProps = {
   title: string;
   books: BookList[];
   backPath: string;
+  showCurrentPage?: boolean;
 };
 
 function RatingStar({ rating }: { rating: number }) {
@@ -29,7 +30,13 @@ function RatingStar({ rating }: { rating: number }) {
   );
 }
 
-function BookListItem({ book }: { book: BookList }) {
+function BookListItem({
+  book,
+  showCurrentPage,
+}: {
+  book: BookList;
+  showCurrentPage?: boolean;
+}) {
   const hasProgress = typeof book.progressPercentage === "number";
   const progressPercentage = hasProgress ? book.progressPercentage : undefined;
 
@@ -72,13 +79,20 @@ function BookListItem({ book }: { book: BookList }) {
           <RatingStar rating={book.rating} />
         ) : null}
 
-        <Button
-          variant="secondary"
-          size="small"
-          className="text-black! mt-auto self-start"
-        >
-          Reading mode
-        </Button>
+        <div className="mt-auto flex flex-col gap-1 self-start">
+          {showCurrentPage &&
+          typeof book.currentPage === "number" &&
+          typeof book.pageCount === "number" &&
+          book.pageCount > 0 ? (
+            <p className="text-sm!">
+              Page {book.currentPage} of {book.pageCount}
+            </p>
+          ) : null}
+
+          <Button variant="secondary" size="small" className="text-black!">
+            Reading mode
+          </Button>
+        </div>
       </div>
     </li>
   );
@@ -88,6 +102,7 @@ export default function BookListPage({
   title,
   books,
   backPath = "/",
+  showCurrentPage = false,
 }: BookListPageProps) {
   return (
     <div className="flex w-full flex-col">
@@ -104,7 +119,11 @@ export default function BookListPage({
 
       <ul className="mt-4 -ml-4 flex flex-col gap-[20px]">
         {books.map((book) => (
-          <BookListItem key={book.id} book={book} />
+          <BookListItem
+            key={book.id}
+            book={book}
+            showCurrentPage={showCurrentPage}
+          />
         ))}
       </ul>
     </div>
