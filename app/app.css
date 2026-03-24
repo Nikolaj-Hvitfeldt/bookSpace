@@ -1,29 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Open Sans", "Newsreader", ui-sans-serif, system-ui, sans-serif,
+  --font-sans:
+    "Open Sans", "Newsreader", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-    --color-primary-blue: #47596F;
-    --color-primary-brown: #48302D;
-    --color-primary-Gray: #D8CCBB;
+  --color-primary-blue: #47596f;
+  --color-primary-brown: #48302d;
+  --color-primary-gray: #d8ccbb;
 
-    --color-secondary-eggshell: #F4F2F0;
-    --color-secondary-gainsboro: #EDEDED;
-    --color-secondary-light-grey: #E1E1E1CC;
-    --color-secondary-black: #000000CC;
+  --color-secondary-eggshell: #f4f2f0;
+  --color-secondary-gainsboro: #ededed;
+  --color-secondary-light-grey: #e1e1e1cc;
+  --color-secondary-black: #000000cc;
 
-    --color-foreground: #FFFFFF;
-    --color-accent: #D8CCBB;
-    --color-accent-foreground: #000000;
-    --color-input: #E1E1E1;
-    --color-ring: #47596F;
+  --color-foreground: #ffffff;
+  --color-accent: #d8ccbb;
+  --color-accent-foreground: #000000;
+  --color-input: #e1e1e1;
+  --color-ring: #47596f;
 }
 
 html,
 body {
   margin: 0;
-  font-family: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family:
+    "Open Sans",
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    sans-serif;
   line-height: 1.5;
 }
 
@@ -54,7 +61,12 @@ h1 {
 /* Subheading */
 h2 {
   font-size: 18px;
-  font-weight: 600;
+  font-family: "Newsreader", Georgia, serif;
+  font-style: normal;
+  line-height: 24px;
+  font-weight: 500;
+  color: black;
+  color: #000;
 }
 
 p {
