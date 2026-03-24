@@ -26,8 +26,8 @@ export default function BookSection({ sectionTitle, books }: BookSectionProps) {
         </button>
       </div>
 
-      <div className="flex overflow-x-auto pb-[6ox] gap[10px] [&::-webkit-scrollbar]:hidden">
-        <ul className="snap-x snap-mandatory">
+      <div className="flex overflow-x-auto pb-[6px] [&::-webkit-scrollbar]:hidden">
+        <ul className="snap-x snap-mandatory flex gap-[10px]">
           {books.map((book) => (
             <li className="snap-start" key={book.id}>
               <BookCard title={book.title} coverImage={book.coverImage} />

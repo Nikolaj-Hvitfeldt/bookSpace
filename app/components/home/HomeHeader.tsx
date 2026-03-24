@@ -98,6 +98,31 @@ export default function HomeHeader({
               coverImage: "testImages/testCard.png",
               id: "1",
             },
+            {
+              title: "Very long title that will wrap to the next line",
+              coverImage: "testImages/testCard.png",
+              id: "2",
+            },
+            {
+              title: "Very long title that will wrap to the next line",
+              coverImage: "testImages/testCard.png",
+              id: "3",
+            },
+            {
+              title: "Very long title that will wrap to the next line",
+              coverImage: "testImages/testCard.png",
+              id: "4",
+            },
+            {
+              title: "Very long title that will wrap to the next line",
+              coverImage: "testImages/testCard.png",
+              id: "5",
+            },
+            {
+              title: "Very long title that will wrap to the next line",
+              coverImage: "testImages/testCard.png",
+              id: "6",
+            },
           ]}
         />
       </div>
