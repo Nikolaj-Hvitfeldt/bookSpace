@@ -15,7 +15,9 @@ export default function BookSection({ sectionTitle, books }: BookSectionProps) {
   return (
     <div className="mt-4 space-y-2">
       <div className="flex items-center justify-between">
-        <p className="font-semibold!">{sectionTitle}</p>
+        <div className="text-[18px] font-semibold leading-[22px]">
+          {sectionTitle}
+        </div>
         <button
           type="button"
           className="text-[16px] inline-flex items-center leading-none"
