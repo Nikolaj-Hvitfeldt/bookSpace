@@ -26,6 +26,8 @@ const readingProgressSchema = new Schema(
   { timestamps: true },
 );
 
+readingProgressSchema.index({ user: 1, book: 1 }, { unique: true });
+
 export type ReadingProgressType = InferSchemaType<
   typeof readingProgressSchema
 > & {
