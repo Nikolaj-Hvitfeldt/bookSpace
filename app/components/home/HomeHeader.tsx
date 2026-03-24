@@ -86,7 +86,7 @@ export default function HomeHeader({
         onChange={(e) => onSearchChange(e.target.value)}
       ></SearchBar>
 
-      <div className="space-y-2 mt-2">
+      <div className="space-y-2 mt-[16px]">
         <div className="text-[18px] font-semibold leading-[22px]">Discover</div>
         <BannerSlider />
       </div>

@@ -31,7 +31,11 @@ export default function BookSection({ sectionTitle, books }: BookSectionProps) {
         <ul className="flex gap-[20px]">
           {books.map((book) => (
             <li key={book.id} className="shrink-0">
-              <BookCard title={book.title} coverImage={book.coverImage} />
+              <BookCard
+                title={book.title}
+                coverImage={book.coverImage}
+                progressPercentage={book.progressPercentage}
+              />
             </li>
           ))}
         </ul>

@@ -22,5 +22,17 @@
     "book": { "$oid": "69bfd64e6694531a4c6fe2d7" },
     "status": "completed",
     "currentPage": 496
+  },
+  {
+    "user": { "$oid": "69c14aa71919f52144b1b910" },
+    "book": { "$oid": "69bfd64e6694531a4c6fe2d8" },
+    "status": "currently-reading",
+    "currentPage": 10
+  },
+  {
+    "user": { "$oid": "69c14aa71919f52144b1b910" },
+    "book": { "$oid": "69bfd64e6694531a4c6fe2d9" },
+    "status": "currently-reading",
+    "currentPage": 250
   }
 ]
