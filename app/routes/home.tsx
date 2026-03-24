@@ -1,6 +1,8 @@
 import { useState } from "react";
 import type { Route } from "./+types/home";
 import HomeHeader from "~/components/home/HomeHeader";
+import BookSection from "~/components/home/BookSection";
+import { getPopularBooks } from "~/db/queries/books.server";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,14 +11,19 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
+export async function loader() {
+  const popularBooks = await getPopularBooks();
+  return { popularBooks };
+}
+
+export default async function Home({ loaderData }: Route.ComponentProps) {
   const [searchValue, setSearchValue] = useState("");
+  const { popularBooks } = loaderData;
+
   return (
     <div className="wrapper">
       <HomeHeader searchValue={searchValue} onSearchChange={setSearchValue} />
-      <div className="book-section mt-10" /> Book row Currently reading
-      <div className="book-section mt-10" /> Book row Recommended
-      <div className="book-section mt-10" /> Book row etc etc
+      <BookSection sectionTitle="Currently Reading" books={popularBooks} />
     </div>
   );
 }

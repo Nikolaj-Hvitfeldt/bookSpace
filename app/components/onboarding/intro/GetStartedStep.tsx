@@ -1,4 +1,4 @@
-import type { BookCovers } from "~/db/queries/books";
+import type { BookCovers } from "~/db/queries/books.server";
 
 type GetStartedStepProps = {
   onNext: () => void;

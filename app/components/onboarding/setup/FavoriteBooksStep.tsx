@@ -1,4 +1,4 @@
-import type { BookCovers } from "~/db/queries/books";
+import type { BookCovers } from "~/db/queries/books.server";
 import { SearchBar } from "~/components/ui/searchbar";
 
 type FavoriteBooksStepProps = {
