@@ -14,7 +14,7 @@ export default function BookCard({ title, coverImage }: BookCardProps) {
     <div className="flex w-[120px] flex-col shrink-0 gap-[10px]">
       <img
         src={coverImage}
-        className="rounded bg-primary-grey/50 cover no-repeat"
+        className="rounded bg-primary-grey/50 object-cover"
       />
       <h2>{title}</h2>
     </div>
