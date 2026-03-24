@@ -3,6 +3,7 @@ import Book from "../models/Book";
 import type { BookCardItem } from "../../components/home/BookCard";
 import User from "../models/User";
 import ReadingProgress from "../models/ReadingProgress";
+import type { BookList } from "~/types/bookList";
 
 export type BookCovers = {
   id: string;
@@ -40,6 +41,29 @@ export async function getPopularBooks(limit = 25): Promise<BookCardItem[]> {
     id: book._id.toString(),
     title: book.title,
     coverImage: book.coverImage?.url || "",
+  }));
+}
+
+export async function getPopularBooksList(limit = 25): Promise<BookList[]> {
+  await connectDb();
+
+  const books = await Book.find()
+    .sort({ ratingsCount: -1 })
+    .limit(limit)
+    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1 })
+    .populate({
+      path: "author",
+      select: { name: 1 },
+    })
+    .lean();
+  return books.map((book) => ({
+    id: book._id.toString(),
+    title: book.title,
+    authors: (book.author as { name?: string }[])
+      .map((a) => a?.name?.trim() ?? "")
+      .filter(Boolean),
+    coverImage: book.coverImage?.url || "",
+    rating: book.rating ?? 0,
   }));
 }
 
