@@ -46,7 +46,7 @@ export async function getShortBooks(limit = 25): Promise<BookCardItem[]> {
   await connectDb();
 
   const books = await Book.find()
-    .sort({ pageCount: -1 })
+    .sort({ pageCount: 1 })
     .limit(limit)
     .select({ _id: 1, title: 1, coverImage: 1 })
     .lean();
@@ -61,7 +61,7 @@ export async function getLongBooks(limit = 25): Promise<BookCardItem[]> {
   await connectDb();
 
   const books = await Book.find()
-    .sort({ pageCount: 1 })
+    .sort({ pageCount: -1 })
     .limit(limit)
     .select({ _id: 1, title: 1, coverImage: 1 })
     .lean();
