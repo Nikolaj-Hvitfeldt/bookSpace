@@ -23,7 +23,7 @@ export default async function Home({ loaderData }: Route.ComponentProps) {
   return (
     <div className="wrapper">
       <HomeHeader searchValue={searchValue} onSearchChange={setSearchValue} />
-      <BookSection sectionTitle="Currently Reading" books={popularBooks} />
+      <BookSection sectionTitle="Popular" books={popularBooks} />
     </div>
   );
 }

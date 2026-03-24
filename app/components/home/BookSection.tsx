@@ -9,7 +9,7 @@ type BookSectionProps = {
 export default function BookSection({ sectionTitle, books }: BookSectionProps) {
   const [emblaCarousel] = useEmblaCarousel({
     dragFree: true,
-    loop: true,
+    loop: false,
     align: "start",
   });
 
@@ -28,7 +28,7 @@ export default function BookSection({ sectionTitle, books }: BookSectionProps) {
         className="overflow-hidden cursor-grab active:cursor-grabbing select-none"
         ref={emblaCarousel}
       >
-        <ul className="flex gap-[10px]">
+        <ul className="flex gap-[20px]">
           {books.map((book) => (
             <li key={book.id} className="shrink-0">
               <BookCard title={book.title} coverImage={book.coverImage} />

@@ -11,12 +11,12 @@ export type BookCardItem = {
 
 export default function BookCard({ title, coverImage }: BookCardProps) {
   return (
-    <div className="flex w-[120px] flex-col shrink-0 gap-[10px]">
+    <div className="flex w-[120px] flex-col shrink-0 gap-[6px]">
       <img
         src={coverImage}
-        className="rounded bg-primary-grey/50 object-cover"
+        className="h-[180px] w-[120px] rounded bg-primary-gray/50 object-cover shadow-md"
       />
-      <h2>{title}</h2>
+      <h2 className="line-clamp-2 leading-[22px]!">{title}</h2>
     </div>
   );
 }
