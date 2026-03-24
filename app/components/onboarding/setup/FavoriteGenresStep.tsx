@@ -1,6 +1,6 @@
 import { Button } from "~/components/ui/button";
 import { SearchBar } from "~/components/ui/searchbar";
-import type { Genres } from "~/db/queries/genre.server";
+import type { Genres } from "~/db/queries/genres.server";
 import { useState, useEffect, useMemo } from "react";
 
 type FavoriteGenresStepProps = {
