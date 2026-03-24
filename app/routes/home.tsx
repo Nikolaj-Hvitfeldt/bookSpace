@@ -7,6 +7,7 @@ import {
   getRecommendedBooks,
   getShortBooks,
   getLongBooks,
+  getCurrentlyReadingBooks,
 } from "~/db/queries/books.server";
 import { getUserData } from "~/services/auth.server";
 
@@ -26,16 +27,36 @@ export async function loader({ request }: Route.LoaderArgs) {
     user?._id.toString() || "",
   );
   const longBooks = await getLongBooks();
-  return { popularBooks, shortBooks, recommendedBooks, longBooks };
+  const currentlyReadingBooks = await getCurrentlyReadingBooks(
+    user?._id.toString() || "",
+    25,
+  );
+  return {
+    popularBooks,
+    shortBooks,
+    recommendedBooks,
+    longBooks,
+    currentlyReadingBooks,
+  };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   const [searchValue, setSearchValue] = useState("");
-  const { popularBooks, shortBooks, recommendedBooks, longBooks } = loaderData;
+  const {
+    popularBooks,
+    shortBooks,
+    recommendedBooks,
+    longBooks,
+    currentlyReadingBooks,
+  } = loaderData;
 
   return (
     <div className="wrapper">
       <HomeHeader searchValue={searchValue} onSearchChange={setSearchValue} />
+      <BookSection
+        sectionTitle="Currently Reading"
+        books={currentlyReadingBooks}
+      />
       <BookSection sectionTitle="Recommended" books={recommendedBooks} />
       <BookSection sectionTitle="Popular" books={popularBooks} />
       <BookSection sectionTitle="Short Escapes" books={shortBooks} />

@@ -2,6 +2,7 @@ import connectDb from "../db.server";
 import Book from "../models/Book";
 import type { BookCardItem } from "../../components/home/BookCard";
 import User from "../models/User";
+import ReadingProgress from "../models/ReadingProgress";
 
 export type BookCovers = {
   id: string;
@@ -119,4 +120,66 @@ export async function getRecommendedBooks(
     title: book.title,
     coverImage: book.coverImage?.url || "",
   }));
+}
+
+export type CurrentlyReadingBook = BookCardItem & {
+  currentPage: number;
+  pageCount: number;
+  progressPercentage: number;
+};
+export async function getCurrentlyReadingBooks(
+  userId: string,
+  limit = 25,
+): Promise<CurrentlyReadingBook[]> {
+  await connectDb();
+
+  if (!userId) return [];
+
+  //Fetch currently reading books
+  //Sort by last updated
+  //populate to replace book with the book data
+  const books = await ReadingProgress.find({
+    user: userId,
+    status: "currently-reading",
+  })
+    .sort({ updatedAt: -1 })
+    .limit(limit)
+    .populate({
+      path: "book",
+      select: { _id: 1, title: 1, coverImage: 1, pageCount: 1 },
+    })
+    .lean();
+
+  return books.map((progress) => {
+    //Typescript shananigans
+    const book = progress.book as unknown as {
+      _id: string;
+      title: string;
+      coverImage: {
+        url: string;
+      };
+      pageCount: number;
+    };
+
+    const pageCount = Math.max(book.pageCount ?? 0, 0);
+    const currentPage = Math.max(progress.currentPage ?? 0, 0);
+
+    //Calculate progress percentage
+    const progressPercentage =
+      pageCount > 0
+        ? Math.min(
+            100,
+            Math.max(0, Math.round((currentPage / pageCount) * 100)),
+          )
+        : 0;
+
+    return {
+      id: book._id.toString(),
+      title: book.title,
+      coverImage: book.coverImage?.url || "",
+      currentPage,
+      pageCount,
+      progressPercentage,
+    };
+  });
 }
