@@ -6,6 +6,7 @@ import {
   getPopularBooks,
   getRecommendedBooks,
   getShortBooks,
+  getLongBooks,
 } from "~/db/queries/books.server";
 import { getUserData } from "~/services/auth.server";
 
@@ -24,12 +25,13 @@ export async function loader({ request }: Route.LoaderArgs) {
     25,
     user?._id.toString() || "",
   );
-  return { popularBooks, shortBooks, recommendedBooks };
+  const longBooks = await getLongBooks();
+  return { popularBooks, shortBooks, recommendedBooks, longBooks };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   const [searchValue, setSearchValue] = useState("");
-  const { popularBooks, shortBooks, recommendedBooks } = loaderData;
+  const { popularBooks, shortBooks, recommendedBooks, longBooks } = loaderData;
 
   return (
     <div className="wrapper">
@@ -37,6 +39,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <BookSection sectionTitle="Recommended" books={recommendedBooks} />
       <BookSection sectionTitle="Popular" books={popularBooks} />
       <BookSection sectionTitle="Short Escapes" books={shortBooks} />
+      <BookSection sectionTitle="Epic Journeys" books={longBooks} />
     </div>
   );
 }
