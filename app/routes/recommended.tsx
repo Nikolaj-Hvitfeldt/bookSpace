@@ -8,7 +8,7 @@ export async function loader() {
   return { books };
 }
 
-export default function Popular({ loaderData }: Route.ComponentProps) {
+export default function Recommended({ loaderData }: Route.ComponentProps) {
   const books = loaderData?.books ?? [];
   return <BookListPage title="Recommended" books={books} backPath="/" />;
 }
