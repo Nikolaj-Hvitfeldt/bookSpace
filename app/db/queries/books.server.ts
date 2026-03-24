@@ -81,6 +81,25 @@ export async function getShortBooks(limit = 25): Promise<BookCardItem[]> {
   }));
 }
 
+export async function getShortBooksList(limit = 25): Promise<BookList[]> {
+  await connectDb();
+  const books = await Book.find()
+    .sort({ pageCount: 1 })
+    .limit(limit)
+    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1 })
+    .populate({
+      path: "author",
+      select: { name: 1 },
+    })
+    .lean();
+  return books.map((book) => ({
+    id: book._id.toString(),
+    title: book.title,
+    authors: mapAuthorNames(book.author as { name?: string }[]),
+    coverImage: book.coverImage?.url || "",
+    rating: book.rating ?? 0,
+  }));
+}
 export async function getLongBooks(limit = 25): Promise<BookCardItem[]> {
   await connectDb();
 
