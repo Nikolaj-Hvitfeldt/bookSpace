@@ -5,4 +5,6 @@ export type BookList = {
   coverImage: string;
   rating: number;
   progressPercentage?: number;
+  currentPage?: number;
+  pageCount?: number;
 };

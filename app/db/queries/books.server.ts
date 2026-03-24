@@ -5,6 +5,7 @@ import User from "../models/User";
 import ReadingProgress from "../models/ReadingProgress";
 import type { BookList } from "~/types/bookList";
 import { mapAuthorNames } from "~/util/authorNames.server";
+import { pageProgressFromReading } from "~/util/pageProgress.server";
 
 export type BookCovers = {
   id: string;
@@ -242,17 +243,8 @@ export async function getCurrentlyReadingBooks(
       pageCount: number;
     };
 
-    const pageCount = Math.max(book.pageCount ?? 0, 0);
-    const currentPage = Math.max(progress.currentPage ?? 0, 0);
-
-    //Calculate progress percentage
-    const progressPercentage =
-      pageCount > 0
-        ? Math.min(
-            100,
-            Math.max(0, Math.round((currentPage / pageCount) * 100)),
-          )
-        : 0;
+    const { currentPage, pageCount, progressPercentage } =
+      pageProgressFromReading(progress.currentPage, book.pageCount);
 
     return {
       id: book._id.toString(),
@@ -261,6 +253,82 @@ export async function getCurrentlyReadingBooks(
       currentPage,
       pageCount,
       progressPercentage,
+    };
+  });
+}
+
+export async function getCurrentlyReadingBooksList(
+  userId: string,
+  limit = 25,
+): Promise<BookList[]> {
+  await connectDb();
+  if (!userId) return [];
+
+  const books = await ReadingProgress.find({
+    user: userId,
+    status: "currently-reading",
+  })
+    .sort({ updatedAt: -1 })
+    .limit(limit)
+    .populate({
+      path: "book",
+      select: {
+        _id: 1,
+        title: 1,
+        coverImage: 1,
+        author: 1,
+        rating: 1,
+        pageCount: 1,
+      },
+    })
+    //Author does not exist in ReadingProgress, so we need to populate it from the Book model
+    .populate({
+      path: "book",
+      select: {
+        _id: 1,
+        title: 1,
+        coverImage: 1,
+        author: 1,
+        rating: 1,
+        pageCount: 1,
+      },
+      populate: {
+        path: "author",
+        select: { name: 1 },
+      },
+    })
+    .lean();
+
+  //use flatMap instead of map to skip empty book populates
+  return books.flatMap((progress) => {
+    const populatedBook = progress.book;
+    if (!populatedBook || typeof populatedBook !== "object") return [];
+
+    const book = populatedBook as unknown as {
+      _id: string;
+      title: string;
+      coverImage: {
+        url: string;
+      };
+      author: {
+        name?: string;
+      }[];
+      rating: number;
+      pageCount: number;
+    };
+
+    const { currentPage, pageCount, progressPercentage } =
+      pageProgressFromReading(progress.currentPage, book.pageCount);
+
+    return {
+      id: book._id.toString(),
+      title: book.title,
+      authors: mapAuthorNames(book.author as { name?: string }[]),
+      coverImage: book.coverImage?.url || "",
+      rating: book.rating ?? 0,
+      progressPercentage,
+      currentPage,
+      pageCount,
     };
   });
 }
