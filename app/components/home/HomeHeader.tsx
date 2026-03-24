@@ -1,6 +1,7 @@
 import { SearchBar } from "~/components/ui/searchbar";
 import { useEffect, useState } from "react";
 import BookCard from "./BookCard";
+import BookSection from "./BookSection";
 
 type HomeHeaderProps = {
   searchValue: string;
@@ -89,7 +90,16 @@ export default function HomeHeader({
         <div className="text-[18px] font-semibold leading-[22px]">Discover</div>
         <BannerSlider />
 
-        <BookCard title="Test" coverImage="testImages/testCard.png" />
+        <BookSection
+          sectionTitle="Currently Reading"
+          books={[
+            {
+              title: "Very long title that will wrap to the next line",
+              coverImage: "testImages/testCard.png",
+              id: "1",
+            },
+          ]}
+        />
       </div>
     </header>
   );
