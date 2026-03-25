@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import BookSection from "./BookSection";
 import type { BookCardItem } from "../home/BookCard";
+import ReviewSection from "./ReviewSection";
 
 type BookDetailsPageProps = {
   book: BookDetail;
@@ -172,6 +173,7 @@ export default function BookDetailsPage({
           }
         />
       ) : null}
+      <ReviewSection />
     </div>
   );
 }
