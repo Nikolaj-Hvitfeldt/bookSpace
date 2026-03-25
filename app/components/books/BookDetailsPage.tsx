@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import type { BookDetail } from "~/types/bookList";
 import { BookmarkButton } from "./BookmarkButton";
 import { Button } from "../ui/button";
+import { useState } from "react";
 
 type BookDetailsPageProps = {
   book: BookDetail;
@@ -98,11 +99,34 @@ function BookMetaData({ book }: { book: BookDetail }) {
 }
 
 function BookDescription({ book }: { book: BookDetail }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <div className="mt-2 pt-2">
-      <h2 className="text-semibold!">Description</h2>
-      <div className="mt-3 text-sm! leading-relaxed text-black whitespace-pre-wrap">
-        {book.description}
+      <div className="flex items-start justify-between">
+        <p className="text-semibold!">Description</p>
+
+        <button
+          type="button"
+          onClick={() => setIsExpanded((e) => !e)}
+          className="shrink-0"
+        >
+          <img
+            src="/globalImages/more-arrow.svg"
+            alt="arrow-down"
+            className={`h-4 w-4 rotate-90 ${isExpanded ? "rotate-270" : ""} transition-transform duration-300`}
+          />
+        </button>
+      </div>
+      <div className="mt-3 text-[15px] font-normal not-italic leading-[22px] text-black whitespace-pre-wrap">
+        <div
+          className={[
+            "text-[15px] font-normal not-italic leading-[22px] text-black whitespace-pre-wrap",
+            isExpanded ? "" : "line-clamp-2 overflow-hidden",
+          ].join(" ")}
+        >
+          {book.description}
+        </div>
       </div>
     </div>
   );
