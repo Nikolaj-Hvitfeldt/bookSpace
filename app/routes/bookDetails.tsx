@@ -10,9 +10,15 @@ import type { BookDetail } from "~/types/bookDetail";
 import type { BookCardItem } from "~/components/home/BookCard";
 import Genre from "~/db/models/Genre";
 import { getReviewsByBookId } from "~/db/queries/reviews.server";
+import { createReviewAction } from "~/actions/createReview.server";
 
 export async function action({ request }: Route.ActionArgs) {
-  return bookmarkAction(request);
+  const formData = await request.formData();
+  const intent = formData.get("submitFor");
+  if (intent === "create-review") {
+    return createReviewAction(request, formData);
+  }
+  return bookmarkAction(request, formData);
 }
 export async function loader({ request, params }: Route.LoaderArgs) {
   const bookSlug = params.bookSlug;
@@ -32,7 +38,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
   //Get reviews for book
   const reviews = await getReviewsByBookId(book.id?.toString() ?? "");
-  console.log("SERVER reviews for", bookSlug, reviews?.length, reviews?.[0]);
 
   const user = await getUser(request);
   const favorittedBooks = await getFavoriteBooks(user?._id.toString() ?? "");

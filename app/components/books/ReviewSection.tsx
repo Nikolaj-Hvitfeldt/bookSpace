@@ -1,9 +1,12 @@
 import RatingStars from "../ui/RatingStars";
 import { useState, useRef, useLayoutEffect } from "react";
 import type { Review as ReviewType } from "~/types/review";
+import { Form } from "react-router";
+import RatingPicker from "../ui/ratingPicker";
 
 type reviewSectionProps = {
   reviews?: ReviewType[];
+  bookId: string;
 };
 
 function formatDate(date: Date | string) {
@@ -14,60 +17,72 @@ function formatDate(date: Date | string) {
   });
 }
 
-function ReviewInput() {
+function ReviewInput({ bookId }: { bookId: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [rating, setRating] = useState(0);
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="h-10 w-10 shrink-0 rounded-full border-2 border-primary-brown flex items-center justify-center">
-        <img
-          src="/reviewImages/review-avatar.svg"
-          alt="avatar"
-          className="h-[40px] w-[40px] shrink-0"
-        />
-      </div>
+    <Form method="post" action="." className="w-full">
+      <input type="hidden" name="submitFor" value="create-review" />
+      <input type="hidden" name="bookId" value={bookId} />
+      <input type="hidden" name="rating" value={rating} />
 
-      <div className="flex items-center gap-1">
-        <div className="rounded-[10px] border border-primary-brown bg-transparent">
-          <div
-            className={[
-              "flex w-[280px] px-2 items-center gap-[10px]",
-              "transition-[height,padding] duration-200",
-              isExpanded
-                ? "h-[120px] py-1 items-start"
-                : "h-[34px] py-1 items-center",
-            ].join(" ")}
-          >
-            <textarea
-              rows={1}
-              placeholder="Write a review"
-              onFocus={() => setIsExpanded(true)}
-              onBlur={(e) => {
-                if (!e.currentTarget.value.trim()) setIsExpanded(false);
-              }}
-              className={[
-                "w-full resize-none bg-transparent text-[15px] leading-[22px] text-black outline-none placeholder:text-black/40",
-                isExpanded
-                  ? "h-full overflow-auto"
-                  : "h-[22px] overflow-hidden",
-              ].join(" ")}
-            />
-          </div>
+      <div className="flex items-center gap-3">
+        <div className="h-10 w-10 shrink-0 rounded-full border-2 border-primary-brown flex items-center justify-center">
+          <img
+            src="/reviewImages/review-avatar.svg"
+            alt="avatar"
+            className="h-[40px] w-[40px] shrink-0"
+          />
         </div>
 
-        <button
-          type="button"
-          aria-label="Send review"
-          className="h-[34px] w-[34px] shrink-0 flex items-center justify-center"
-        >
-          <img
-            src="/reviewImages/send-icon.svg"
-            alt="send"
-            className="h-5 w-5 shrink-0"
-          />
-        </button>
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
+          <RatingPicker value={rating} onChange={setRating} />
+
+          <div className="flex items-center gap-1">
+            <div className="rounded-[10px] border border-primary-brown bg-transparent">
+              <div
+                className={[
+                  "flex w-[280px] px-2 items-center gap-[10px]",
+                  "transition-[height,padding] duration-200",
+                  isExpanded
+                    ? "h-[120px] py-1 items-start"
+                    : "h-[34px] py-1 items-center",
+                ].join(" ")}
+              >
+                <textarea
+                  name="text"
+                  rows={1}
+                  placeholder="Write a review"
+                  onFocus={() => setIsExpanded(true)}
+                  onBlur={(e) => {
+                    if (!e.currentTarget.value.trim()) setIsExpanded(false);
+                  }}
+                  className={[
+                    "w-full resize-none bg-transparent text-[15px] leading-[22px] text-black outline-none placeholder:text-black/40",
+                    isExpanded
+                      ? "h-full overflow-auto"
+                      : "h-[22px] overflow-hidden",
+                  ].join(" ")}
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              aria-label="Send review"
+              className="h-[34px] w-[34px] shrink-0 flex items-center justify-center"
+            >
+              <img
+                src="/reviewImages/send-icon.svg"
+                alt="send"
+                className="h-5 w-5 shrink-0"
+              />
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </Form>
   );
 }
 
@@ -166,12 +181,13 @@ function Reviewitem({ review }: { review: ReviewType }) {
   );
 }
 
-export default function ReviewSection({ reviews }: reviewSectionProps) {
-  console.log("ReviewSection reviews", reviews?.length, reviews?.[0]);
+export default function ReviewSection({ reviews, bookId }: reviewSectionProps) {
+  const reviewsLength = reviews?.length ?? 0;
+
   return (
     <div className="mt-4 space-y-4">
       <div className="text-[18px] font-semibold leading-[22px]">Reviews</div>
-      <ReviewInput />
+      <ReviewInput bookId={bookId} key={reviewsLength} />
       <div className="mt-5 space-y-5">
         {reviews && reviews.length > 0 ? (
           reviews?.map((review) => (

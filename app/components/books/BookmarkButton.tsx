@@ -24,6 +24,7 @@ export function BookmarkButton({
   return (
     <fetcher.Form method="post" action="." className={className}>
       <input type="hidden" name="bookId" value={bookId} />
+      <input type="hidden" name="submitFor" value="bookmark" />
       <button
         type="submit"
         className="shrink-0 rounded p-1 text-primary-brown/60 hover:text-primary-brown disabled:opacity-50"
