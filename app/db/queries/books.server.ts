@@ -296,6 +296,7 @@ export async function getCurrentlyReadingBooksList(
         author: 1,
         rating: 1,
         pageCount: 1,
+        slug: 1,
       },
       populate: {
         path: "author",
