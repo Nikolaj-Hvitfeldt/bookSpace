@@ -8,4 +8,5 @@ export type BookList = {
   currentPage?: number;
   pageCount?: number;
   isBookmarked?: boolean;
+  bookSlug?: string;
 };

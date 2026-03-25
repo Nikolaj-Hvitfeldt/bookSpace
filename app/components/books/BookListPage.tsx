@@ -1,7 +1,8 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { BookList } from "~/types/bookList";
 import { Button } from "../ui/button";
 import { BookmarkButton } from "./BookmarkButton";
+import RatingStar from "../ui/RatingStars";
 
 export type { BookList };
 
@@ -11,25 +12,6 @@ type BookListPageProps = {
   backPath: string;
   showCurrentPage?: boolean;
 };
-
-function RatingStar({ rating }: { rating: number }) {
-  //Round the rating to the nearest number
-  const filledStar = Math.max(0, Math.min(5, Math.round(rating)));
-
-  return (
-    <div className="flex gap-[2px] text-[14px] leading-none text-primary-brown">
-      {Array.from({ length: 5 }, (_, index) => (
-        <div key={index}>
-          {index < filledStar ? (
-            <img src="/globalImages/star-filled.svg" alt="Filled star" />
-          ) : (
-            <img src="/globalImages/star-empty.svg" alt="Empty star" />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function BookListItem({
   book,
@@ -44,11 +26,13 @@ function BookListItem({
   return (
     <li className="flex gap-[10px] border-black/10">
       <div className="flex w-[120px] shrink-0 flex-col gap-[6px">
-        <img
-          src={book.coverImage}
-          alt={book.title}
-          className="h-[180px] w-[120px] rounded bg-primary-gray/50 object-cover shadow-md"
-        />
+        <Link to={`/books/${book.bookSlug}`}>
+          <img
+            src={book.coverImage}
+            alt={book.title}
+            className="h-[180px] w-[120px] rounded bg-primary-gray/50 object-cover shadow-md"
+          />
+        </Link>
         {hasProgress ? (
           <div className="mt-1 h-[4px] w-full overflow-hidden rounded-full bg-primary-brown/25">
             <div
@@ -101,16 +85,18 @@ export default function BookListPage({
   backPath = "/",
   showCurrentPage = false,
 }: BookListPageProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="flex w-full flex-col">
       <header className="relative flex items-center justify-center border-b border-black/10 pb-3 -mx-[clamp(16px,4vw,24px)] px-[clamp(16px,4vw,24px)]">
-        <Link
-          to={backPath}
+        <button
+          onClick={() => navigate(-1)}
           className="absolute left-0 top-1/2 -translate-y-1/2 text-black h-[25px] w-[25px]"
           aria-label="Go back"
         >
           {<img src="/globalImages/back-button.avif" alt="Back" />}
-        </Link>
+        </button>
         <h1 className="font-semibold!">{title}</h1>
       </header>
 

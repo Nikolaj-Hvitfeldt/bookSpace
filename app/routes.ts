@@ -8,11 +8,14 @@ import {
 export default [
   layout("layouts/app.tsx", [
     index("routes/home.tsx"),
-    route("currently-reading", "routes/currentlyReading.tsx"),
-    route("recommended", "routes/recommended.tsx"),
-    route("popular", "routes/popular.tsx"),
-    route("short-escapes", "routes/shortEscapes.tsx"),
-    route("epic-journeys", "routes/epicJourneys.tsx"),
+    route("books/currently-reading", "routes/currentlyReading.tsx"),
+    route("books/recommended", "routes/recommended.tsx"),
+    route("books/popular", "routes/popular.tsx"),
+    route("books/short-escapes", "routes/shortEscapes.tsx"),
+    route("books/epic-journeys", "routes/epicJourneys.tsx"),
+    route("books/:bookSlug", "routes/bookDetails.tsx"),
+    route("books/genres/:genreSlug", "routes/genreBooks.tsx"),
+    route("authors/:authorSlug", "routes/authorBooks.tsx"),
   ]),
   layout("layouts/authLayout.tsx", [
     route("login", "routes/login.tsx"),

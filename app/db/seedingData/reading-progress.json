@@ -1,38 +1,116 @@
 [
   {
-    "user": { "$oid": "69c14aa71919f52144b1b910" },
-    "book": { "$oid": "69bfd64e6694531a4c6fe2d4" },
+    "userEmail": "test@gmail.com",
+    "bookSlug": "morning-star",
     "status": "currently-reading",
-    "currentPage": 492
+    "currentPage": 180
   },
   {
-    "user": { "$oid": "69c14aa71919f52144b1b910" },
-    "book": { "$oid": "69bfd64e6694531a4c6fe2d5" },
+    "userEmail": "test@gmail.com",
+    "bookSlug": "the-dark-forest",
     "status": "currently-reading",
-    "currentPage": 184
+    "currentPage": 95
   },
   {
-    "user": { "$oid": "69c14aa71919f52144b1b910" },
-    "book": { "$oid": "69bfd64e6694531a4c6fe2d6" },
+    "userEmail": "test@gmail.com",
+    "bookSlug": "eleanor-oliphant-is-completely-fine",
+    "status": "completed",
+    "currentPage": 336
+  },
+  {
+    "userEmail": "test@gmail.com",
+    "bookSlug": "a-gentleman-in-moscow",
     "status": "want-to-read",
     "currentPage": 0
   },
   {
-    "user": { "$oid": "69c14aa71919f52144b1b910" },
-    "book": { "$oid": "69bfd64e6694531a4c6fe2d7" },
+    "userEmail": "test@gmail.com",
+    "bookSlug": "divine-rivals",
+    "status": "currently-reading",
+    "currentPage": 120
+  },
+  {
+    "userEmail": "test@test.com",
+    "bookSlug": "the-hate-u-give",
+    "status": "currently-reading",
+    "currentPage": 210
+  },
+  {
+    "userEmail": "test@test.com",
+    "bookSlug": "calibans-war",
+    "status": "want-to-read",
+    "currentPage": 0
+  },
+  {
+    "userEmail": "test@test.com",
+    "bookSlug": "heartstopper-volume-one",
+    "status": "currently-reading",
+    "currentPage": 88
+  },
+  {
+    "userEmail": "test@test.com",
+    "bookSlug": "remarkably-bright-creatures",
     "status": "completed",
-    "currentPage": 496
+    "currentPage": 390
   },
   {
-    "user": { "$oid": "69c14aa71919f52144b1b910" },
-    "book": { "$oid": "69bfd64e6694531a4c6fe2d8" },
-    "status": "currently-reading",
-    "currentPage": 10
+    "userEmail": "test2@test.com",
+    "bookSlug": "morning-star",
+    "status": "want-to-read",
+    "currentPage": 0
   },
   {
-    "user": { "$oid": "69c14aa71919f52144b1b910" },
-    "book": { "$oid": "69bfd64e6694531a4c6fe2d9" },
+    "userEmail": "test2@test.com",
+    "bookSlug": "exit-strategy",
+    "status": "completed",
+    "currentPage": 172
+  },
+  {
+    "userEmail": "test2@test.com",
+    "bookSlug": "we-are-legion",
     "status": "currently-reading",
-    "currentPage": 250
+    "currentPage": 120
+  },
+  {
+    "userEmail": "test2@test.com",
+    "bookSlug": "the-nightingale",
+    "status": "currently-reading",
+    "currentPage": 200
+  },
+  {
+    "userEmail": "test2@test.com",
+    "bookSlug": "the-help",
+    "status": "completed",
+    "currentPage": 534
+  },
+  {
+    "userEmail": "test3@test.com",
+    "bookSlug": "network-effect",
+    "status": "currently-reading",
+    "currentPage": 140
+  },
+  {
+    "userEmail": "test3@test.com",
+    "bookSlug": "crown-of-midnight",
+    "status": "want-to-read",
+    "currentPage": 0
+  },
+  {
+    "userEmail": "test3@test.com",
+    "bookSlug": "the-bands-of-mourning",
+    "status": "currently-reading",
+    "currentPage": 220
+  },
+  {
+    "userEmail": "test3@test.com",
+    "bookSlug": "nettle-bone",
+    "status": "currently-reading",
+    "currentPage": 140
+  },
+  {
+    "userEmail": "test3@test.com",
+    "bookSlug": "aristotle-and-dante-discover-the-secrets-of-the-universe",
+    "status": "completed",
+    "currentPage": 368
   }
 ]
