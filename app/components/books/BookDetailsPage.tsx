@@ -150,13 +150,15 @@ export default function BookDetailsPage({
       <BookHero book={book} />
       <BookMetaData book={book} />
       <BookDescription book={book} />
-      <BookSection
-        sectionTitle="Other books by this Author"
-        books={authorBooks}
-        morePath={
-          book.authorSlugs?.[0] ? `/author/${book.authorSlugs[0]}` : "/"
-        }
-      />
+      {authorBooks.length > 0 ? (
+        <BookSection
+          sectionTitle="Other books by this Author"
+          books={authorBooks}
+          morePath={
+            book.authorSlugs?.[0] ? `/author/${book.authorSlugs[0]}` : "/"
+          }
+        />
+      ) : null}
     </div>
   );
 }
