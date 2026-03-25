@@ -155,7 +155,7 @@ export default function OnboardingLayout() {
                 previousStepPath ? navigate(previousStepPath) : navigate(-1)
               }
             >
-              <img src="/globalImages/more-arrow.svg" alt="Go back" />
+              <img src="/globalImages/back-button.avif" alt="Go back" />
             </button>
 
             <Link to={skipPath}>Skip</Link>

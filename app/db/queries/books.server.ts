@@ -353,11 +353,15 @@ export async function getBookDetailbyId(
       path: "author",
       select: { name: 1 },
     })
+    .populate({
+      path: "genres",
+      select: { name: 1 },
+    })
     .lean();
 
   if (!book) return null;
 
-  const genres = book.genres.map((genre) => genre.toString());
+  const genres = book.genres as { name?: string }[];
   const authors = mapAuthorNames(book.author as { name?: string }[]);
 
   return {
@@ -368,6 +372,6 @@ export async function getBookDetailbyId(
     rating: book.rating ?? 0,
     pageCount: book.pageCount ?? 0,
     description: book.description ?? "",
-    genres,
+    genres: genres.map((genre) => genre.name ?? ""),
   };
 }

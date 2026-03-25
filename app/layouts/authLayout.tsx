@@ -28,7 +28,7 @@ export default function AuthLayout() {
             className="h-[25px] w-[25px]"
             onClick={() => navigate(-1)}
           >
-            <img src="/onboardingImages/back-button.avif" alt="Go back" />
+            <img src="/globalImages/back-button.avif" alt="Go back" />
           </button>
         </header>
         <Outlet />
