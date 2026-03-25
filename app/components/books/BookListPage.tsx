@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { BookList } from "~/types/bookList";
 import { Button } from "../ui/button";
 import { BookmarkButton } from "./BookmarkButton";
@@ -85,16 +85,18 @@ export default function BookListPage({
   backPath = "/",
   showCurrentPage = false,
 }: BookListPageProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="flex w-full flex-col">
       <header className="relative flex items-center justify-center border-b border-black/10 pb-3 -mx-[clamp(16px,4vw,24px)] px-[clamp(16px,4vw,24px)]">
-        <Link
-          to={backPath}
+        <button
+          onClick={() => navigate(-1)}
           className="absolute left-0 top-1/2 -translate-y-1/2 text-black h-[25px] w-[25px]"
           aria-label="Go back"
         >
           {<img src="/globalImages/back-button.avif" alt="Back" />}
-        </Link>
+        </button>
         <h1 className="font-semibold!">{title}</h1>
       </header>
 

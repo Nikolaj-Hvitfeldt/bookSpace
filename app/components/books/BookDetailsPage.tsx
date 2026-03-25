@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { BookDetail } from "~/types/bookList";
 import { BookmarkButton } from "./BookmarkButton";
 import { Button } from "../ui/button";
@@ -31,7 +31,7 @@ function BookHero({ book }: { book: BookDetail }) {
 }
 
 function BookDetailHeader({
-  backPath,
+  backPath = "/",
   bookId,
   isBookmarked,
 }: {
@@ -39,15 +39,17 @@ function BookDetailHeader({
   bookId: string;
   isBookmarked: boolean;
 }) {
+  const navigate = useNavigate();
+
   return (
     <header className="flex w-full items-start justify-between">
-      <Link to={backPath} className="pt-1">
+      <button onClick={() => navigate(-1)} className="pt-1">
         <img
           src="/globalImages/back-button.avif"
           alt="back"
           className="h-[25px] w-[35px]"
         />
-      </Link>
+      </button>
       <BookmarkButton
         bookId={bookId}
         isBookmarked={isBookmarked}
