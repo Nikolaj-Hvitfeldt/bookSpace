@@ -162,8 +162,6 @@ export default function BookDetailsPage({
   similarBooks,
   reviews,
 }: BookDetailsPageProps) {
-  console.log("BookDetailsPage reviews", reviews?.length, reviews?.[0]);
-
   return (
     <div className="flex flex-col w-full">
       <BookDetailHeader

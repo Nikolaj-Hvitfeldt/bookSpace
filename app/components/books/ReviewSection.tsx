@@ -176,11 +176,12 @@ function Reviewitem({ review }: { review: ReviewType }) {
 }
 
 export default function ReviewSection({ reviews, bookId }: reviewSectionProps) {
-  console.log("ReviewSection reviews", reviews?.length, reviews?.[0]);
+  const reviewsLength = reviews?.length ?? 0;
+
   return (
     <div className="mt-4 space-y-4">
       <div className="text-[18px] font-semibold leading-[22px]">Reviews</div>
-      <ReviewInput bookId={bookId} />
+      <ReviewInput bookId={bookId} key={reviewsLength} />
       <div className="mt-5 space-y-5">
         {reviews && reviews.length > 0 ? (
           reviews?.map((review) => (
