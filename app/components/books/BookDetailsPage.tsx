@@ -104,7 +104,7 @@ function BookDescription({ book }: { book: BookDetail }) {
   return (
     <div className="mt-2 pt-2">
       <div className="flex items-start justify-between">
-        <p className="text-semibold!">Description</p>
+        <p className="text-base font-semibold!">Description</p>
 
         <button
           type="button"
@@ -118,7 +118,7 @@ function BookDescription({ book }: { book: BookDetail }) {
           />
         </button>
       </div>
-      <div className="mt-3 text-[15px] font-normal not-italic leading-[22px] text-black whitespace-pre-wrap">
+      <div className="mt-1 text-[15px] font-normal not-italic leading-[22px] text-black whitespace-pre-wrap">
         <div
           className={[
             "text-[15px] font-normal not-italic leading-[22px] text-black whitespace-pre-wrap",
