@@ -18,28 +18,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 export default function AppLayout() {
   return (
-    <div className="app-shell">
-      <header className="app-header">
-        <Link to="/" className="brand">
-          Address Book
-        </Link>
-        <nav className="main-nav">
-          <NavLink to="/" end>
-            Home
-          </NavLink>
-          <NavLink to="/login" end>
-            Login
-          </NavLink>
-          <NavLink to="/signup" end>
-            Sign up
-          </NavLink>
-        </nav>
-      </header>
-
-      <main className="app-main">
+    <main className=" bg-secondary-eggshell">
+      <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(32px,8vh,64px)] pb-24">
         <Outlet />
-      </main>
-      <Navbar />
-    </div>
+        <Navbar />
+      </div>
+    </main>
   );
 }
