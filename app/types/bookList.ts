@@ -7,4 +7,5 @@ export type BookList = {
   progressPercentage?: number;
   currentPage?: number;
   pageCount?: number;
+  isBookmarked?: boolean;
 };
