@@ -2,8 +2,9 @@ export type Review = {
   id: string;
   userName: string;
   text: string;
+  rating: number;
   helpfulCount: number;
   notHelpfulCount: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };

@@ -1,45 +1,18 @@
 import RatingStars from "../ui/RatingStars";
 import { useState, useRef, useLayoutEffect } from "react";
+import type { Review as ReviewType } from "~/types/review";
 
-type Review = {
-  id: string;
-  author: string;
-  date: string;
-  rating: number;
-  text: string;
-  helpfulCount: number;
-  notHelpfulCount: number;
+type reviewSectionProps = {
+  reviews?: ReviewType[];
 };
 
-const reviews: Review[] = [
-  {
-    id: "1",
-    author: "Laura Nielsen",
-    date: "7th November, 2023",
-    rating: 5,
-    text: "What makes The Goldfinch so compelling is Tartt’s immersive, almost cinematic storytelling. The novel spans years and landscapes—from the grimness of New York City to the vast desolation of the Nevada desert. Tartt’s… more",
-    helpfulCount: 1,
-    notHelpfulCount: 1,
-  },
-  {
-    id: "2",
-    author: "Laura Nielsen",
-    date: "7th November, 2023",
-    rating: 5,
-    text: "What makes The Goldfinch so compelling is Tartt’s immersive, almost cinematic storytelling. Tartt’s… more",
-    helpfulCount: 1,
-    notHelpfulCount: 1,
-  },
-  {
-    id: "3",
-    author: "Johnny Deluxe",
-    date: "1st january, 2026",
-    rating: 3,
-    text: "This was ass",
-    helpfulCount: 69,
-    notHelpfulCount: 420,
-  },
-];
+function formatDate(date: Date | string) {
+  return new Date(date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
 function ReviewInput() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -133,7 +106,7 @@ function ReviewText({ text }: { text: string }) {
   );
 }
 
-function Reviewitem({ review }: { review: Review }) {
+function Reviewitem({ review }: { review: ReviewType }) {
   return (
     <div key={review.id} className="space-y-2">
       <div className="flex items-start justify-between">
@@ -149,7 +122,7 @@ function Reviewitem({ review }: { review: Review }) {
           {/* Name and rating */}
           <div className="pt-1 flex flex-col gap-[2px]">
             <div className="text-[18px] font-semibold leading-[22px]">
-              {review.author}
+              {review.userName}
             </div>
             <RatingStars rating={review.rating} />
           </div>
@@ -159,7 +132,9 @@ function Reviewitem({ review }: { review: Review }) {
         <div className="pt-1 flex flex-col gap-[2px]">
           <div className="leading-[22px] font-semibold ml-auto">...</div>
 
-          <div className="text-sm text-black/60">{review.date}</div>
+          <div className="text-sm text-black/60">
+            {formatDate(review.createdAt)}
+          </div>
         </div>
       </div>
 
@@ -191,14 +166,20 @@ function Reviewitem({ review }: { review: Review }) {
   );
 }
 
-export default function ReviewSection() {
+export default function ReviewSection({ reviews }: reviewSectionProps) {
+  console.log("ReviewSection reviews", reviews?.length, reviews?.[0]);
   return (
     <div className="mt-4 space-y-4">
       <div className="text-[18px] font-semibold leading-[22px]">Reviews</div>
+      <ReviewInput />
       <div className="mt-5 space-y-5">
-        {reviews.map((review) => (
-          <Reviewitem key={review.id} review={review} />
-        ))}
+        {reviews && reviews.length > 0 ? (
+          reviews?.map((review) => (
+            <Reviewitem key={review.id} review={review} />
+          ))
+        ) : (
+          <div className="text-center text-black/60">No reviews yet</div>
+        )}
       </div>
     </div>
   );

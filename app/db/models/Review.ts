@@ -16,6 +16,10 @@ const reviewSchema = new Schema(
       type: String,
       required: [true, "Text is required"],
     },
+    rating: {
+      type: Number,
+      required: [true, "Rating is required"],
+    },
     helpfulCount: {
       type: Number,
       default: 0,

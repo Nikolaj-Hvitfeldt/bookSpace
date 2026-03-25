@@ -6,12 +6,14 @@ import { useState, useRef, useLayoutEffect } from "react";
 import BookSection from "./BookSection";
 import type { BookCardItem } from "../home/BookCard";
 import ReviewSection from "./ReviewSection";
+import type { Review } from "~/types/review";
 
 type BookDetailsPageProps = {
   book: BookDetail;
   backPath: string;
   authorBooks: BookCardItem[];
   similarBooks: BookCardItem[];
+  reviews: Review[];
 };
 
 function BookHero({ book }: { book: BookDetail }) {
@@ -158,7 +160,10 @@ export default function BookDetailsPage({
   backPath,
   authorBooks,
   similarBooks,
+  reviews,
 }: BookDetailsPageProps) {
+  console.log("BookDetailsPage reviews", reviews?.length, reviews?.[0]);
+
   return (
     <div className="flex flex-col w-full">
       <BookDetailHeader
@@ -187,7 +192,7 @@ export default function BookDetailsPage({
           }
         />
       ) : null}
-      <ReviewSection />
+      <ReviewSection reviews={reviews || []} />
     </div>
   );
 }
