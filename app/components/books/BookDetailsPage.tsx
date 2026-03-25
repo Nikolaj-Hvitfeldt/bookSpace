@@ -159,7 +159,7 @@ export default function BookDetailsPage({
           sectionTitle="Other books by this Author"
           books={authorBooks}
           morePath={
-            book.authorSlugs?.[0] ? `/author/${book.authorSlugs[0]}` : "/"
+            book.authorSlugs?.[0] ? `/authors/${book.authorSlugs[0]}` : "/"
           }
         />
       ) : null}
@@ -167,7 +167,9 @@ export default function BookDetailsPage({
         <BookSection
           sectionTitle="Similar Books"
           books={similarBooks}
-          morePath={book.genreSlugs?.[0] ? `/books/${book.genreSlugs[0]}` : "/"}
+          morePath={
+            book.genreSlugs?.[0] ? `/books/genres/${book.genreSlugs[0]}` : "/"
+          }
         />
       ) : null}
     </div>

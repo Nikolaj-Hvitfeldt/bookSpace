@@ -1,7 +1,7 @@
 import type { Route } from "./+types/bookDetails";
 import { bookmarkAction } from "~/actions/bookmark.server";
 import { getUser } from "~/services/auth.server";
-import { getBookDetailbyId } from "~/db/queries/books.server";
+import { getBookDetailsBySlug } from "~/db/queries/books.server";
 import BookDetailsPage from "~/components/books/BookDetailsPage";
 import { getFavoriteBooks } from "~/db/queries/favorites.server";
 import Author from "~/db/models/Author";
@@ -14,18 +14,18 @@ export async function action({ request }: Route.ActionArgs) {
   return bookmarkAction(request);
 }
 export async function loader({ request, params }: Route.LoaderArgs) {
-  const bookId = params.bookId;
+  const bookSlug = params.bookSlug;
 
-  // Check if bookId is provided
-  if (!bookId) {
-    throw (new Error("Book not found"), { status: 404 });
+  // Check if bookSlug is provided
+  if (!bookSlug) {
+    throw new Response("Book Not Found", { status: 404 });
   }
 
-  const book = await getBookDetailbyId(bookId);
+  const book = await getBookDetailsBySlug(bookSlug);
 
   // Check if book exists
   if (!book) {
-    throw (new Error("Book not found"), { status: 404 });
+    throw new Response("Book Not Found", { status: 404 });
   }
 
   const user = await getUser(request);
@@ -46,7 +46,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     if (author?._id) {
       const books = await Book.find({
         author: author?._id,
-        _id: { $ne: bookId },
+        _id: { $ne: book.id },
       })
         .select({ _id: 1, title: 1, coverImage: 1 })
         .lean();
@@ -67,7 +67,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       if (genre?._id) {
         const books = await Book.find({
           genres: genre?._id,
-          _id: { $ne: bookId },
+          _id: { $ne: book.id },
         })
           .select({ _id: 1, title: 1, coverImage: 1 })
           .limit(25)
@@ -83,7 +83,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   }
 
   return {
-    book: { ...book, isBookmarked: favorittedBooks.has(bookId) },
+    book: { ...book, isBookmarked: favorittedBooks.has(book.id) },
     authorBooks,
     similarBooks,
   };

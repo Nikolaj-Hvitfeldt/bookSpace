@@ -26,7 +26,7 @@ function BookListItem({
   return (
     <li className="flex gap-[10px] border-black/10">
       <div className="flex w-[120px] shrink-0 flex-col gap-[6px">
-        <Link to={`/book/${book.id}`}>
+        <Link to={`/books/${book.bookSlug}`}>
           <img
             src={book.coverImage}
             alt={book.title}

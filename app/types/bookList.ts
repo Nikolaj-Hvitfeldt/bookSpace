@@ -8,6 +8,7 @@ export type BookList = {
   currentPage?: number;
   pageCount?: number;
   isBookmarked?: boolean;
+  bookSlug?: string;
 };
 
 export type BookDetail = {
@@ -22,4 +23,5 @@ export type BookDetail = {
   genres: string[];
   genreSlugs: string[];
   isBookmarked?: boolean;
+  bookSlug: string;
 };

@@ -35,7 +35,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const books = await Book.find({ genres: genre._id })
     .sort({ ratingsCount: -1 })
     .limit(25)
-    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1 })
+    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1, slug: 1 })
     .populate({ path: "author", select: { name: 1 } })
     .lean();
 
@@ -46,6 +46,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
     authors: mapAuthorNames(b.author as { name?: string }[]),
     coverImage: b.coverImage?.url || "",
     rating: b.rating ?? 0,
+    bookSlug: b.slug ?? "",
   }));
 
   return {
