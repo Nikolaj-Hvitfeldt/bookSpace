@@ -1,7 +1,7 @@
 import { SearchBar } from "~/components/ui/searchbar";
 import { useEffect, useState } from "react";
 import BookCard from "./BookCard";
-import BookSection from "./BookSection";
+import BookSection from "../books/BookSection";
 
 type HomeHeaderProps = {
   searchValue: string;

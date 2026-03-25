@@ -3,6 +3,7 @@ import type { BookDetail } from "~/types/bookList";
 import { BookmarkButton } from "./BookmarkButton";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import BookSection from "./BookSection";
 
 type BookDetailsPageProps = {
   book: BookDetail;
@@ -146,6 +147,11 @@ export default function BookDetailsPage({
       <BookHero book={book} />
       <BookMetaData book={book} />
       <BookDescription book={book} />
+      <BookSection
+        sectionTitle="Other books by this Author"
+        books={[]}
+        morePath="/author/${book.authors[0]}"
+      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Route } from "./+types/home";
 import HomeHeader from "~/components/home/HomeHeader";
-import BookSection from "~/components/home/BookSection";
+import BookSection from "~/components/books/BookSection";
 import {
   getPopularBooks,
   getRecommendedBooks,
