@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router";
-import type { BookDetail } from "~/types/bookList";
+import type { BookDetail } from "~/types/bookDetail";
 import { BookmarkButton } from "./BookmarkButton";
 import { Button } from "../ui/button";
 import { useState, useRef, useLayoutEffect } from "react";
