@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import connectDb from "../db.server";
 import User from "../models/User";
 import Book from "../models/Book";
+import type { BookList } from "~/types/bookList";
 
 type ToggleFavorite = {
   success: boolean;
@@ -88,4 +89,15 @@ export async function toggleFavoriteBook(
       bookMarked: true,
     };
   }
+}
+
+//For each book in the providedlist, if book.id is in favoriteIds (set of ids of favorite books), isBookmarked is true. Otherwise false
+export function markBooksAsBookmarked(
+  books: BookList[],
+  favoriteIds: Set<string>,
+): BookList[] {
+  return books.map((book) => ({
+    ...book,
+    isBookmarked: favoriteIds.has(book.id),
+  }));
 }

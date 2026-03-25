@@ -4,6 +4,7 @@ import type { Route } from "./+types/popular";
 import { bookmarkAction } from "~/actions/bookmark.server";
 import { getUser } from "~/services/auth.server";
 import { getFavoriteBooks } from "~/db/queries/favorites.server";
+import { markBooksAsBookmarked } from "~/db/queries/favorites.server";
 
 export async function action({ request }: Route.ActionArgs) {
   return bookmarkAction(request);
@@ -14,7 +15,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const books = await getPopularBooksList();
   const favorittedBooks = await getFavoriteBooks(user?._id.toString() ?? "");
 
-  return { books, favorittedBooks };
+  return { books: markBooksAsBookmarked(books, favorittedBooks) };
 }
 
 export default function Popular({ loaderData }: Route.ComponentProps) {
