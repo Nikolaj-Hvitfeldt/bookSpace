@@ -1,5 +1,5 @@
 import { getUser } from "~/services/auth.server";
-import { data } from "react-router";
+import { data, redirect } from "react-router";
 import Book from "~/db/models/Book";
 import Review from "~/db/models/Review";
 
@@ -58,5 +58,6 @@ export async function createReviewAction(
     rating: ratingNumber,
   });
 
-  return data({ success: true, review: review }, { status: 201 });
+  //Redirect to revalidate data
+  return redirect(`/books/${book.slug}`);
 }
