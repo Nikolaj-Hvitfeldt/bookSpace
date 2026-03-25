@@ -98,88 +98,106 @@ function ReviewInput() {
   );
 }
 
-export default function ReviewSection() {
-  const [expandedById, setExpandedById] = useState<Record<string, boolean>>({});
-  const toggleReview = (id: string) =>
-    setExpandedById((prev) => ({ ...prev, [id]: !prev[id] }));
+function ReviewText({ text }: { text: string }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [maxHeight, setMaxHeight] = useState("44px");
+  const textRef = useRef<HTMLDivElement>(null);
 
+  useLayoutEffect(() => {
+    const element = textRef.current;
+    if (!element) return;
+    if (isExpanded) {
+      setMaxHeight(element.scrollHeight + "px");
+    } else {
+      setMaxHeight("44px");
+    }
+  }, [isExpanded, text]);
+
+  const toggle = () => setIsExpanded((prev) => !prev);
+
+  return (
+    <div role="button" onClick={toggle} className="cursor-pointer">
+      <div
+        ref={textRef}
+        style={{
+          maxHeight,
+        }}
+        className="overflow-hidden transition-[max-height] duration-250 ease-in-out"
+      >
+        {/* Review text */}
+        <div className="text-[15px] font-normal not-italic leading-[22px] text-black whitespace-pre-wrap">
+          {text}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Reviewitem({ review }: { review: Review }) {
+  return (
+    <div key={review.id} className="space-y-2">
+      <div className="flex items-start justify-between">
+        <div className="flex items-center gap-2">
+          <div className="h-10 w-10 rounded-full border-2 border-primary-brown flex items-center justify-center text-primary-brown">
+            <img
+              src="/reviewImages/review-avatar.svg"
+              alt="avatar"
+              className="h-[40px] w-[40px] shrink-0"
+            />
+          </div>
+
+          {/* Name and rating */}
+          <div className="pt-1 flex flex-col gap-[2px]">
+            <div className="text-[18px] font-semibold leading-[22px]">
+              {review.author}
+            </div>
+            <RatingStars rating={review.rating} />
+          </div>
+        </div>
+
+        {/* Review date */}
+        <div className="pt-1 flex flex-col gap-[2px]">
+          <div className="leading-[22px] font-semibold ml-auto">...</div>
+
+          <div className="text-sm text-black/60">{review.date}</div>
+        </div>
+      </div>
+
+      {/* Review text */}
+      <ReviewText text={review.text} />
+
+      {/* Review helpful and not helpful */}
+      <div className="flex items-center gap-6 mt-2">
+        <div className="flex items-center gap-2 text-[14px] text-primary-brown">
+          <img
+            src="/reviewImages/thumbs-up.svg"
+            alt="thumbs-up"
+            className="h-[17px] w-[17px] shrink-0"
+          />
+
+          <div>{`Helpful (${review.helpfulCount})`}</div>
+        </div>
+        <div className="flex items-center gap-2 text-[14px] text-primary-brown">
+          <img
+            src="/reviewImages/thumbs-down.svg"
+            alt="thumbs-down"
+            className="h-[17px] w-[17px] shrink-0"
+          />
+
+          <div>{`Not helpful (${review.notHelpfulCount})`}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ReviewSection() {
   return (
     <div className="mt-4 space-y-4">
       <div className="text-[18px] font-semibold leading-[22px]">Reviews</div>
-
-      <ReviewInput />
-
-      {/* Reviews list */}
-      <div className="space-y-5 mt-5">
+      <div className="mt-5 space-y-5">
         {reviews.map((review) => (
-          <div key={review.id} className="space-y-2">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-2">
-                <div className="h-10 w-10 rounded-full border-2 border-primary-brown flex items-center justify-center text-primary-brown">
-                  <img
-                    src="/reviewImages/review-avatar.svg"
-                    alt="avatar"
-                    className="h-[40px] w-[40px] shrink-0"
-                  />
-                </div>
-
-                {/* Name and rating */}
-                <div className="pt-1 flex flex-col gap-[2px]">
-                  <div className="text-[18px] font-semibold leading-[22px]">
-                    {review.author}
-                  </div>
-                  <RatingStars rating={review.rating} />
-                </div>
-              </div>
-
-              {/* Review date */}
-              <div className="pt-1 flex flex-col gap-[2px]">
-                <div className="leading-[22px] font-semibold ml-auto">...</div>
-
-                <div className="text-sm text-black/60">{review.date}</div>
-              </div>
-            </div>
-
-            <div
-              role="button"
-              onClick={() => toggleReview(review.id)}
-              className="cursor-pointer"
-            >
-              <div
-                style={{
-                  maxHeight: expandedById[review.id] ? "140px" : "44px",
-                }}
-                className="overflow-hidden transition-[max-height] duration-250 ease-in-out"
-              >
-                {/* Review text */}
-                <div className="text-[15px] font-normal not-italic leading-[22px] text-black whitespace-pre-wrap">
-                  {review.text}
-                </div>
-              </div>
-            </div>
-
-            {/* Review helpful and not helpful */}
-            <div className="flex items-center gap-6 mt-2">
-              <div className="flex items-center gap-2 text-[14px] text-primary-brown">
-                <img
-                  src="/reviewImages/thumbs-up.svg"
-                  alt="thumbs-up"
-                  className="h-[17px] w-[17px] shrink-0"
-                />
-
-                <div>{`Helpful (${review.helpfulCount})`}</div>
-              </div>
-              <div className="flex items-center gap-2 text-[14px] text-primary-brown">
-                <img
-                  src="/reviewImages/thumbs-down.svg"
-                  alt="thumbs-down"
-                  className="h-[17px] w-[17px] shrink-0"
-                />
-
-                <div>{`Not helpful (${review.notHelpfulCount})`}</div>
-              </div>
-            </div>
-          </div>
+          <Reviewitem key={review.id} review={review} />
         ))}
       </div>
     </div>
