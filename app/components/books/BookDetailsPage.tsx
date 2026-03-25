@@ -4,10 +4,12 @@ import { BookmarkButton } from "./BookmarkButton";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import BookSection from "./BookSection";
+import type { BookCardItem } from "../home/BookCard";
 
 type BookDetailsPageProps = {
   book: BookDetail;
   backPath: string;
+  authorBooks: BookCardItem[];
 };
 
 function BookHero({ book }: { book: BookDetail }) {
@@ -136,6 +138,7 @@ function BookDescription({ book }: { book: BookDetail }) {
 export default function BookDetailsPage({
   book,
   backPath,
+  authorBooks,
 }: BookDetailsPageProps) {
   return (
     <div className="flex flex-col w-full">
@@ -149,8 +152,10 @@ export default function BookDetailsPage({
       <BookDescription book={book} />
       <BookSection
         sectionTitle="Other books by this Author"
-        books={[]}
-        morePath="/author/${book.authors[0]}"
+        books={authorBooks}
+        morePath={
+          book.authorSlugs?.[0] ? `/author/${book.authorSlugs[0]}` : "/"
+        }
       />
     </div>
   );

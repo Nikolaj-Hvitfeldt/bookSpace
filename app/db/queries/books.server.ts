@@ -351,7 +351,7 @@ export async function getBookDetailbyId(
     })
     .populate({
       path: "author",
-      select: { name: 1 },
+      select: { name: 1, slug: 1 },
     })
     .populate({
       path: "genres",
@@ -363,11 +363,15 @@ export async function getBookDetailbyId(
 
   const genres = book.genres as { name?: string }[];
   const authors = mapAuthorNames(book.author as { name?: string }[]);
+  const authorSlugs = (book.author as { slug?: string }[]).map(
+    (author) => author.slug ?? "",
+  );
 
   return {
     id: book._id.toString(),
     title: book.title,
     authors,
+    authorSlugs,
     coverImage: book.coverImage?.url || "",
     rating: book.rating ?? 0,
     pageCount: book.pageCount ?? 0,
