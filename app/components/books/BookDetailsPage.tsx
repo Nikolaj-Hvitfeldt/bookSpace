@@ -167,7 +167,7 @@ export default function BookDetailsPage({
         <BookSection
           sectionTitle="Similar Books"
           books={similarBooks}
-          morePath="/"
+          morePath={book.genreSlugs?.[0] ? `/books/${book.genreSlugs[0]}` : "/"}
         />
       ) : null}
     </div>

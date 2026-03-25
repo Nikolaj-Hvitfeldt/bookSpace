@@ -14,6 +14,7 @@ export default [
     route("short-escapes", "routes/shortEscapes.tsx"),
     route("epic-journeys", "routes/epicJourneys.tsx"),
     route("book/:bookId", "routes/bookDetails.tsx"),
+    route("books/:genreSlug", "routes/genreBooks.tsx"),
     route("author/:authorSlug", "routes/authorBooks.tsx"),
   ]),
   layout("layouts/authLayout.tsx", [

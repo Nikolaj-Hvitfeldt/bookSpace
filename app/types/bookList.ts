@@ -20,5 +20,6 @@ export type BookDetail = {
   pageCount: number;
   description: string;
   genres: string[];
+  genreSlugs: string[];
   isBookmarked?: boolean;
 };

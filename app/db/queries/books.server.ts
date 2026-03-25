@@ -355,7 +355,7 @@ export async function getBookDetailbyId(
     })
     .populate({
       path: "genres",
-      select: { name: 1 },
+      select: { name: 1, slug: 1 },
     })
     .lean();
 
@@ -365,6 +365,9 @@ export async function getBookDetailbyId(
   const authors = mapAuthorNames(book.author as { name?: string }[]);
   const authorSlugs = (book.author as { slug?: string }[]).map(
     (author) => author.slug ?? "",
+  );
+  const genreSlugs = (book.genres as { slug?: string }[]).map(
+    (genre) => genre.slug ?? "",
   );
 
   return {
@@ -377,5 +380,6 @@ export async function getBookDetailbyId(
     pageCount: book.pageCount ?? 0,
     description: book.description ?? "",
     genres: genres.map((genre) => genre.name ?? ""),
+    genreSlugs,
   };
 }
