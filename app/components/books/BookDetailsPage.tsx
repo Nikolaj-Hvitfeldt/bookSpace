@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router";
 import type { BookDetail } from "~/types/bookList";
 import { BookmarkButton } from "./BookmarkButton";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import BookSection from "./BookSection";
 import type { BookCardItem } from "../home/BookCard";
 import ReviewSection from "./ReviewSection";
@@ -107,32 +107,46 @@ function BookMetaData({ book }: { book: BookDetail }) {
 
 function BookDescription({ book }: { book: BookDetail }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [maxHeight, setMaxHeight] = useState("44px");
+  const textRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const element = textRef.current;
+    if (!element) return;
+    if (isExpanded) {
+      setMaxHeight(element.scrollHeight + "px");
+    } else {
+      setMaxHeight("44px");
+    }
+  }, [isExpanded, book.description]);
+
+  const toggleDescription = () => {
+    setIsExpanded((prev) => !prev);
+  };
 
   return (
     <div className="mt-2 pt-2">
-      <div className="flex items-start justify-between">
-        <p className="text-base font-semibold!">Description</p>
+      <div role="button" onClick={toggleDescription} className="cursor-pointer">
+        <div className="flex items-start justify-between">
+          <p className="text-base font-semibold!">Description</p>
 
-        <button
-          type="button"
-          onClick={() => setIsExpanded((e) => !e)}
-          className="shrink-0"
-        >
-          <img
-            src="/globalImages/more-arrow.svg"
-            alt="arrow-down"
-            className={`h-4 w-4 rotate-90 ${isExpanded ? "rotate-270" : ""} transition-transform duration-300`}
-          />
-        </button>
-      </div>
-      <div className="mt-1 text-[15px] font-normal not-italic leading-[22px] text-black whitespace-pre-wrap">
+          <button type="button" className="shrink-0">
+            <img
+              src="/globalImages/more-arrow.svg"
+              alt="arrow-down"
+              className={`h-4 w-4 rotate-90 ${isExpanded ? "rotate-270" : ""} transition-transform duration-300`}
+            />
+          </button>
+        </div>
+
         <div
-          className={[
-            "text-[15px] font-normal not-italic leading-[22px] text-black whitespace-pre-wrap",
-            isExpanded ? "" : "line-clamp-2 overflow-hidden",
-          ].join(" ")}
+          ref={textRef}
+          style={{ maxHeight: maxHeight }}
+          className="mt-1 overflow-hidden transition-[max-height] duration-300 ease-in-out"
         >
-          {book.description}
+          <div className="mt-1 text-[15px] font-normal not-italic leading-[22px] text-black whitespace-pre-wrap">
+            {book.description}
+          </div>
         </div>
       </div>
     </div>
