@@ -3,7 +3,8 @@ import Book from "../models/Book";
 import type { BookCardItem } from "../../components/home/BookCard";
 import User from "../models/User";
 import ReadingProgress from "../models/ReadingProgress";
-import type { BookList, BookDetail } from "~/types/bookList";
+import type { BookList } from "~/types/bookList";
+import type { BookDetail } from "~/types/bookDetail";
 import { mapAuthorNames } from "~/util/authorNames.server";
 import { pageProgressFromReading } from "~/util/pageProgress.server";
 
