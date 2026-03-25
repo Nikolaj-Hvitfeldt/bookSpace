@@ -3,7 +3,10 @@ import { data } from "react-router";
 import Book from "~/db/models/Book";
 import Review from "~/db/models/Review";
 
-export async function createReviewAction(request: Request) {
+export async function createReviewAction(
+  request: Request,
+  formData?: FormData,
+) {
   const user = await getUser(request);
 
   //If the user is not found return unauthorized status code
@@ -11,11 +14,11 @@ export async function createReviewAction(request: Request) {
     return data({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 
-  const formData = await request.formData();
+  const fd = formData ?? (await request.formData());
 
-  const text = formData.get("text");
-  const rating = formData.get("rating");
-  const bookId = formData.get("bookId");
+  const text = fd.get("text");
+  const rating = fd.get("rating");
+  const bookId = fd.get("bookId");
 
   //If the text is not a string or is empty return error
   if (!text || typeof text !== "string" || !text.trim()) {

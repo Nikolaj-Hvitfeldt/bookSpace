@@ -192,7 +192,7 @@ export default function BookDetailsPage({
           }
         />
       ) : null}
-      <ReviewSection reviews={reviews || []} />
+      <ReviewSection reviews={reviews || []} bookId={book.id} />
     </div>
   );
 }
