@@ -1,12 +1,6 @@
 import { SearchBar } from "~/components/ui/searchbar";
 import { useEffect, useState } from "react";
-import BookCard from "./BookCard";
-import BookSection from "../books/BookSection";
-
-type HomeHeaderProps = {
-  searchValue: string;
-  onSearchChange: (value: string) => void;
-};
+import { useNavigate } from "react-router";
 
 //Change to Avif when my daily reset of conversions on the website hits
 const slides = [
@@ -74,16 +68,14 @@ function BannerSlider() {
   );
 }
 
-export default function HomeHeader({
-  searchValue,
-  onSearchChange,
-}: HomeHeaderProps) {
+export default function HomeHeader() {
+  const navigate = useNavigate();
+
   return (
     <header className="w-full">
       <SearchBar
         placeholder="Search..."
-        value={searchValue}
-        onChange={(e) => onSearchChange(e.target.value)}
+        onFocus={() => navigate("/search")}
       ></SearchBar>
 
       <div className="space-y-2 mt-[16px]">
