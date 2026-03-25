@@ -1,11 +1,22 @@
 import BookListPage, { type BookList } from "~/components/books/BookListPage";
 import { getShortBooksList } from "~/db/queries/books.server";
 import type { Route } from "./+types/popular";
+import { getUser } from "~/services/auth.server";
+import { getFavoriteBooks } from "~/db/queries/favorites.server";
+import { markBooksAsBookmarked } from "~/db/queries/favorites.server";
+import { bookmarkAction } from "~/actions/bookmark.server";
 
-export async function loader() {
+export async function action({ request }: Route.ActionArgs) {
+  return bookmarkAction(request);
+}
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const user = await getUser(request);
+  const favorittedBooks = await getFavoriteBooks(user?._id.toString() ?? "");
   const books = await getShortBooksList();
+  const booksWithFavoriteFlags = markBooksAsBookmarked(books, favorittedBooks);
 
-  return { books };
+  return { books: booksWithFavoriteFlags };
 }
 
 export default function ShortEscapes({ loaderData }: Route.ComponentProps) {
