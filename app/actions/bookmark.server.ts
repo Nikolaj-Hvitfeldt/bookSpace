@@ -7,7 +7,7 @@ export async function bookmarkAction(request: Request) {
 
   //If the user is not found return unauthorized status code
   if (!user?._id) {
-    return data({ ok: false, error: "Unauthorized" }, { status: 401 });
+    return data({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 
   const formData = await request.formData();
@@ -15,16 +15,19 @@ export async function bookmarkAction(request: Request) {
   //If the book id is not found return error code
   const bookId = formData.get("bookId");
   if (!bookId || typeof bookId !== "string") {
-    return data({ ok: false, error: "Invalid book id" }, { status: 400 });
+    return data({ success: false, error: "Invalid book id" }, { status: 400 });
   }
 
   const result = await toggleFavoriteBook(user._id, bookId);
 
   //If the result is not successful return error code
   if (!result.success) {
-    return data({ ok: false, error: result.error }, { status: 400 });
+    return data({ success: false, error: result.error }, { status: 400 });
   }
 
   //If the result is successful return new bookmark status and success code
-  return data({ ok: true, bookMarked: result.bookMarked }, { status: 200 });
+  return data(
+    { success: true, bookmarked: result.bookmarked },
+    { status: 200 },
+  );
 }

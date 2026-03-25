@@ -6,7 +6,7 @@ import type { BookList } from "~/types/bookList";
 
 type ToggleFavorite = {
   success: boolean;
-  bookMarked?: boolean;
+  bookmarked?: boolean;
   error?: string;
 };
 
@@ -75,7 +75,7 @@ export async function toggleFavoriteBook(
     );
     return {
       success: true,
-      bookMarked: false,
+      bookmarked: false,
     };
 
     //If the book is not bookmarked add it to the user's favorite books
@@ -86,7 +86,7 @@ export async function toggleFavoriteBook(
     );
     return {
       success: true,
-      bookMarked: true,
+      bookmarked: true,
     };
   }
 }
