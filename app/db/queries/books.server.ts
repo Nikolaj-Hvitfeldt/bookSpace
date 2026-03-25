@@ -3,7 +3,7 @@ import Book from "../models/Book";
 import type { BookCardItem } from "../../components/home/BookCard";
 import User from "../models/User";
 import ReadingProgress from "../models/ReadingProgress";
-import type { BookList } from "~/types/bookList";
+import type { BookList, BookDetail } from "~/types/bookList";
 import { mapAuthorNames } from "~/util/authorNames.server";
 import { pageProgressFromReading } from "~/util/pageProgress.server";
 
@@ -331,4 +331,43 @@ export async function getCurrentlyReadingBooksList(
       pageCount,
     };
   });
+}
+
+export async function getBookDetailbyId(
+  bookId: string,
+): Promise<BookDetail | null> {
+  await connectDb();
+
+  const book = await Book.findById(bookId)
+    .select({
+      _id: 1,
+      title: 1,
+      coverImage: 1,
+      author: 1,
+      rating: 1,
+      pageCount: 1,
+      description: 1,
+      genres: 1,
+    })
+    .populate({
+      path: "author",
+      select: { name: 1 },
+    })
+    .lean();
+
+  if (!book) return null;
+
+  const genres = book.genres.map((genre) => genre.toString());
+  const authors = mapAuthorNames(book.author as { name?: string }[]);
+
+  return {
+    id: book._id.toString(),
+    title: book.title,
+    authors,
+    coverImage: book.coverImage?.url || "",
+    rating: book.rating ?? 0,
+    pageCount: book.pageCount ?? 0,
+    description: book.description ?? "",
+    genres,
+  };
 }

@@ -13,6 +13,7 @@ export default [
     route("popular", "routes/popular.tsx"),
     route("short-escapes", "routes/shortEscapes.tsx"),
     route("epic-journeys", "routes/epicJourneys.tsx"),
+    route("book/:bookId", "routes/bookDetails.tsx"),
   ]),
   layout("layouts/authLayout.tsx", [
     route("login", "routes/login.tsx"),

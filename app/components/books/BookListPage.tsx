@@ -44,11 +44,13 @@ function BookListItem({
   return (
     <li className="flex gap-[10px] border-black/10">
       <div className="flex w-[120px] shrink-0 flex-col gap-[6px">
-        <img
-          src={book.coverImage}
-          alt={book.title}
-          className="h-[180px] w-[120px] rounded bg-primary-gray/50 object-cover shadow-md"
-        />
+        <Link to={`/book/${book.id}`}>
+          <img
+            src={book.coverImage}
+            alt={book.title}
+            className="h-[180px] w-[120px] rounded bg-primary-gray/50 object-cover shadow-md"
+          />
+        </Link>
         {hasProgress ? (
           <div className="mt-1 h-[4px] w-full overflow-hidden rounded-full bg-primary-brown/25">
             <div
