@@ -1,0 +1,98 @@
+[
+  {
+    "bookSlug": "morning-star",
+    "userEmail": "test@gmail.com",
+    "text": "A brutal, satisfying end to the trilogy. Pierce Brown doesn't pull punches—every chapter costs someone something. If you liked Red Rising, this is the pay-off you're waiting for.",
+    "rating": 5,
+    "helpfulCount": 12,
+    "notHelpfulCount": 1
+  },
+  {
+    "bookSlug": "morning-star",
+    "userEmail": "test@test.com",
+    "text": "I loved the first two books more. This one is very heavy on battle scenes and politics—I skimmed a few middle sections—but the ending still hit hard.",
+    "rating": 4,
+    "helpfulCount": 5,
+    "notHelpfulCount": 2
+  },
+  {
+    "bookSlug": "eleanor-oliphant-is-completely-fine",
+    "userEmail": "test@gmail.com",
+    "text": "Eleanor's voice is funny and heartbreaking at the same time. It tackles loneliness without being preachy. I finished it in a weekend.",
+    "rating": 5,
+    "helpfulCount": 8,
+    "notHelpfulCount": 0
+  },
+  {
+    "bookSlug": "eleanor-oliphant-is-completely-fine",
+    "userEmail": "test2@test.com",
+    "text": "Good characterization, but the \"twist\" felt a bit soap-opera to me. Still worth reading for the dry humour alone.",
+    "rating": 3,
+    "helpfulCount": 2,
+    "notHelpfulCount": 4
+  },
+  {
+    "bookSlug": "the-dark-forest",
+    "userEmail": "test@gmail.com",
+    "text": "The Wallfacer idea is wild in the best way. Dense sci-fi—the kind you want to discuss with someone after every chapter.",
+    "rating": 5,
+    "helpfulCount": 15,
+    "notHelpfulCount": 1
+  },
+  {
+    "bookSlug": "the-dark-forest",
+    "userEmail": "test3@test.com",
+    "text": "Slower than Three-Body Problem in places, but the scale of the ideas makes up for it. Stick with it.",
+    "rating": 4,
+    "helpfulCount": 6,
+    "notHelpfulCount": 1
+  },
+  {
+    "bookSlug": "the-hate-u-give",
+    "userEmail": "test@gmail.com",
+    "text": "Required reading. Angie's voice is real, the family dynamics are layered, and it doesn't offer easy answers.",
+    "rating": 5,
+    "helpfulCount": 20,
+    "notHelpfulCount": 0
+  },
+  {
+    "bookSlug": "the-hate-u-give",
+    "userEmail": "test@test.com",
+    "text": "Powerful on theme. A few high-school scenes felt a bit long for me, but the core story is unforgettable.",
+    "rating": 4,
+    "helpfulCount": 3,
+    "notHelpfulCount": 2
+  },
+  {
+    "bookSlug": "a-gentleman-in-moscow",
+    "userEmail": "test@gmail.com",
+    "text": "Elegant prose, cosy but not shallow. I kept thinking about it for days after the last page.",
+    "rating": 5,
+    "helpfulCount": 9,
+    "notHelpfulCount": 0
+  },
+  {
+    "bookSlug": "a-gentleman-in-moscow",
+    "userEmail": "test2@test.com",
+    "text": "Beautiful writing. If you need heavy plot twists this might feel quiet, but as a character study it's superb.",
+    "rating": 4,
+    "helpfulCount": 4,
+    "notHelpfulCount": 1
+  },
+  {
+    "bookSlug": "divine-rivals",
+    "userEmail": "test@gmail.com",
+    "text": "Romantic fantasy with real stakes. The letters device hooked me immediately—messy, sweet, and tense.",
+    "rating": 5,
+    "helpfulCount": 11,
+    "notHelpfulCount": 2
+  },
+  {
+    "bookSlug": "divine-rivals",
+    "userEmail": "test3@test.com",
+    "text": "Fun world-building and I liked the rivals-to-lovers arc. Waiting impatiently for the next book.",
+    "rating": 4,
+    "helpfulCount": 7,
+    "notHelpfulCount": 1
+  }
+]

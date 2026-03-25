@@ -1,17 +1,19 @@
 import { Link, useNavigate } from "react-router";
-import type { BookDetail } from "~/types/bookList";
+import type { BookDetail } from "~/types/bookDetail";
 import { BookmarkButton } from "./BookmarkButton";
 import { Button } from "../ui/button";
 import { useState, useRef, useLayoutEffect } from "react";
 import BookSection from "./BookSection";
 import type { BookCardItem } from "../home/BookCard";
 import ReviewSection from "./ReviewSection";
+import type { Review } from "~/types/review";
 
 type BookDetailsPageProps = {
   book: BookDetail;
   backPath: string;
   authorBooks: BookCardItem[];
   similarBooks: BookCardItem[];
+  reviews: Review[];
 };
 
 function BookHero({ book }: { book: BookDetail }) {
@@ -158,6 +160,7 @@ export default function BookDetailsPage({
   backPath,
   authorBooks,
   similarBooks,
+  reviews,
 }: BookDetailsPageProps) {
   return (
     <div className="flex flex-col w-full">
@@ -187,7 +190,7 @@ export default function BookDetailsPage({
           }
         />
       ) : null}
-      <ReviewSection />
+      <ReviewSection reviews={reviews || []} bookId={book.id} />
     </div>
   );
 }
