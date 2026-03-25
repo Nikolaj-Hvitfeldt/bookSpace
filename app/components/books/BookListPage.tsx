@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import type { BookList } from "~/types/bookList";
 import { Button } from "../ui/button";
+import { BookmarkButton } from "./BookmarkButton";
 
 export type { BookList };
 
@@ -64,15 +65,11 @@ function BookListItem({
             <p className="card-title">{book.title}</p>
             <p className="text-sm!">by {book.authors?.join(", ")}</p>
           </div>
-          <button
-            type="button"
-            className="shrink-0 rounded p-1 text-black/60 hover:text-black"
-            aria-label="Bookmark this book"
-          >
-            <div className="text-[20px] leading-none">
-              <img src="/globalImages/bookmark-empty.png" alt="Bookmark" />
-            </div>
-          </button>
+          <BookmarkButton
+            bookId={book.id}
+            isBookmarked={book.isBookmarked ?? false}
+            className="shrink-0"
+          />
         </div>
 
         {typeof book.rating === "number" ? (
