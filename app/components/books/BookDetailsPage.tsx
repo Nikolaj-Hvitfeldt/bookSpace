@@ -10,6 +10,7 @@ type BookDetailsPageProps = {
   book: BookDetail;
   backPath: string;
   authorBooks: BookCardItem[];
+  similarBooks: BookCardItem[];
 };
 
 function BookHero({ book }: { book: BookDetail }) {
@@ -141,6 +142,7 @@ export default function BookDetailsPage({
   book,
   backPath,
   authorBooks,
+  similarBooks,
 }: BookDetailsPageProps) {
   return (
     <div className="flex flex-col w-full">
@@ -159,6 +161,13 @@ export default function BookDetailsPage({
           morePath={
             book.authorSlugs?.[0] ? `/author/${book.authorSlugs[0]}` : "/"
           }
+        />
+      ) : null}
+      {similarBooks.length > 0 ? (
+        <BookSection
+          sectionTitle="Similar Books"
+          books={similarBooks}
+          morePath="/"
         />
       ) : null}
     </div>
