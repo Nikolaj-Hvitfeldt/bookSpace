@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Route } from "./+types/home";
 import HomeHeader from "~/components/home/HomeHeader";
-import BookSection from "~/components/home/BookSection";
+import BookSection from "~/components/books/BookSection";
 import {
   getPopularBooks,
   getRecommendedBooks,
@@ -56,27 +56,27 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <BookSection
         sectionTitle="Currently Reading"
         books={currentlyReadingBooks}
-        morePath="/currently-reading"
+        morePath="/books/currently-reading"
       />
       <BookSection
         sectionTitle="Recommended"
         books={recommendedBooks}
-        morePath="/recommended"
+        morePath="/books/recommended"
       />
       <BookSection
         sectionTitle="Popular"
         books={popularBooks}
-        morePath="/popular"
+        morePath="/books/popular"
       />
       <BookSection
         sectionTitle="Short Escapes"
         books={shortBooks}
-        morePath="/short-escapes"
+        morePath="/books/short-escapes"
       />
       <BookSection
         sectionTitle="Epic Journeys"
         books={longBooks}
-        morePath="/epic-journeys"
+        morePath="/books/epic-journeys"
       />
     </div>
   );

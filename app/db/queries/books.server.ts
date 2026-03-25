@@ -3,7 +3,7 @@ import Book from "../models/Book";
 import type { BookCardItem } from "../../components/home/BookCard";
 import User from "../models/User";
 import ReadingProgress from "../models/ReadingProgress";
-import type { BookList } from "~/types/bookList";
+import type { BookList, BookDetail } from "~/types/bookList";
 import { mapAuthorNames } from "~/util/authorNames.server";
 import { pageProgressFromReading } from "~/util/pageProgress.server";
 
@@ -52,7 +52,7 @@ export async function getPopularBooksList(limit = 25): Promise<BookList[]> {
   const books = await Book.find()
     .sort({ ratingsCount: -1 })
     .limit(limit)
-    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1 })
+    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1, slug: 1 })
     .populate({
       path: "author",
       select: { name: 1 },
@@ -64,6 +64,7 @@ export async function getPopularBooksList(limit = 25): Promise<BookList[]> {
     authors: mapAuthorNames(book.author as { name?: string }[]),
     coverImage: book.coverImage?.url || "",
     rating: book.rating ?? 0,
+    bookSlug: book.slug ?? "",
   }));
 }
 
@@ -87,7 +88,7 @@ export async function getShortBooksList(limit = 25): Promise<BookList[]> {
   const books = await Book.find()
     .sort({ pageCount: 1 })
     .limit(limit)
-    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1 })
+    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1, slug: 1 })
     .populate({
       path: "author",
       select: { name: 1 },
@@ -99,6 +100,7 @@ export async function getShortBooksList(limit = 25): Promise<BookList[]> {
     authors: mapAuthorNames(book.author as { name?: string }[]),
     coverImage: book.coverImage?.url || "",
     rating: book.rating ?? 0,
+    bookSlug: book.slug ?? "",
   }));
 }
 export async function getLongBooks(limit = 25): Promise<BookCardItem[]> {
@@ -121,7 +123,7 @@ export async function getLongBooksList(limit = 25): Promise<BookList[]> {
   const books = await Book.find()
     .sort({ pageCount: -1 })
     .limit(limit)
-    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1 })
+    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1, slug: 1 })
     .populate({
       path: "author",
       select: { name: 1 },
@@ -133,6 +135,7 @@ export async function getLongBooksList(limit = 25): Promise<BookList[]> {
     authors: mapAuthorNames(book.author as { name?: string }[]),
     coverImage: book.coverImage?.url || "",
     rating: book.rating ?? 0,
+    bookSlug: book.slug ?? "",
   }));
 }
 export async function getRecommendedBooks(
@@ -189,7 +192,7 @@ export async function getRecommendedBooksList(limit = 25): Promise<BookList[]> {
   const books = await Book.find()
     .sort({ rating: -1 })
     .limit(limit)
-    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1 })
+    .select({ _id: 1, title: 1, coverImage: 1, author: 1, rating: 1, slug: 1 })
     .populate({
       path: "author",
       select: { name: 1 },
@@ -201,6 +204,7 @@ export async function getRecommendedBooksList(limit = 25): Promise<BookList[]> {
     authors: mapAuthorNames(book.author as { name?: string }[]),
     coverImage: book.coverImage?.url || "",
     rating: book.rating ?? 0,
+    bookSlug: book.slug ?? "",
   }));
 }
 
@@ -279,6 +283,7 @@ export async function getCurrentlyReadingBooksList(
         author: 1,
         rating: 1,
         pageCount: 1,
+        slug: 1,
       },
     })
     //Author does not exist in ReadingProgress, so we need to populate it from the Book model
@@ -315,6 +320,7 @@ export async function getCurrentlyReadingBooksList(
       }[];
       rating: number;
       pageCount: number;
+      slug: string;
     };
 
     const { currentPage, pageCount, progressPercentage } =
@@ -329,6 +335,60 @@ export async function getCurrentlyReadingBooksList(
       progressPercentage,
       currentPage,
       pageCount,
+      bookSlug: book.slug ?? "",
     };
   });
+}
+
+export async function getBookDetailsBySlug(
+  bookSlug: string,
+): Promise<BookDetail | null> {
+  await connectDb();
+
+  const book = await Book.findOne({ slug: bookSlug })
+    .select({
+      _id: 1,
+      title: 1,
+      coverImage: 1,
+      author: 1,
+      rating: 1,
+      pageCount: 1,
+      description: 1,
+      genres: 1,
+      slug: 1,
+    })
+    .populate({
+      path: "author",
+      select: { name: 1, slug: 1 },
+    })
+    .populate({
+      path: "genres",
+      select: { name: 1, slug: 1 },
+    })
+    .lean();
+
+  if (!book) return null;
+
+  const genres = book.genres as { name?: string }[];
+  const authors = mapAuthorNames(book.author as { name?: string }[]);
+  const authorSlugs = (book.author as { slug?: string }[]).map(
+    (author) => author.slug ?? "",
+  );
+  const genreSlugs = (book.genres as { slug?: string }[]).map(
+    (genre) => genre.slug ?? "",
+  );
+
+  return {
+    id: book._id.toString(),
+    title: book.title,
+    authors,
+    authorSlugs,
+    coverImage: book.coverImage?.url || "",
+    rating: book.rating ?? 0,
+    pageCount: book.pageCount ?? 0,
+    description: book.description ?? "",
+    genres: genres.map((genre) => genre.name ?? ""),
+    genreSlugs,
+    bookSlug: book.slug ?? "",
+  };
 }
