@@ -9,4 +9,6 @@ export type BookList = {
   pageCount?: number;
   isBookmarked?: boolean;
   bookSlug?: string;
+  moods?: string[];
+  tags?: string[];
 };
