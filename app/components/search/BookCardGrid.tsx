@@ -23,6 +23,7 @@ export default function BookCardGrid({
                 title={book.title}
                 coverImage={book.coverImage}
                 progressPercentage={book.progressPercentage}
+                size="small"
               />
             </Link>
           </li>

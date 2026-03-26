@@ -135,7 +135,9 @@ export default function SearchPage({ genres, books }: SearchPageProps) {
             <h2 className="mb-2 text-[18px] font-semibold! leading-[22px] text-black">
               Search Books by Title or Author:
             </h2>
-            <BookCardGrid books={filteredBooks} maxBooks={6} />
+            <div className="max-w-[330px]">
+              <BookCardGrid books={filteredBooks} maxBooks={6} />
+            </div>
           </div>
         </>
       ) : null}
