@@ -3,9 +3,9 @@ import TabSlider, { type tabItem } from "~/components/ui/tabSlider";
 import { useState, useMemo } from "react";
 import { Link } from "react-router";
 import type { GenreWithCovers } from "~/db/queries/genres.server";
-
 import type { BookList } from "~/types/bookList";
 import BookCardGrid from "./BookCardGrid";
+import FiltersPanel from "./FiltersPanel";
 
 type SearchTab = "Search" | "Filters";
 
@@ -113,34 +113,38 @@ export default function SearchPage({ genres, books }: SearchPageProps) {
         setQuery={setQuery}
       />
 
-      {selectedTab === "Search" ? (
-        <>
-          <div className="mt-5">
-            <h2 className="mb-2 text-[18px] font-semibold! leading-[22px] text-black">
-              Search by Genres:
-            </h2>
-            <div className="grid grid-cols-2 gap-4 pt-2">
-              {shownGenres.map((genre) => (
-                <GenreCard
-                  key={genre.slug}
-                  name={genre.name}
-                  slug={genre.slug}
-                  covers={genre.urls as [string, string, string]}
-                />
-              ))}
+      <div className="mt-5 flex-1 min-h-0 flex flex-col">
+        {selectedTab === "Search" ? (
+          <>
+            <div className="mt-5">
+              <h2 className="mb-2 text-[18px] font-semibold! leading-[22px] text-black">
+                Search by Genres:
+              </h2>
+              <div className="grid grid-cols-2 gap-4 pt-2">
+                {shownGenres.map((genre) => (
+                  <GenreCard
+                    key={genre.slug}
+                    name={genre.name}
+                    slug={genre.slug}
+                    covers={genre.urls as [string, string, string]}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="mt-5 w-full border-t border-primary-brown pt-5">
-            <h2 className="mb-2 text-[18px] font-semibold! leading-[22px] text-black">
-              Search Books by Title or Author:
-            </h2>
-            <div className="max-w-[330px] pt-2">
-              <BookCardGrid books={filteredBooks} maxBooks={6} />
+            <div className="mt-5 w-full border-t border-primary-brown pt-5">
+              <h2 className="mb-2 text-[18px] font-semibold! leading-[22px] text-black">
+                Search Books by Title or Author:
+              </h2>
+              <div className="max-w-[330px] pt-2">
+                <BookCardGrid books={filteredBooks} maxBooks={6} />
+              </div>
             </div>
-          </div>
-        </>
-      ) : null}
+          </>
+        ) : (
+          <FiltersPanel />
+        )}
+      </div>
     </div>
   );
 }
