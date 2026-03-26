@@ -1,11 +1,35 @@
 import { Button } from "../ui/button";
 import { useState, useRef, useLayoutEffect } from "react";
 
+type AccordionContent = "slider" | "checkbox";
+
 function cn(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
-function FilterSectionRow({ label }: { label: string }) {
+function SliderFilterContent() {
+  return (
+    <div>
+      <div>Slider content goes here</div>
+    </div>
+  );
+}
+
+function CheckboxFilterContent() {
+  return (
+    <div>
+      <div>Checkbox content goes here</div>
+    </div>
+  );
+}
+
+function FilterSectionRow({
+  label,
+  content,
+}: {
+  label: string;
+  content: AccordionContent;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [maxHeight, setMaxHeight] = useState("0px");
   const contentRef = useRef<HTMLDivElement>(null);
@@ -54,10 +78,14 @@ function FilterSectionRow({ label }: { label: string }) {
 
       <div
         style={{ maxHeight }}
-        className="overflow-hidden transition-[max-height] duration-300 ease-in-out"
+        className="overflow-hidden transition-[max-height] duration-200 ease-in-out"
       >
         <div ref={contentRef} className="pb-2">
-          <div>Content goes here</div>
+          {content === "slider" ? (
+            <SliderFilterContent />
+          ) : (
+            <CheckboxFilterContent />
+          )}
         </div>
       </div>
     </div>
@@ -67,9 +95,11 @@ function FilterSectionRow({ label }: { label: string }) {
 function SearchFiltersAccordion({
   label,
   rows,
+  content,
 }: {
   label: string;
   rows: string[];
+  content: AccordionContent;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [maxHeight, setMaxHeight] = useState("0px");
@@ -141,7 +171,7 @@ function SearchFiltersAccordion({
       >
         <div ref={contentRef} className="pt-1 pb-2">
           {rows.map((row) => (
-            <FilterSectionRow label={row} key={row} />
+            <FilterSectionRow label={row} key={row} content={content} />
           ))}
         </div>
       </div>
@@ -180,10 +210,12 @@ export default function FiltersPanel() {
             "Content Intensity",
             "Predictabillity & Style",
           ]}
+          content="slider"
         />
         <SearchFiltersAccordion
           label="Character & Plot"
           rows={["Age", "Sexuality", "Gender", "Plot"]}
+          content="checkbox"
         />
         <SearchFiltersButtonFooter />
       </div>
