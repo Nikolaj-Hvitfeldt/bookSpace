@@ -31,6 +31,19 @@ const sliderRows: SliderRows = {
   ],
 };
 
+const checkboxRows: Record<string, string[]> = {
+  Age: ["0-25", "26-50", "51-75", "76+"],
+  Sexuality: ["Straight", "Gay", "Lesbian", "Pansexual"],
+  Gender: ["Male", "Female", "Non-binary", "Transgender"],
+  Plot: [
+    "Conflict",
+    "Open",
+    "Generations",
+    "Lots of twists and turns",
+    "Revelation",
+  ],
+};
+
 function cn(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
@@ -93,10 +106,39 @@ function SliderFilterRow({
   );
 }
 
-function CheckboxFilterRow() {
+function CheckboxFilterRow({
+  label,
+  checked,
+  onToggle,
+}: {
+  label: string;
+  checked: boolean;
+  onToggle: () => void;
+}) {
   return (
-    <div>
-      <div>Checkbox content goes here</div>
+    <div className="flex items-center justify-between py-2">
+      <div className=" text-[16px] font-medium leading-[18px] tracking-[-0.1px] [font-variant-ligatures:none]">
+        {label}
+      </div>
+      <button
+        type="button"
+        onClick={onToggle}
+        className="h-[22px] w-[22px] shrink-0"
+      >
+        {checked ? (
+          <img
+            src="/searchImages/checkbox-filled.svg"
+            alt="Checked"
+            className="h-full w-full"
+          />
+        ) : (
+          <img
+            src="/searchImages/checkbox-empty.svg"
+            alt="Unchecked"
+            className="h-full w-full"
+          />
+        )}
+      </button>
     </div>
   );
 }
@@ -111,6 +153,8 @@ function FilterSectionRow({
   const [isOpen, setIsOpen] = useState(false);
   const [maxHeight, setMaxHeight] = useState("0px");
   const contentRef = useRef<HTMLDivElement>(null);
+  const options = checkboxRows[label] ?? [];
+  const [selected, setSelected] = useState<Set<string>>(new Set());
 
   const sliderPairs = sliderRows[label as keyof SliderRows] ?? [];
   const [sliderValues, setSliderValues] = useState<number[]>(
@@ -126,6 +170,14 @@ function FilterSectionRow({
       setMaxHeight("0px");
     }
   }, [isOpen]);
+
+  function toggleOption(option: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      next.has(option) ? next.delete(option) : next.add(option);
+      return next;
+    });
+  }
 
   return (
     <div className="w-full">
@@ -160,6 +212,7 @@ function FilterSectionRow({
         )}
       </button>
 
+      {/* Show slider or checkbox content */}
       <div
         style={{ maxHeight }}
         className="overflow-hidden transition-[max-height] duration-200 ease-in-out"
@@ -182,7 +235,16 @@ function FilterSectionRow({
               ))}
             </div>
           ) : (
-            <CheckboxFilterRow />
+            <div className="space-y-2 pt-1">
+              {options.map((option) => (
+                <CheckboxFilterRow
+                  key={option}
+                  label={option}
+                  checked={selected.has(option)}
+                  onToggle={() => toggleOption(option)}
+                />
+              ))}
+            </div>
           )}
         </div>
       </div>
@@ -267,7 +329,7 @@ function SearchFiltersAccordion({
         style={{ maxHeight: maxHeight }}
         className="overflow-hidden transition-[max-height] duration-300 ease-in-out"
       >
-        <div ref={contentRef} className="pt-1 pb-2">
+        <div ref={contentRef}>
           {rows.map((row) => (
             <FilterSectionRow label={row} key={row} content={content} />
           ))}
