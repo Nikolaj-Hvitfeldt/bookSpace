@@ -9,9 +9,8 @@ const searchTabs: tabItem[] = [
   { label: "Filters", value: "Filters" },
 ];
 
-export default function SearchPage() {
+function SearchHeader() {
   const [selectedTab, setSelectedTab] = useState<SearchTab>("Genres");
-
   return (
     <div className="flex flex-col gap-3">
       <SearchBar placeholder="Search..." />
@@ -20,6 +19,14 @@ export default function SearchPage() {
         value={selectedTab}
         onChange={(value) => setSelectedTab(value as SearchTab)}
       />
+    </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <div>
+      <SearchHeader />
     </div>
   );
 }
