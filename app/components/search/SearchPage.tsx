@@ -3,6 +3,7 @@ import TabSlider, { type tabItem } from "~/components/ui/tabSlider";
 import { useState, useMemo } from "react";
 import { Link } from "react-router";
 import type { GenreWithCovers } from "~/db/queries/genres.server";
+import BookCard from "../books/BookCard";
 
 type SearchTab = "Genres" | "Filters";
 
@@ -70,6 +71,24 @@ function GenreCard({
         {name}
       </div>
     </Link>
+  );
+}
+
+function SearchResultBookCard({
+  title,
+  coverImage,
+  slug,
+}: {
+  title: string;
+  coverImage: string;
+  slug: string;
+}) {
+  return (
+    <li className="shrink-0">
+      <Link to={`/books/${slug}`} className="inline-block">
+        <BookCard title={title} coverImage={coverImage} />
+      </Link>
+    </li>
   );
 }
 

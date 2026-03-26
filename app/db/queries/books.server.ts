@@ -1,6 +1,6 @@
 import connectDb from "../db.server";
 import Book from "../models/Book";
-import type { BookCardItem } from "../../components/home/BookCard";
+import type { BookCardItem } from "../../components/books/BookCard";
 import User from "../models/User";
 import ReadingProgress from "../models/ReadingProgress";
 import type { BookList } from "~/types/bookList";
