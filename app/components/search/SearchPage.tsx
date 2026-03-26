@@ -1,46 +1,38 @@
 import { SearchBar } from "~/components/ui/searchbar";
 import TabSlider, { type tabItem } from "~/components/ui/tabSlider";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router";
+import type { GenreWithCovers } from "~/db/queries/genres.server";
 
 type SearchTab = "Genres" | "Filters";
-
-export type GenreCardProps = {
-  name: string;
-  slug: string;
-  covers: [string, string, string];
-};
 
 const searchTabs: tabItem[] = [
   { label: "Genres", value: "Genres" },
   { label: "Filters", value: "Filters" },
 ];
 
-const mockCovers: [string, string, string] = [
-  "https://assets.hardcover.app/book_mappings/7332844/702879986b75f035349c34acad3d94f88bb737ed.jpeg",
-  "https://assets.hardcover.app/book_mappings/7332585/6e1c88b9a08b218821f23440bae0e0d500785656.jpeg",
-  "https://assets.hardcover.app/editions/30390608/6f1556b0-7613-4243-bc8f-078106dd20eb-ddark.jpg",
-];
-
-const Genres: GenreCardProps[] = [
-  { name: "Romance", slug: "romance", covers: mockCovers },
-  { name: "Thriller", slug: "thriller", covers: mockCovers },
-  { name: "Fiction", slug: "fiction", covers: mockCovers },
-  { name: "Fantasy", slug: "fantasy", covers: mockCovers },
-  { name: "Drama", slug: "drama", covers: mockCovers },
-  { name: "Classics", slug: "classics", covers: mockCovers },
-];
+type SearchPageProps = {
+  genres: GenreWithCovers[];
+};
 
 function SearchHeader({
   selectedTab,
   setSelectedTab,
+  query,
+  setQuery,
 }: {
   selectedTab: SearchTab;
   setSelectedTab: (value: SearchTab) => void;
+  query: string;
+  setQuery: (value: string) => void;
 }) {
   return (
     <div className="flex flex-col gap-3">
-      <SearchBar placeholder="Search..." />
+      <SearchBar
+        placeholder="Search..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
       <TabSlider
         items={searchTabs}
         value={selectedTab}
@@ -50,7 +42,15 @@ function SearchHeader({
   );
 }
 
-function GenreCard({ name, slug, covers }: GenreCardProps) {
+function GenreCard({
+  name,
+  slug,
+  covers,
+}: {
+  name: string;
+  slug: string;
+  covers: [string, string, string];
+}) {
   return (
     <Link
       to={`/books/genres/${slug}`}
@@ -73,15 +73,38 @@ function GenreCard({ name, slug, covers }: GenreCardProps) {
   );
 }
 
-export default function SearchPage() {
+export default function SearchPage({ genres }: SearchPageProps) {
   const [selectedTab, setSelectedTab] = useState<SearchTab>("Genres");
+  const [query, setQuery] = useState("");
+  const [visibleGenresCount, setVisibleGenresCount] = useState(6);
+
+  const filteredGenres = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return genres;
+
+    return genres.filter((genre) => genre.name.toLowerCase().includes(q));
+  }, [query, genres]);
+
+  const shownGenres = filteredGenres.slice(0, visibleGenresCount);
+
   return (
     <div>
-      <SearchHeader selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+      <SearchHeader
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        query={query}
+        setQuery={setQuery}
+      />
+
       {selectedTab === "Genres" ? (
         <div className="mt-5 grid grid-cols-2 gap-4">
-          {Genres.map((genre) => (
-            <GenreCard key={genre.slug} {...genre} />
+          {shownGenres.map((genre) => (
+            <GenreCard
+              key={genre.slug}
+              name={genre.name}
+              slug={genre.slug}
+              covers={genre.urls as [string, string, string]}
+            />
           ))}
         </div>
       ) : null}
