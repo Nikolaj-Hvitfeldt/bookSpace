@@ -37,7 +37,8 @@ export const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
       >
         <input
           ref={ref}
-          type="search"
+          type="text"
+          inputMode="search"
           placeholder={placeholder}
           className={cn(
             "min-w-0 flex-1 bg-transparent text-[16px] font-medium text-secondary outline-none",

@@ -1,12 +1,13 @@
 import connectDb from "../db.server";
 import Book from "../models/Book";
-import type { BookCardItem } from "../../components/home/BookCard";
+import type { BookCardItem } from "../../components/books/BookCard";
 import User from "../models/User";
 import ReadingProgress from "../models/ReadingProgress";
 import type { BookList } from "~/types/bookList";
 import type { BookDetail } from "~/types/bookDetail";
 import { mapAuthorNames } from "~/util/authorNames.server";
 import { pageProgressFromReading } from "~/util/pageProgress.server";
+import Author from "../models/Author";
 
 export type BookCovers = {
   id: string;
@@ -393,4 +394,70 @@ export async function getBookDetailsBySlug(
     genreSlugs,
     bookSlug: book.slug ?? "",
   };
+}
+
+export async function searchBooksByTitleOrAuthor(): Promise<BookList[]> {
+  await connectDb();
+
+  const books = await Book.collection
+    .aggregate<{
+      _id: unknown;
+      title: string;
+      slug: string;
+      coverImage: string;
+      rating: number;
+      authors: string[];
+    }>([
+      //keep only fields needed for search
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          slug: 1,
+          rating: { $ifNull: ["$rating", 0] },
+          coverImage: { $ifNull: ["$coverImage.url", ""] },
+          author: 1,
+        },
+      },
+
+      //join author names only
+      {
+        $lookup: {
+          from: "authors",
+          localField: "author",
+          foreignField: "_id",
+          as: "authorDocs",
+          pipeline: [{ $project: { _id: 0, name: 1 } }],
+        },
+      },
+
+      //keep only fields needed for search again
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          slug: 1,
+          rating: 1,
+          coverImage: 1,
+          authors: {
+            $map: {
+              input: "$authorDocs",
+              as: "a",
+              in: "$$a.name",
+            },
+          },
+        },
+      },
+      { $sort: { ratingsCount: -1, title: 1 } },
+    ])
+    .toArray();
+
+  return books.map((book) => ({
+    id: (book._id as any).toString(),
+    title: book.title ?? "",
+    authors: (book.authors ?? []).filter(Boolean),
+    coverImage: book.coverImage ?? "",
+    rating: typeof book.rating === "number" ? book.rating : 0,
+    bookSlug: book.slug ?? "",
+  }));
 }
