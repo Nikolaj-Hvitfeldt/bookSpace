@@ -7,10 +7,10 @@ import type { GenreWithCovers } from "~/db/queries/genres.server";
 import type { BookList } from "~/types/bookList";
 import BookCardGrid from "./BookCardGrid";
 
-type SearchTab = "Genres" | "Filters";
+type SearchTab = "Search" | "Filters";
 
 const searchTabs: tabItem[] = [
-  { label: "Genres", value: "Genres" },
+  { label: "Search", value: "Search" },
   { label: "Filters", value: "Filters" },
 ];
 
@@ -78,7 +78,7 @@ function GenreCard({
 }
 
 export default function SearchPage({ genres, books }: SearchPageProps) {
-  const [selectedTab, setSelectedTab] = useState<SearchTab>("Genres");
+  const [selectedTab, setSelectedTab] = useState<SearchTab>("Search");
   const [query, setQuery] = useState("");
   const [visibleGenresCount, setVisibleGenresCount] = useState(6);
 
@@ -113,13 +113,13 @@ export default function SearchPage({ genres, books }: SearchPageProps) {
         setQuery={setQuery}
       />
 
-      {selectedTab === "Genres" ? (
+      {selectedTab === "Search" ? (
         <>
           <div className="mt-5">
             <h2 className="mb-2 text-[18px] font-semibold! leading-[22px] text-black">
               Search by Genres:
             </h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 pt-2">
               {shownGenres.map((genre) => (
                 <GenreCard
                   key={genre.slug}
@@ -135,7 +135,7 @@ export default function SearchPage({ genres, books }: SearchPageProps) {
             <h2 className="mb-2 text-[18px] font-semibold! leading-[22px] text-black">
               Search Books by Title or Author:
             </h2>
-            <div className="max-w-[330px]">
+            <div className="max-w-[330px] pt-2">
               <BookCardGrid books={filteredBooks} maxBooks={6} />
             </div>
           </div>
