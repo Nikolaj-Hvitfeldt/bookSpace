@@ -366,6 +366,7 @@ function SearchFiltersButtonFooter({
   return (
     <div className="flex justify-between">
       <Button
+        type="submit"
         size="small"
         className="w-[165px] h-[40px] p-[10px] flex items-center justify-center gap-[10px]"
         disabled={isSaveDisabled}
@@ -373,6 +374,7 @@ function SearchFiltersButtonFooter({
         Save
       </Button>
       <Button
+        type="button"
         variant="secondary"
         className="font-semibold! w-[165px] h-[40px] p-[10px] flex items-center justify-center gap-[10px]"
         size="small"
@@ -390,7 +392,7 @@ export default function FiltersPanel() {
   const isSubmitting =
     navigation.state === "submitting" &&
     navigation.formMethod?.toLowerCase() === "post" &&
-    (navigation.formAction?.endsWith("/search") ?? false);
+    (navigation.formAction?.endsWith("/search/result") ?? false);
 
   //Initialize the slider state with the default values
   const initialSlider = useMemo(() => buildInitialSliderState(), []);
@@ -477,7 +479,7 @@ export default function FiltersPanel() {
   return (
     <Form
       method="post"
-      action="/search"
+      action="/search/result"
       className="flex min-h-[calc(100dvh-240px)] flex-col"
     >
       {/* Hidden inputs for form submission */}
