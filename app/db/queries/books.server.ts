@@ -450,8 +450,8 @@ export async function searchBooksByTitleOrAuthor(): Promise<BookList[]> {
       },
       { $sort: { ratingsCount: -1, title: 1 } },
     ])
-
     .toArray();
+
   return books.map((book) => ({
     id: (book._id as any).toString(),
     title: book.title ?? "",

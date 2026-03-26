@@ -12,7 +12,7 @@ export default function BookCardGrid({
 }: BookCardGridProps) {
   const shown = books.slice(0, maxBooks);
   return (
-    <ul className="grid grid-cols-3 gap-[10px]">
+    <ul className="grid grid-cols-3 gap-4">
       {shown.map((book) => {
         if (!book.bookSlug) return null;
 

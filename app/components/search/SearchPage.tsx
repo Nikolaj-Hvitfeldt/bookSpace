@@ -3,7 +3,9 @@ import TabSlider, { type tabItem } from "~/components/ui/tabSlider";
 import { useState, useMemo } from "react";
 import { Link } from "react-router";
 import type { GenreWithCovers } from "~/db/queries/genres.server";
-import BookCard from "../books/BookCard";
+
+import type { BookList } from "~/types/bookList";
+import BookCardGrid from "./BookCardGrid";
 
 type SearchTab = "Genres" | "Filters";
 
@@ -14,6 +16,7 @@ const searchTabs: tabItem[] = [
 
 type SearchPageProps = {
   genres: GenreWithCovers[];
+  books: BookList[];
 };
 
 function SearchHeader({
@@ -74,29 +77,12 @@ function GenreCard({
   );
 }
 
-function SearchResultBookCard({
-  title,
-  coverImage,
-  slug,
-}: {
-  title: string;
-  coverImage: string;
-  slug: string;
-}) {
-  return (
-    <li className="shrink-0">
-      <Link to={`/books/${slug}`} className="inline-block">
-        <BookCard title={title} coverImage={coverImage} />
-      </Link>
-    </li>
-  );
-}
-
-export default function SearchPage({ genres }: SearchPageProps) {
+export default function SearchPage({ genres, books }: SearchPageProps) {
   const [selectedTab, setSelectedTab] = useState<SearchTab>("Genres");
   const [query, setQuery] = useState("");
   const [visibleGenresCount, setVisibleGenresCount] = useState(6);
 
+  //filter genres by query
   const filteredGenres = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return genres;
@@ -105,6 +91,18 @@ export default function SearchPage({ genres }: SearchPageProps) {
   }, [query, genres]);
 
   const shownGenres = filteredGenres.slice(0, visibleGenresCount);
+
+  //filter books by query
+  const filteredBooks = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return books;
+
+    return books.filter(
+      (book) =>
+        book.title.toLowerCase().includes(q) ||
+        book.authors.some((author) => author.toLowerCase().includes(q)),
+    );
+  }, [query, books]);
 
   return (
     <div>
@@ -116,16 +114,30 @@ export default function SearchPage({ genres }: SearchPageProps) {
       />
 
       {selectedTab === "Genres" ? (
-        <div className="mt-5 grid grid-cols-2 gap-4">
-          {shownGenres.map((genre) => (
-            <GenreCard
-              key={genre.slug}
-              name={genre.name}
-              slug={genre.slug}
-              covers={genre.urls as [string, string, string]}
-            />
-          ))}
-        </div>
+        <>
+          <div className="mt-5">
+            <h2 className="mb-2 text-[18px] font-semibold! leading-[22px] text-black">
+              Search by Genres:
+            </h2>
+            <div className="grid grid-cols-2 gap-4">
+              {shownGenres.map((genre) => (
+                <GenreCard
+                  key={genre.slug}
+                  name={genre.name}
+                  slug={genre.slug}
+                  covers={genre.urls as [string, string, string]}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-5 w-full border-t border-primary-brown pt-5">
+            <h2 className="mb-2 text-[18px] font-semibold! leading-[22px] text-black">
+              Search Books by Title or Author:
+            </h2>
+            <BookCardGrid books={filteredBooks} maxBooks={6} />
+          </div>
+        </>
       ) : null}
     </div>
   );
