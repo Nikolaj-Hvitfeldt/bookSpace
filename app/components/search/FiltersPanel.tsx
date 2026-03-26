@@ -5,24 +5,54 @@ import {
   type FilterRowConfig,
   type FilterAccordionConfig,
 } from "./filterConfig";
+import { useNavigation, Form } from "react-router";
+import { useMemo } from "react";
 
 function cn(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
+// checkbox options per row label. f.eks all the checkboxes for Age in a set
+type CheckboxSelectedByRow = Record<string, Set<string>>;
+
+// sliders enabled per row label. like aboce
+type SliderEnabledByRow = Record<string, boolean[]>;
+type SliderValuesByRow = Record<string, number[]>;
+
+function buildInitialSliderState(): {
+  enabled: SliderEnabledByRow;
+  values: SliderValuesByRow;
+} {
+  const enabled: SliderEnabledByRow = {};
+  const values: SliderValuesByRow = {};
+
+  for (const group of searchFilterConfig) {
+    for (const row of group.rows) {
+      // Initailize each slider pair as disabled with default value as 50 (the middle value)
+      if (row.content === "slider") {
+        enabled[row.label] = row.sliderPairs.map(() => false);
+        values[row.label] = row.sliderPairs.map(() => 50);
+      }
+    }
+  }
+  return { enabled, values };
+}
+
 function SliderFilterRow({
   leftLabel,
   rightLabel,
+  enabled,
   value,
+  onToggleEnabled,
   onChange,
 }: {
   leftLabel: string;
   rightLabel: string;
   value: number;
+  enabled: boolean;
+  onToggleEnabled: () => void;
   onChange: (value: number) => void;
 }) {
-  const [isChecked, setIsChecked] = useState(false);
-
   return (
     <div className="space-y-2">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center">
@@ -32,9 +62,9 @@ function SliderFilterRow({
         <button
           type="button"
           className="h-[22px] w-[22px] shrink-0 mx-3"
-          onClick={() => setIsChecked((prev) => !prev)}
+          onClick={onToggleEnabled}
         >
-          {isChecked ? (
+          {enabled ? (
             <img
               src="/searchImages/checkbox-filled.svg"
               alt="Checked"
@@ -56,13 +86,10 @@ function SliderFilterRow({
         type="range"
         min={0}
         max={100}
-        disabled={!isChecked}
+        disabled={!enabled}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className={cn(
-          "filters-slider",
-          !isChecked && "filters-slider--disabled",
-        )}
+        className={cn("filters-slider", !enabled && "filters-slider--disabled")}
       />
     </div>
   );
@@ -105,15 +132,26 @@ function CheckboxFilterRow({
   );
 }
 
-function FilterSectionRow({ row }: { row: FilterRowConfig }) {
+function FilterSectionRow({
+  row,
+  selectedOptions,
+  sliderEnabled,
+  sliderValues,
+  onToggleOption,
+  onToggleSliderEnabled,
+  onSliderValueChange,
+}: {
+  row: FilterRowConfig;
+  selectedOptions: Set<string>;
+  sliderEnabled: boolean[];
+  sliderValues: number[];
+  onToggleOption: (option: string) => void;
+  onToggleSliderEnabled: (pairIndex: number) => void;
+  onSliderValueChange: (pairIndex: number, value: number) => void;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [maxHeight, setMaxHeight] = useState("0px");
   const contentRef = useRef<HTMLDivElement>(null);
-
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [sliderValues, setSliderValues] = useState<number[]>(
-    row.content === "slider" ? row.sliderPairs.map(() => 50) : [],
-  );
 
   useLayoutEffect(() => {
     const element = contentRef.current;
@@ -126,17 +164,10 @@ function FilterSectionRow({ row }: { row: FilterRowConfig }) {
   }, [
     isOpen,
     row.content,
-    row.content === "slider" ? sliderValues.length : 0,
-    row.content === "checkbox" ? selected.size : 0,
+    selectedOptions.size,
+    sliderEnabled.length,
+    sliderValues.length,
   ]);
-
-  function toggleOption(option: string) {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      next.has(option) ? next.delete(option) : next.add(option);
-      return next;
-    });
-  }
 
   return (
     <div className="w-full">
@@ -184,11 +215,11 @@ function FilterSectionRow({ row }: { row: FilterRowConfig }) {
                   key={index}
                   leftLabel={pair.left}
                   rightLabel={pair.right}
+                  enabled={sliderEnabled[index] ?? false}
                   value={sliderValues[index] ?? 50}
+                  onToggleEnabled={() => onToggleSliderEnabled(index)}
                   onChange={(nextValue) =>
-                    setSliderValues((prev) =>
-                      prev.map((v, i) => (i === index ? nextValue : v)),
-                    )
+                    onSliderValueChange(index, nextValue)
                   }
                 />
               ))}
@@ -199,8 +230,8 @@ function FilterSectionRow({ row }: { row: FilterRowConfig }) {
                 <CheckboxFilterRow
                   key={option}
                   label={option}
-                  checked={selected.has(option)}
-                  onToggle={() => toggleOption(option)}
+                  checked={selectedOptions.has(option)}
+                  onToggle={() => onToggleOption(option)}
                 />
               ))}
             </div>
@@ -211,7 +242,27 @@ function FilterSectionRow({ row }: { row: FilterRowConfig }) {
   );
 }
 
-function SearchFiltersAccordion({ group }: { group: FilterAccordionConfig }) {
+function SearchFiltersAccordion({
+  group,
+  checkboxSelectedByRow,
+  sliderEnabledByRow,
+  sliderValuesByRow,
+  onToggleOption,
+  onToggleSliderEnabled,
+  onSliderValueChange,
+}: {
+  group: FilterAccordionConfig;
+  checkboxSelectedByRow: CheckboxSelectedByRow;
+  sliderEnabledByRow: SliderEnabledByRow;
+  sliderValuesByRow: SliderValuesByRow;
+  onToggleOption: (rowLabel: string, option: string) => void;
+  onToggleSliderEnabled: (rowLabel: string, pairIndex: number) => void;
+  onSliderValueChange: (
+    rowLabel: string,
+    pairIndex: number,
+    value: number,
+  ) => void;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [maxHeight, setMaxHeight] = useState("0px");
   const contentRef = useRef<HTMLDivElement>(null);
@@ -282,7 +333,20 @@ function SearchFiltersAccordion({ group }: { group: FilterAccordionConfig }) {
       >
         <div ref={contentRef}>
           {group.rows.map((row) => (
-            <FilterSectionRow row={row} key={row.label} />
+            <FilterSectionRow
+              row={row}
+              key={row.label}
+              selectedOptions={checkboxSelectedByRow[row.label] ?? new Set()}
+              sliderEnabled={sliderEnabledByRow[row.label] ?? []}
+              sliderValues={sliderValuesByRow[row.label] ?? []}
+              onToggleOption={(option) => onToggleOption(row.label, option)}
+              onToggleSliderEnabled={(pairIndex) =>
+                onToggleSliderEnabled(row.label, pairIndex)
+              }
+              onSliderValueChange={(pairIndex, value) =>
+                onSliderValueChange(row.label, pairIndex, value)
+              }
+            />
           ))}
         </div>
       </div>
@@ -290,19 +354,32 @@ function SearchFiltersAccordion({ group }: { group: FilterAccordionConfig }) {
   );
 }
 
-function SearchFiltersButtonFooter() {
+function SearchFiltersButtonFooter({
+  isSubmitting,
+  onClearAll,
+  isSaveDisabled,
+}: {
+  isSubmitting: boolean;
+  onClearAll: () => void;
+  isSaveDisabled: boolean;
+}) {
   return (
     <div className="flex justify-between">
       <Button
+        type="submit"
         size="small"
         className="w-[165px] h-[40px] p-[10px] flex items-center justify-center gap-[10px]"
+        disabled={isSaveDisabled}
       >
         Save
       </Button>
       <Button
+        type="button"
         variant="secondary"
         className="font-semibold! w-[165px] h-[40px] p-[10px] flex items-center justify-center gap-[10px]"
         size="small"
+        onClick={onClearAll}
+        disabled={isSubmitting}
       >
         Clear All
       </Button>
@@ -311,16 +388,125 @@ function SearchFiltersButtonFooter() {
 }
 
 export default function FiltersPanel() {
+  const navigation = useNavigation();
+  const isSubmitting =
+    navigation.state === "submitting" &&
+    navigation.formMethod?.toLowerCase() === "post" &&
+    (navigation.formAction?.endsWith("/search/result") ?? false);
+
+  //Initialize the slider state with the default values
+  const initialSlider = useMemo(() => buildInitialSliderState(), []);
+  const [sliderEnabledByRow, setSliderEnabledByRow] =
+    useState<SliderEnabledByRow>(initialSlider.enabled);
+
+  const [checkboxSelectedByRow, setCheckboxSelectedByRow] =
+    useState<CheckboxSelectedByRow>({});
+  const [sliderValuesByRow, setSliderValuesByRow] = useState<SliderValuesByRow>(
+    initialSlider.values,
+  );
+
+  // Function to toggle the checkboxes
+  function toggleOption(rowLabel: string, option: string) {
+    setCheckboxSelectedByRow((prev) => {
+      const next = new Set(prev[rowLabel] ?? []);
+      next.has(option) ? next.delete(option) : next.add(option);
+      return { ...prev, [rowLabel]: next };
+    });
+  }
+
+  // Function to toggle the slider checkboxes
+  function toggleSliderEnabled(rowLabel: string, pairIndex: number) {
+    setSliderEnabledByRow((prev) => {
+      const row = [...(prev[rowLabel] ?? [])];
+      const current = row[pairIndex] ?? false;
+      row[pairIndex] = !current;
+      return { ...prev, [rowLabel]: row };
+    });
+  }
+
+  // Function to update slider values
+  function setSliderValue(rowLabel: string, pairIndex: number, value: number) {
+    setSliderValuesByRow((prev) => {
+      const row = [...(prev[rowLabel] ?? [])];
+      row[pairIndex] = value;
+      return { ...prev, [rowLabel]: row };
+    });
+  }
+
+  // Clears all filters back to initial state
+  function clearAll() {
+    setCheckboxSelectedByRow({});
+    const freshState = buildInitialSliderState();
+    setSliderEnabledByRow(freshState.enabled);
+    setSliderValuesByRow(freshState.values);
+  }
+
+  // selected all the checkboxes for the Character & Plot group
+  const selectedTags = useMemo(() => {
+    const tagsGroup = searchFilterConfig.find(
+      (group) => group.label === "Character & Plot",
+    );
+    if (!tagsGroup) return [];
+    return tagsGroup.rows.flatMap((row) =>
+      Array.from(checkboxSelectedByRow[row.label] ?? []),
+    );
+  }, [checkboxSelectedByRow]);
+
+  // selected all the sliders for the Mood & Emotions group
+  const selectedMoods = useMemo(() => {
+    const moodsGroup = searchFilterConfig.find(
+      (group) => group.label === "Mood & Emotions",
+    );
+    if (!moodsGroup) return [];
+    const values: string[] = [];
+    for (const row of moodsGroup.rows) {
+      if (row.content !== "slider") continue;
+      row.sliderPairs.forEach((pair, index) => {
+        const enabled = sliderEnabledByRow[row.label]?.[index] ?? false;
+        const val = sliderValuesByRow[row.label]?.[index] ?? 50;
+        if (!enabled) return;
+        values.push(val < 50 ? pair.left : pair.right);
+      });
+    }
+    return values;
+  }, [sliderEnabledByRow, sliderValuesByRow]);
+
+  // Disable the Save button if there are no filters selected
+  const hasAnyCheckboxSelected =
+    selectedTags.length > 0 || selectedMoods.length > 0;
+  const isSaveDisabled = isSubmitting || !hasAnyCheckboxSelected;
+
   return (
-    <div className="flex min-h-[calc(100dvh-240px)] flex-col">
+    <Form
+      method="post"
+      action="/search/result"
+      className="flex min-h-[calc(100dvh-240px)] flex-col"
+    >
+      {/* Hidden inputs for form submission */}
+      <input type="hidden" name="moods" value={selectedMoods.join(",")} />
+      <input type="hidden" name="tags" value={selectedTags.join(",")} />
+
       <div className="space-y-6">
         {searchFilterConfig.map((group) => (
-          <SearchFiltersAccordion group={group} key={group.label} />
+          <SearchFiltersAccordion
+            group={group}
+            key={group.label}
+            checkboxSelectedByRow={checkboxSelectedByRow}
+            sliderEnabledByRow={sliderEnabledByRow}
+            sliderValuesByRow={sliderValuesByRow}
+            onToggleOption={toggleOption}
+            onToggleSliderEnabled={toggleSliderEnabled}
+            onSliderValueChange={setSliderValue}
+          />
         ))}
       </div>
       <div className="mt-auto pt-4">
-        <SearchFiltersButtonFooter />
+        <SearchFiltersButtonFooter
+          onClearAll={clearAll}
+          isSubmitting={isSubmitting}
+          isSaveDisabled={isSaveDisabled}
+        />
       </div>
-    </div>
+    </Form>
   );
 }

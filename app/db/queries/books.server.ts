@@ -461,3 +461,131 @@ export async function searchBooksByTitleOrAuthor(): Promise<BookList[]> {
     bookSlug: book.slug ?? "",
   }));
 }
+
+export async function getBooksByFilters({
+  moods = [],
+  tags = [],
+  limit = 25,
+}: {
+  moods?: string[];
+  tags?: string[];
+  limit?: number;
+}): Promise<BookList[]> {
+  await connectDb();
+
+  // Normalize the moods and tags
+  const normalizedMoods = (moods ?? [])
+    .map((mood) => mood.trim().toLowerCase())
+    .filter(Boolean);
+
+  const normalizedTags = (tags ?? [])
+    .map((tag) => tag.trim().toLowerCase())
+    .filter(Boolean);
+
+  if (normalizedMoods.length === 0 && normalizedTags.length === 0) {
+    return [];
+  }
+
+  // Build object to match the moods and tags in the database
+  const match: Record<string, unknown> = {};
+  if (normalizedMoods.length > 0 && normalizedTags.length > 0) {
+    match.$or = [
+      { moodsLower: { $in: normalizedMoods } },
+      { tagsLower: { $in: normalizedTags } },
+    ];
+  } else if (normalizedMoods.length > 0) {
+    match.moodsLower = { $in: normalizedMoods };
+  } else if (normalizedTags.length > 0) {
+    match.tagsLower = { $in: normalizedTags };
+  }
+
+  const books = await Book.collection
+    .aggregate<{
+      _id: unknown;
+      title: string;
+      slug: string;
+      coverImage: string;
+      rating: number;
+      authors: string[];
+    }>([
+      {
+        // Normalize stored moods/tags to lowercase for case-insensitive matching
+        $addFields: {
+          moodsLower: {
+            $map: {
+              input: { $ifNull: ["$moods", []] },
+              as: "m",
+              in: { $toLower: "$$m" },
+            },
+          },
+          tagsLower: {
+            $map: {
+              input: { $ifNull: ["$tags", []] },
+              as: "t",
+              in: { $toLower: "$$t" },
+            },
+          },
+        },
+      },
+
+      // Match the moods and tags
+      { $match: match },
+
+      //keep only fields needed
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          slug: 1,
+          rating: { $ifNull: ["$rating", 0] },
+          coverImage: { $ifNull: ["$coverImage.url", ""] },
+          author: 1,
+          ratingsCount: 1,
+        },
+      },
+
+      // 4) join author names
+      {
+        $lookup: {
+          from: "authors",
+          localField: "author",
+          foreignField: "_id",
+          as: "authorDocs",
+          pipeline: [{ $project: { _id: 0, name: 1 } }],
+        },
+      },
+
+      // Modelling our return object
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          slug: 1,
+          coverImage: 1,
+          rating: 1,
+          authors: {
+            $map: {
+              input: "$authorDocs",
+              as: "a",
+              in: "$$a.name",
+            },
+          },
+          ratingsCount: 1,
+        },
+      },
+
+      { $sort: { ratingsCount: -1, title: 1 } },
+      { $limit: limit },
+    ])
+    .toArray();
+
+  //map the books to the BookList type
+  return books.map((book) => ({
+    id: (book._id as any).toString(),
+    title: book.title ?? "",
+    authors: (book.authors ?? []).filter(Boolean),
+    coverImage: book.coverImage ?? "",
+    rating: typeof book.rating === "number" ? book.rating : 0,
+    bookSlug: book.slug ?? "",
+  }));
+}
