@@ -1,7 +1,7 @@
 import { Button } from "../ui/button";
 import { useState, useRef, useLayoutEffect } from "react";
 
-function SearchFiltersAccordion({ title }: { title: string }) {
+function SearchFiltersAccordion({ label }: { label: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [maxHeight, setMaxHeight] = useState("0px");
   const contentRef = useRef<HTMLDivElement>(null);
@@ -30,7 +30,7 @@ function SearchFiltersAccordion({ title }: { title: string }) {
               Books by
             </div>
             <div className="text-[22px] font-semibold leading-[18px] tracking-[-0.1px] [font-variant-ligatures:none] font-[Newsreader,Georgia,serif]">
-              {title}
+              {label}
             </div>
           </div>
         </div>
@@ -89,8 +89,8 @@ export default function FiltersPanel() {
   return (
     <div>
       <div className="mt-5 flex flex-col justify-between gap-6">
-        <SearchFiltersAccordion title="Mood & Emotions" />
-        <SearchFiltersAccordion title="Character & Plot" />
+        <SearchFiltersAccordion label="Mood & Emotions" />
+        <SearchFiltersAccordion label="Character & Plot" />
         <SearchFiltersButtonFooter />
       </div>
     </div>
