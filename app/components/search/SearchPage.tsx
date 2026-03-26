@@ -3,9 +3,9 @@ import TabSlider, { type tabItem } from "~/components/ui/tabSlider";
 import { useState, useMemo } from "react";
 import { Link } from "react-router";
 import type { GenreWithCovers } from "~/db/queries/genres.server";
-
 import type { BookList } from "~/types/bookList";
 import BookCardGrid from "./BookCardGrid";
+import FiltersPanel from "./FiltersPanel";
 
 type SearchTab = "Search" | "Filters";
 
@@ -140,7 +140,9 @@ export default function SearchPage({ genres, books }: SearchPageProps) {
             </div>
           </div>
         </>
-      ) : null}
+      ) : (
+        <FiltersPanel />
+      )}
     </div>
   );
 }
