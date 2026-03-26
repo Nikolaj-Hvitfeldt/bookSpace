@@ -6,13 +6,7 @@ export default async function connectDb() {
   }
 
   const readyState = mongoose.connection.readyState;
-  if (readyState > 0) {
-    console.log(
-      "Mongoose: Re-using existing connection (readyState: %d)",
-      readyState,
-    );
-    return;
-  }
+  if (readyState > 0) return;
 
   mongoose.connection.on("error", (error: unknown) => {
     console.error("Mongoose: error %o", error);
@@ -27,7 +21,9 @@ export default async function connectDb() {
     throw new Error("MONGODB_URL environment variable is not defined");
   }
 
-  await mongoose.connect(url, { serverSelectionTimeoutMS: 10000 }).catch((error: any) => {
-    console.error("Mongoose connection error:", error);
-  });
+  await mongoose
+    .connect(url, { serverSelectionTimeoutMS: 10000 })
+    .catch((error: any) => {
+      console.error("Mongoose connection error:", error);
+    });
 }
