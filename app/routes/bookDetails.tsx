@@ -7,7 +7,7 @@ import { getFavoriteBooks } from "~/db/queries/favorites.server";
 import Author from "~/db/models/Author";
 import Book from "~/db/models/Book";
 import type { BookDetail } from "~/types/bookDetail";
-import type { BookCardItem } from "~/components/home/BookCard";
+import type { BookCardItem } from "~/components/books/BookCard";
 import Genre from "~/db/models/Genre";
 import { getReviewsByBookId } from "~/db/queries/reviews.server";
 import { createReviewAction } from "~/actions/createReview.server";

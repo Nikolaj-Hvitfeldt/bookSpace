@@ -1,4 +1,4 @@
-import BookCard, { type BookCardItem } from "../home/BookCard";
+import BookCard, { type BookCardItem } from "./BookCard";
 import useEmblaCarousel from "embla-carousel-react";
 import { Link } from "react-router";
 

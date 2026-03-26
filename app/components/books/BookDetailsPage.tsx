@@ -4,7 +4,7 @@ import { BookmarkButton } from "./BookmarkButton";
 import { Button } from "../ui/button";
 import { useState, useRef, useLayoutEffect } from "react";
 import BookSection from "./BookSection";
-import type { BookCardItem } from "../home/BookCard";
+import type { BookCardItem } from "./BookCard";
 import ReviewSection from "./ReviewSection";
 import type { Review } from "~/types/review";
 
