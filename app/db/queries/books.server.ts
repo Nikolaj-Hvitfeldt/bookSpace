@@ -7,6 +7,7 @@ import type { BookList } from "~/types/bookList";
 import type { BookDetail } from "~/types/bookDetail";
 import { mapAuthorNames } from "~/util/authorNames.server";
 import { pageProgressFromReading } from "~/util/pageProgress.server";
+import Author from "../models/Author";
 
 export type BookCovers = {
   id: string;
@@ -393,4 +394,52 @@ export async function getBookDetailsBySlug(
     genreSlugs,
     bookSlug: book.slug ?? "",
   };
+}
+
+export async function searchBooksByTitleOrAuthor(
+  q: string,
+  { limit = 6 },
+): Promise<BookList[]> {
+  await connectDb();
+
+  const query = q.trim();
+  if (!query) return [];
+
+  //search for author ids
+  const authorIdsDocument = await Author.find({
+    name: { $regex: query, $options: "i" },
+  })
+    .select({ _id: 1 })
+    .lean();
+
+  //map author ids to strings
+  const authorIds = authorIdsDocument.map((author) => author._id.toString());
+
+  //the query that will be used to find books by title or author
+  const searchQuery: any[] = [{ title: { $regex: query, $options: "i" } }];
+
+  //if there are author ids, add them to the search query
+  if (authorIds.length > 0) {
+    searchQuery.push({ author: { $in: authorIds } });
+  }
+
+  //find books by title or author with our search query
+  const books = await Book.find({ $or: searchQuery })
+    .sort({ ratingsCount: -1 })
+    .limit(limit)
+    .select({ _id: 1, title: 1, slug: 1, rating: 1, coverImage: 1, author: 1 })
+    .populate({
+      path: "author",
+      select: { name: 1 },
+    })
+    .lean();
+
+  return books.map((book) => ({
+    id: book._id.toString(),
+    title: book.title ?? "",
+    authors: mapAuthorNames(book.author as { name?: string }[]),
+    coverImage: book.coverImage?.url || "",
+    rating: book.rating ?? 0,
+    bookSlug: book.slug ?? "",
+  }));
 }
