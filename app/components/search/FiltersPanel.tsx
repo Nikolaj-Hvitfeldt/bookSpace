@@ -1,48 +1,10 @@
 import { Button } from "../ui/button";
 import { useState, useRef, useLayoutEffect } from "react";
-
-type AccordionContent = "slider" | "checkbox";
-
-type SliderPair = {
-  left: string;
-  right: string;
-};
-
-type SliderRows = {
-  "Emotional Tone": SliderPair[];
-  "Content Intensity": SliderPair[];
-  "Predictabillity & Style": SliderPair[];
-};
-
-const sliderRows: SliderRows = {
-  "Emotional Tone": [
-    { left: "Happy", right: "Sad" },
-    { left: "Funny", right: "Serious" },
-    { left: "Optimistic", right: "Unusual" },
-  ],
-  "Content Intensity": [
-    { left: "Sad", right: "Disturbing" },
-    { left: "Gentle", right: "Violent" },
-  ],
-  "Predictabillity & Style": [
-    { left: "Expected", right: "Unpredictable" },
-    { left: "Conventional", right: "Unusual" },
-    { left: "Larger than Life", right: "Down to Earth" },
-  ],
-};
-
-const checkboxRows: Record<string, string[]> = {
-  Age: ["0-25", "26-50", "51-75", "76+"],
-  Sexuality: ["Straight", "Gay", "Lesbian", "Pansexual"],
-  Gender: ["Male", "Female", "Non-binary", "Transgender"],
-  Plot: [
-    "Conflict",
-    "Open",
-    "Generations",
-    "Lots of twists and turns",
-    "Revelation",
-  ],
-};
+import {
+  searchFilterConfig,
+  type FilterRowConfig,
+  type FilterAccordionConfig,
+} from "./filterConfig";
 
 function cn(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -143,22 +105,14 @@ function CheckboxFilterRow({
   );
 }
 
-function FilterSectionRow({
-  label,
-  content,
-}: {
-  label: string;
-  content: AccordionContent;
-}) {
+function FilterSectionRow({ row }: { row: FilterRowConfig }) {
   const [isOpen, setIsOpen] = useState(false);
   const [maxHeight, setMaxHeight] = useState("0px");
   const contentRef = useRef<HTMLDivElement>(null);
-  const options = checkboxRows[label] ?? [];
-  const [selected, setSelected] = useState<Set<string>>(new Set());
 
-  const sliderPairs = sliderRows[label as keyof SliderRows] ?? [];
+  const [selected, setSelected] = useState<Set<string>>(new Set());
   const [sliderValues, setSliderValues] = useState<number[]>(
-    sliderPairs.map(() => 50),
+    row.content === "slider" ? row.sliderPairs.map(() => 50) : [],
   );
 
   useLayoutEffect(() => {
@@ -169,7 +123,12 @@ function FilterSectionRow({
     } else {
       setMaxHeight("0px");
     }
-  }, [isOpen]);
+  }, [
+    isOpen,
+    row.content,
+    row.content === "slider" ? sliderValues.length : 0,
+    row.content === "checkbox" ? selected.size : 0,
+  ]);
 
   function toggleOption(option: string) {
     setSelected((prev) => {
@@ -192,7 +151,7 @@ function FilterSectionRow({
             isOpen ? "font-semibold" : "font-medium",
           )}
         >
-          {label}
+          {row.label}
         </div>
 
         {isOpen ? (
@@ -218,9 +177,9 @@ function FilterSectionRow({
         className="overflow-hidden transition-[max-height] duration-200 ease-in-out"
       >
         <div ref={contentRef} className="pb-2">
-          {content === "slider" ? (
+          {row.content === "slider" ? (
             <div className="space-y-4">
-              {sliderPairs.map((pair, index) => (
+              {row.sliderPairs.map((pair, index) => (
                 <SliderFilterRow
                   key={index}
                   leftLabel={pair.left}
@@ -236,7 +195,7 @@ function FilterSectionRow({
             </div>
           ) : (
             <div className="space-y-2 pt-1">
-              {options.map((option) => (
+              {row.options.map((option) => (
                 <CheckboxFilterRow
                   key={option}
                   label={option}
@@ -252,15 +211,7 @@ function FilterSectionRow({
   );
 }
 
-function SearchFiltersAccordion({
-  label,
-  rows,
-  content,
-}: {
-  label: string;
-  rows: string[];
-  content: AccordionContent;
-}) {
+function SearchFiltersAccordion({ group }: { group: FilterAccordionConfig }) {
   const [isOpen, setIsOpen] = useState(false);
   const [maxHeight, setMaxHeight] = useState("0px");
   const contentRef = useRef<HTMLDivElement>(null);
@@ -301,7 +252,7 @@ function SearchFiltersAccordion({
               Books by
             </div>
             <div className="text-[22px] font-semibold leading-[18px] tracking-[-0.1px] [font-variant-ligatures:none] font-[Newsreader,Georgia,serif]">
-              {label}
+              {group.label}
             </div>
           </div>
         </div>
@@ -330,8 +281,8 @@ function SearchFiltersAccordion({
         className="overflow-hidden transition-[max-height] duration-300 ease-in-out"
       >
         <div ref={contentRef}>
-          {rows.map((row) => (
-            <FilterSectionRow label={row} key={row} content={content} />
+          {group.rows.map((row) => (
+            <FilterSectionRow row={row} key={row.label} />
           ))}
         </div>
       </div>
@@ -361,22 +312,13 @@ function SearchFiltersButtonFooter() {
 
 export default function FiltersPanel() {
   return (
-    <div>
-      <div className="mt-5 flex flex-col justify-between gap-6">
-        <SearchFiltersAccordion
-          label="Mood & Emotions"
-          rows={[
-            "Emotional Tone",
-            "Content Intensity",
-            "Predictabillity & Style",
-          ]}
-          content="slider"
-        />
-        <SearchFiltersAccordion
-          label="Character & Plot"
-          rows={["Age", "Sexuality", "Gender", "Plot"]}
-          content="checkbox"
-        />
+    <div className="flex min-h-[calc(100dvh-240px)] flex-col">
+      <div className="space-y-6">
+        {searchFilterConfig.map((group) => (
+          <SearchFiltersAccordion group={group} key={group.label} />
+        ))}
+      </div>
+      <div className="mt-auto pt-4">
         <SearchFiltersButtonFooter />
       </div>
     </div>
