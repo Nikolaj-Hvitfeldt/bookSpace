@@ -93,7 +93,7 @@ function SliderFilterRow({
   );
 }
 
-function CheckboxFilterContent() {
+function CheckboxFilterRow() {
   return (
     <div>
       <div>Checkbox content goes here</div>
@@ -182,7 +182,7 @@ function FilterSectionRow({
               ))}
             </div>
           ) : (
-            <CheckboxFilterContent />
+            <CheckboxFilterRow />
           )}
         </div>
       </div>
