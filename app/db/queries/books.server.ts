@@ -396,50 +396,68 @@ export async function getBookDetailsBySlug(
   };
 }
 
-export async function searchBooksByTitleOrAuthor(
-  q: string,
-  { limit = 6 },
-): Promise<BookList[]> {
+export async function searchBooksByTitleOrAuthor(): Promise<BookList[]> {
   await connectDb();
 
-  const query = q.trim();
-  if (!query) return [];
+  const books = await Book.collection
+    .aggregate<{
+      _id: unknown;
+      title: string;
+      slug: string;
+      coverImage: string;
+      rating: number;
+      authors: string[];
+    }>([
+      //keep only fields needed for search
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          slug: 1,
+          rating: { $ifNull: ["$rating", 0] },
+          coverImage: { $ifNull: ["$coverImage.url", ""] },
+          author: 1,
+        },
+      },
 
-  //search for author ids
-  const authorIdsDocument = await Author.find({
-    name: { $regex: query, $options: "i" },
-  })
-    .select({ _id: 1 })
-    .lean();
+      //join author names only
+      {
+        $lookup: {
+          from: "authors",
+          localField: "author",
+          foreignField: "_id",
+          as: "authorDocs",
+          pipeline: [{ $project: { _id: 0, name: 1 } }],
+        },
+      },
 
-  //map author ids to strings
-  const authorIds = authorIdsDocument.map((author) => author._id.toString());
+      //keep only fields needed for search again
+      {
+        $project: {
+          _id: 1,
+          title: 1,
+          slug: 1,
+          rating: 1,
+          coverImage: 1,
+          authors: {
+            $map: {
+              input: "$authorDocs",
+              as: "a",
+              in: "$$a.name",
+            },
+          },
+        },
+      },
+      { $sort: { ratingsCount: -1, title: 1 } },
+    ])
 
-  //the query that will be used to find books by title or author
-  const searchQuery: any[] = [{ title: { $regex: query, $options: "i" } }];
-
-  //if there are author ids, add them to the search query
-  if (authorIds.length > 0) {
-    searchQuery.push({ author: { $in: authorIds } });
-  }
-
-  //find books by title or author with our search query
-  const books = await Book.find({ $or: searchQuery })
-    .sort({ ratingsCount: -1 })
-    .limit(limit)
-    .select({ _id: 1, title: 1, slug: 1, rating: 1, coverImage: 1, author: 1 })
-    .populate({
-      path: "author",
-      select: { name: 1 },
-    })
-    .lean();
-
+    .toArray();
   return books.map((book) => ({
-    id: book._id.toString(),
+    id: (book._id as any).toString(),
     title: book.title ?? "",
-    authors: mapAuthorNames(book.author as { name?: string }[]),
-    coverImage: book.coverImage?.url || "",
-    rating: book.rating ?? 0,
+    authors: (book.authors ?? []).filter(Boolean),
+    coverImage: book.coverImage ?? "",
+    rating: typeof book.rating === "number" ? book.rating : 0,
     bookSlug: book.slug ?? "",
   }));
 }
