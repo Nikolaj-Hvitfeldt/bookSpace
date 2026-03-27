@@ -1,5 +1,4 @@
 import type { Route } from "./+types/bookDetails";
-import { bookmarkAction } from "~/actions/bookmark.server";
 import { getUser } from "~/services/auth.server";
 import { getBookDetailsBySlug } from "~/db/queries/books.server";
 import BookDetailsPage from "~/components/books/BookDetailsPage";
@@ -11,6 +10,7 @@ import type { BookCardItem } from "~/components/books/BookCard";
 import Genre from "~/db/models/Genre";
 import { getReviewsByBookId } from "~/db/queries/reviews.server";
 import { createReviewAction } from "~/actions/createReview.server";
+import { bookmarkToggle } from "~/actions/bookmark.server";
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
@@ -18,7 +18,7 @@ export async function action({ request }: Route.ActionArgs) {
   if (intent === "create-review") {
     return createReviewAction(request, formData);
   }
-  return bookmarkAction(request, formData);
+  return bookmarkToggle(request, formData);
 }
 export async function loader({ request, params }: Route.LoaderArgs) {
   const bookSlug = params.bookSlug;

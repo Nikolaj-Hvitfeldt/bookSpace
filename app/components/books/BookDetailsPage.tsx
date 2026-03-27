@@ -46,20 +46,28 @@ function BookDetailHeader({
   const navigate = useNavigate();
 
   return (
-    <header className="flex w-full items-start justify-between">
-      <button onClick={() => navigate(-1)} className="pt-1">
-        <img
-          src="/globalImages/back-button.avif"
-          alt="back"
-          className="h-[25px] w-[35px]"
+    <div className="flex w-full flex-col">
+      <header className="relative flex items-center justify-center pb-3">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="absolute left-0 top-1/2 -translate-y-1/2 text-black h-[25px] w-[25px]"
+        >
+          <img src="/globalImages/back-button.avif" alt="back" />
+        </button>
+        <h1
+          aria-hidden="true"
+          className="font-semibold! relative top-[6px] opacity-0 select-none pointer-events-none"
+        >
+          ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        </h1>
+        <BookmarkButton
+          bookId={bookId}
+          isBookmarked={isBookmarked}
+          className="absolute right-0 top-1/2 -translate-y-1/2"
         />
-      </button>
-      <BookmarkButton
-        bookId={bookId}
-        isBookmarked={isBookmarked}
-        className="shrink-0 pt-1"
-      />
-    </header>
+      </header>
+    </div>
   );
 }
 
@@ -163,7 +171,7 @@ export default function BookDetailsPage({
   reviews,
 }: BookDetailsPageProps) {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <BookDetailHeader
         backPath={backPath}
         bookId={book.id}
