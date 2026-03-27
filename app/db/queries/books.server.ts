@@ -14,7 +14,7 @@ export type BookCovers = {
   coverUrl: string;
 };
 
-const defaultLimit = 6;
+const defaultLimit = 9;
 
 export async function getBookCovers(
   limit = defaultLimit,
