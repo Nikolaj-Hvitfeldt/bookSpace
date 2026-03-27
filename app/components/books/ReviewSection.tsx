@@ -68,11 +68,11 @@ function ReviewInput({
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <RatingPicker value={rating} onChange={setRating} />
 
-          <div className="flex items-center gap-1">
-            <div className="rounded-[10px] border border-primary-brown bg-transparent">
+          <div className="flex items-center gap-1 min-w-0">
+            <div className="rounded-[10px] border border-primary-brown bg-transparent min-w-0 flex-1">
               <div
                 className={[
-                  "flex w-[280px] px-2 items-center gap-[10px]",
+                  "flex w-full min-w-0 px-2 items-center gap-[10px]",
                   "transition-[height,padding] duration-200",
                   isExpanded
                     ? "h-[120px] py-1 items-start"
