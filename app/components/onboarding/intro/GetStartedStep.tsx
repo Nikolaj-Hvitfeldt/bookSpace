@@ -1,4 +1,5 @@
 import type { BookCovers } from "~/db/queries/books.server";
+import OnboardingBookCardGrid from "../OnboardingBookGrid";
 
 type GetStartedStepProps = {
   onNext: () => void;
@@ -13,13 +14,7 @@ export default function GetStartedStep({ onNext, books }: GetStartedStepProps) {
       {/* Book covers */}
       <div className="w-full text-right mt-[clamp(14px,2vh,28px)]">
         <div className="flex flex-wrap gap-2">
-          {books.map((book) => (
-            <img
-              key={book.id}
-              src={book.coverUrl}
-              className="w-24 h-32 rounded-[10px] shadow-lg"
-            />
-          ))}
+          <OnboardingBookCardGrid books={books} maxBooks={9} />
         </div>
 
         {/* Text */}

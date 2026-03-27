@@ -14,7 +14,7 @@ export type BookCovers = {
   coverUrl: string;
 };
 
-const defaultLimit = 6;
+const defaultLimit = 9;
 
 export async function getBookCovers(
   limit = defaultLimit,
@@ -182,13 +182,14 @@ export async function getRecommendedBooks(
   })
     .sort({ rating: -1 })
     .limit(limit)
-    .select({ _id: 1, title: 1, coverImage: 1 })
+    .select({ _id: 1, title: 1, coverImage: 1, slug: 1 })
     .lean();
 
   return recommendedBooks.map((book) => ({
     id: book._id.toString(),
     title: book.title,
     coverImage: book.coverImage?.url || "",
+    slug: book.slug ?? "",
   }));
 }
 
