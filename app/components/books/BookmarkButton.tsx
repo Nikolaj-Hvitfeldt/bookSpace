@@ -16,19 +16,27 @@ export function BookmarkButton({
   className,
 }: BookmarkButtonProps) {
   const fetcher = useFetcher<BookmarkActionData>();
+  const isSubmitting = fetcher.state !== "idle";
+  const isBookmarkSubmit = fetcher.formData?.get("submitFor") === "bookmark";
+
+  const optimisticUpdate =
+    isSubmitting && isBookmarkSubmit ? !initialBookmarked : undefined;
+
   const bookmarked =
-    fetcher.data?.success === true &&
-    typeof fetcher.data.bookmarked === "boolean"
-      ? fetcher.data.bookmarked
-      : initialBookmarked;
+    typeof optimisticUpdate === "boolean"
+      ? optimisticUpdate
+      : fetcher.data?.success === true &&
+          typeof fetcher.data.bookmarked === "boolean"
+        ? fetcher.data.bookmarked
+        : initialBookmarked;
   return (
     <fetcher.Form method="post" action="." className={className}>
       <input type="hidden" name="bookId" value={bookId} />
       <input type="hidden" name="submitFor" value="bookmark" />
       <button
         type="submit"
-        className="shrink-0 rounded p-1 text-primary-brown/60 hover:text-primary-brown disabled:opacity-50"
-        disabled={fetcher.state !== "idle"}
+        className="shrink-0 rounded p-1 text-primary-brown/60 hover:text-primary-brown"
+        disabled={isSubmitting}
       >
         <div className="block text-[20px] leading-none">
           {bookmarked ? (

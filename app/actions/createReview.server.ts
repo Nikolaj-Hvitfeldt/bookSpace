@@ -58,6 +58,5 @@ export async function createReviewAction(
     rating: ratingNumber,
   });
 
-  //Redirect to revalidate data
-  return redirect(`/books/${book.slug}`);
+  return data({ success: true, review }, { status: 200 });
 }

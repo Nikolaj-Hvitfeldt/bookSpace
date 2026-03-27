@@ -1,12 +1,24 @@
 import RatingStars from "../ui/RatingStars";
-import { useState, useRef, useLayoutEffect } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import type { Review as ReviewType } from "~/types/review";
-import { Form } from "react-router";
+import { useFetcher } from "react-router";
 import RatingPicker from "../ui/ratingPicker";
 
 type reviewSectionProps = {
   reviews?: ReviewType[];
   bookId: string;
+};
+
+type CreateReviewActionData = {
+  success: boolean;
+  review?: ReviewType;
+  error?: string;
 };
 
 function formatDate(date: Date | string) {
@@ -17,12 +29,29 @@ function formatDate(date: Date | string) {
   });
 }
 
-function ReviewInput({ bookId }: { bookId: string }) {
+function ReviewInput({
+  bookId,
+  onCreated,
+}: {
+  bookId: string;
+  onCreated: (review: ReviewType) => void;
+}) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [rating, setRating] = useState(0);
+  const fetcher = useFetcher<CreateReviewActionData>();
+
+  useEffect(() => {
+    const created = fetcher.data?.success ? fetcher.data.review : undefined;
+    if (!created) return;
+    onCreated(created);
+    setRating(0);
+    setIsExpanded(false);
+  }, [fetcher.data?.review?.id]);
+
+  const isSubmitting = fetcher.state !== "idle";
 
   return (
-    <Form method="post" action="." className="w-full">
+    <fetcher.Form method="post" action="." className="w-full">
       <input type="hidden" name="submitFor" value="create-review" />
       <input type="hidden" name="bookId" value={bookId} />
       <input type="hidden" name="rating" value={rating} />
@@ -39,11 +68,11 @@ function ReviewInput({ bookId }: { bookId: string }) {
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <RatingPicker value={rating} onChange={setRating} />
 
-          <div className="flex items-center gap-1">
-            <div className="rounded-[10px] border border-primary-brown bg-transparent">
+          <div className="flex items-center gap-1 min-w-0">
+            <div className="rounded-[10px] border border-primary-brown bg-transparent min-w-0 flex-1">
               <div
                 className={[
-                  "flex w-[280px] px-2 items-center gap-[10px]",
+                  "flex w-full min-w-0 px-2 items-center gap-[10px]",
                   "transition-[height,padding] duration-200",
                   isExpanded
                     ? "h-[120px] py-1 items-start"
@@ -72,6 +101,7 @@ function ReviewInput({ bookId }: { bookId: string }) {
               type="submit"
               aria-label="Send review"
               className="h-[34px] w-[34px] shrink-0 flex items-center justify-center"
+              disabled={isSubmitting}
             >
               <img
                 src="/reviewImages/send-icon.svg"
@@ -82,7 +112,7 @@ function ReviewInput({ bookId }: { bookId: string }) {
           </div>
         </div>
       </div>
-    </Form>
+    </fetcher.Form>
   );
 }
 
@@ -183,14 +213,32 @@ function Reviewitem({ review }: { review: ReviewType }) {
 
 export default function ReviewSection({ reviews, bookId }: reviewSectionProps) {
   const reviewsLength = reviews?.length ?? 0;
+  const [currentReviews, setCurrentReviews] = useState<ReviewType[]>(
+    reviews ?? [],
+  );
+
+  //Sync on fresh list
+  useLayoutEffect(() => {
+    setCurrentReviews(reviews ?? []);
+  }, [reviews]);
+
+  //Reusing the same callback function to avoid unnecessary re-renders
+  // and infinite rendering loops between children and parent
+  const handleReviewCreated = useCallback((newReview: ReviewType) => {
+    setCurrentReviews((prev) => [newReview, ...prev]);
+  }, []);
 
   return (
     <div className="mt-4 space-y-4">
       <div className="text-[18px] font-semibold leading-[22px]">Reviews</div>
-      <ReviewInput bookId={bookId} key={reviewsLength} />
+      <ReviewInput
+        bookId={bookId}
+        key={reviewsLength}
+        onCreated={handleReviewCreated}
+      />
       <div className="mt-5 space-y-5">
-        {reviews && reviews.length > 0 ? (
-          reviews?.map((review) => (
+        {currentReviews.length > 0 ? (
+          currentReviews?.map((review) => (
             <Reviewitem key={review.id} review={review} />
           ))
         ) : (

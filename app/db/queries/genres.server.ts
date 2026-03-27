@@ -13,12 +13,10 @@ export type GenreWithCovers = {
   urls: string[];
 };
 
-const defaultLimit = 15;
-
-export async function getGenres(limit = defaultLimit): Promise<Genres[]> {
+export async function getGenres(): Promise<Genres[]> {
   await connectDb();
 
-  const genres = await Genre.find().select({ name: 1 }).limit(limit).lean();
+  const genres = await Genre.find().select({ name: 1 }).lean();
 
   return genres.map((genre) => ({
     id: genre._id.toString(),
@@ -59,7 +57,10 @@ export async function getGenresWithPreviewCovers(): Promise<GenreWithCovers[]> {
 
       //Unwind the genres array to get one document per genre
       { $unwind: "$genres" },
-      { $sort: { ratingsCount: -1 } },
+
+      // Randomize order so each genre gets random covers
+      { $addFields: { randomSort: { $rand: {} } } },
+      { $sort: { randomSort: 1 } },
       {
         // For each genre,list all cover URLs
         $group: {
@@ -104,7 +105,7 @@ export async function getGenresWithPreviewCovers(): Promise<GenreWithCovers[]> {
       //Sort by top rating and book count and then by name
       { $sort: { bookCount: -1, name: 1 } },
 
-      //Drop the bookCount again before returning
+      //Drop the unnecessary fields again before returning
       {
         $project: {
           _id: 0,

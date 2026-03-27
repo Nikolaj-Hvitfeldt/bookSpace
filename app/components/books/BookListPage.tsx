@@ -89,7 +89,7 @@ export default function BookListPage({
 
   return (
     <div className="flex w-full flex-col">
-      <header className="relative flex items-center justify-center border-b border-black/10 pb-3 -mx-[clamp(16px,4vw,24px)] px-[clamp(16px,4vw,24px)]">
+      <header className="relative flex items-center justify-center border-b border-black/10 pb-3">
         <button
           onClick={() => navigate(-1)}
           className="absolute left-0 top-1/2 -translate-y-1/2 text-black h-[25px] w-[25px]"
@@ -97,10 +97,10 @@ export default function BookListPage({
         >
           {<img src="/globalImages/back-button.avif" alt="Back" />}
         </button>
-        <h1 className="font-semibold!">{title}</h1>
+        <h1 className="font-semibold! relative top-[6px]">{title}</h1>
       </header>
 
-      <ul className="mt-4 -ml-4 flex flex-col gap-[20px]">
+      <ul className="mt-4 flex flex-col gap-[20px]">
         {books.map((book) => (
           <BookListItem
             key={book.id}
