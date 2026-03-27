@@ -38,9 +38,7 @@ function ensureCovers(covers: string[]): [string, string, string] {
   return [firstCover, secondCover, thirdCover];
 }
 
-export async function getGenresWithPreviewCovers(
-  limit = 4,
-): Promise<GenreWithCovers[]> {
+export async function getGenresWithPreviewCovers(): Promise<GenreWithCovers[]> {
   await connectDb();
 
   //Query on genres that have at least one book with a non-empty genres array and a usable cover
@@ -61,7 +59,10 @@ export async function getGenresWithPreviewCovers(
 
       //Unwind the genres array to get one document per genre
       { $unwind: "$genres" },
-      { $sort: { ratingsCount: -1 } },
+
+      // Randomize order so each genre gets random covers
+      { $addFields: { randomSort: { $rand: {} } } },
+      { $sort: { randomSort: 1 } },
       {
         // For each genre,list all cover URLs
         $group: {
@@ -105,9 +106,8 @@ export async function getGenresWithPreviewCovers(
       },
       //Sort by top rating and book count and then by name
       { $sort: { bookCount: -1, name: 1 } },
-      { $limit: limit },
 
-      //Drop the bookCount again before returning
+      //Drop the unnecessary fields again before returning
       {
         $project: {
           _id: 0,
