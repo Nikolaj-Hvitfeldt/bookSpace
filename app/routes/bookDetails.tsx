@@ -1,5 +1,4 @@
 import type { Route } from "./+types/bookDetails";
-import { bookmarkAction } from "~/actions/bookmark.server";
 import { getUser } from "~/services/auth.server";
 import { getBookDetailsBySlug } from "~/db/queries/books.server";
 import BookDetailsPage from "~/components/books/BookDetailsPage";
