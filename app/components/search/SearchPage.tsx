@@ -80,7 +80,7 @@ function GenreCard({
 export default function SearchPage({ genres, books }: SearchPageProps) {
   const [selectedTab, setSelectedTab] = useState<SearchTab>("Search");
   const [query, setQuery] = useState("");
-  const [visibleGenresCount, setVisibleGenresCount] = useState(6);
+  const [visibleGenresCount, setVisibleGenresCount] = useState(4);
 
   //filter genres by query
   const filteredGenres = useMemo(() => {
@@ -145,7 +145,7 @@ export default function SearchPage({ genres, books }: SearchPageProps) {
                 {filteredBooks.length === 0 ? (
                   <p className="text-black/70!">No book found</p>
                 ) : (
-                  <BookCardGrid books={filteredBooks} maxBooks={4} />
+                  <BookCardGrid books={filteredBooks} maxBooks={6} />
                 )}
               </div>
             </div>
