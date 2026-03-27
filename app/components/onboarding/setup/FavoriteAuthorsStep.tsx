@@ -1,7 +1,7 @@
 import { Button } from "~/components/ui/button";
 import { SearchBar } from "~/components/ui/searchbar";
 import type { Authors } from "~/db/queries/authors.server";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 
 type FavoriteAuthorsStepProps = {
   onNext: () => void;
@@ -41,14 +41,26 @@ export default function FavoriteAuthorsStep({
     if (!searchQuery.trim()) return authors;
 
     const query = searchQuery.toLowerCase().trim();
-    return authors.filter((author) =>
-      author.name.toLowerCase().includes(query),
-    );
+    return authors
+      .filter((author) => author.name.toLowerCase().includes(query))
+      .slice(0, 15);
   }, [authors, searchQuery]);
 
+  //ref that stores the selected ids for persistence
+  const selectedIdsRef = useRef<string[]>(selectedIds);
+
   useEffect(() => {
-    sessionStorage.setItem(favoriteAuthorsKey, JSON.stringify(selectedIds));
+    selectedIdsRef.current = selectedIds;
   }, [selectedIds]);
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.setItem(
+        favoriteAuthorsKey,
+        JSON.stringify(selectedIdsRef.current),
+      );
+    };
+  }, []);
 
   return (
     <>
