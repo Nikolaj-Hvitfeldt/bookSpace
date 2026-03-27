@@ -1,7 +1,7 @@
 import { Button } from "~/components/ui/button";
 import { SearchBar } from "~/components/ui/searchbar";
 import type { Authors } from "~/db/queries/authors.server";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 
 type FavoriteAuthorsStepProps = {
   onNext: () => void;
@@ -38,17 +38,32 @@ export default function FavoriteAuthorsStep({
 
   const [searchQuery, setSearchQuery] = useState("");
   const filteredAuthors = useMemo(() => {
-    if (!searchQuery.trim()) return authors;
-
     const query = searchQuery.toLowerCase().trim();
-    return authors.filter((author) =>
-      author.name.toLowerCase().includes(query),
-    );
+
+    //if no query save all authors else show authors that correlate to the query
+    const authorsToDisplay = !query
+      ? authors
+      : authors.filter((author) => author.name.toLowerCase().includes(query));
+
+    //only render the first 15 authors
+    return authorsToDisplay.slice(0, 10);
   }, [authors, searchQuery]);
 
+  //ref that stores the selected ids for persistence
+  const selectedIdsRef = useRef<string[]>(selectedIds);
+
   useEffect(() => {
-    sessionStorage.setItem(favoriteAuthorsKey, JSON.stringify(selectedIds));
+    selectedIdsRef.current = selectedIds;
   }, [selectedIds]);
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.setItem(
+        favoriteAuthorsKey,
+        JSON.stringify(selectedIdsRef.current),
+      );
+    };
+  }, []);
 
   return (
     <>
