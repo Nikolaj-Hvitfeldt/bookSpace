@@ -38,12 +38,15 @@ export default function FavoriteAuthorsStep({
 
   const [searchQuery, setSearchQuery] = useState("");
   const filteredAuthors = useMemo(() => {
-    if (!searchQuery.trim()) return authors;
-
     const query = searchQuery.toLowerCase().trim();
-    return authors
-      .filter((author) => author.name.toLowerCase().includes(query))
-      .slice(0, 15);
+
+    //if no query save all authors else show authors that correlate to the query
+    const authorsToDisplay = !query
+      ? authors
+      : authors.filter((author) => author.name.toLowerCase().includes(query));
+
+    //only render the first 15 authors
+    return authorsToDisplay.slice(0, 10);
   }, [authors, searchQuery]);
 
   //ref that stores the selected ids for persistence

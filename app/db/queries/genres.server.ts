@@ -13,12 +13,10 @@ export type GenreWithCovers = {
   urls: string[];
 };
 
-const defaultLimit = 15;
-
-export async function getGenres(limit = defaultLimit): Promise<Genres[]> {
+export async function getGenres(): Promise<Genres[]> {
   await connectDb();
 
-  const genres = await Genre.find().select({ name: 1 }).limit(limit).lean();
+  const genres = await Genre.find().select({ name: 1 }).lean();
 
   return genres.map((genre) => ({
     id: genre._id.toString(),

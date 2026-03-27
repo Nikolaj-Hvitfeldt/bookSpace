@@ -6,12 +6,10 @@ export type Authors = {
   name: string;
 };
 
-const defaultLimit = 20;
-
-export async function getAuthors(limit = defaultLimit): Promise<Authors[]> {
+export async function getAuthors(): Promise<Authors[]> {
   await connectDb();
 
-  const authors = await Author.find().select({ name: 1 }).limit(limit).lean();
+  const authors = await Author.find().select({ name: 1 }).lean();
 
   return authors.map((author) => ({
     id: author._id.toString(),

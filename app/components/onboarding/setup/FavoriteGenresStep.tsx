@@ -38,12 +38,13 @@ export default function FavoriteGenresStep({
 
   const [searchQuery, setSearchQuery] = useState("");
   const filteredGenres = useMemo(() => {
-    if (!searchQuery.trim()) return genres;
-
     const query = searchQuery.toLowerCase().trim();
-    return genres
-      .filter((genre) => genre.name.toLowerCase().includes(query))
-      .slice(0, 15);
+
+    const displayGenres = !query
+      ? genres
+      : genres.filter((genre) => genre.name.toLowerCase().includes(query));
+
+    return displayGenres.slice(0, 15);
   }, [genres, searchQuery]);
 
   //ref that stores the selected ids for persistence
