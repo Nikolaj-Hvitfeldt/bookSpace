@@ -39,12 +39,13 @@ export async function getPopularBooks(limit = 25): Promise<BookCardItem[]> {
     // Its a matter of semantics in the end. What is actually popular? Lots of views or good reception?
     .sort({ ratingsCount: -1 })
     .limit(limit)
-    .select({ _id: 1, title: 1, coverImage: 1 })
+    .select({ _id: 1, title: 1, coverImage: 1, slug: 1 })
     .lean();
   return books.map((book) => ({
     id: book._id.toString(),
     title: book.title,
     coverImage: book.coverImage?.url || "",
+    slug: book.slug ?? "",
   }));
 }
 
@@ -76,12 +77,13 @@ export async function getShortBooks(limit = 25): Promise<BookCardItem[]> {
   const books = await Book.find()
     .sort({ pageCount: 1 })
     .limit(limit)
-    .select({ _id: 1, title: 1, coverImage: 1 })
+    .select({ _id: 1, title: 1, coverImage: 1, slug: 1 })
     .lean();
   return books.map((book) => ({
     id: book._id.toString(),
     title: book.title,
     coverImage: book.coverImage?.url || "",
+    slug: book.slug ?? "",
   }));
 }
 
@@ -111,12 +113,13 @@ export async function getLongBooks(limit = 25): Promise<BookCardItem[]> {
   const books = await Book.find()
     .sort({ pageCount: -1 })
     .limit(limit)
-    .select({ _id: 1, title: 1, coverImage: 1 })
+    .select({ _id: 1, title: 1, coverImage: 1, slug: 1 })
     .lean();
   return books.map((book) => ({
     id: book._id.toString(),
     title: book.title,
     coverImage: book.coverImage?.url || "",
+    slug: book.slug ?? "",
   }));
 }
 
@@ -234,7 +237,7 @@ export async function getCurrentlyReadingBooks(
     .limit(limit)
     .populate({
       path: "book",
-      select: { _id: 1, title: 1, coverImage: 1, pageCount: 1 },
+      select: { _id: 1, title: 1, coverImage: 1, pageCount: 1, slug: 1 },
     })
     .lean();
 
@@ -247,6 +250,7 @@ export async function getCurrentlyReadingBooks(
         url: string;
       };
       pageCount: number;
+      slug: string;
     };
 
     const { currentPage, pageCount, progressPercentage } =
@@ -259,6 +263,7 @@ export async function getCurrentlyReadingBooks(
       currentPage,
       pageCount,
       progressPercentage,
+      slug: book.slug ?? "",
     };
   });
 }

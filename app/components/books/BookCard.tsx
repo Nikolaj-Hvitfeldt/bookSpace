@@ -10,6 +10,7 @@ export type BookCardItem = {
   title: string;
   coverImage: string;
   progressPercentage?: number;
+  slug?: string;
 };
 
 export default function BookCard({
