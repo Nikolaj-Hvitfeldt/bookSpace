@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { Route } from "./+types/home";
 import HomeHeader from "~/components/home/HomeHeader";
 import BookSection from "~/components/books/BookSection";
@@ -41,7 +40,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  const [searchValue, setSearchValue] = useState("");
   const {
     popularBooks,
     shortBooks,
@@ -51,13 +49,15 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   } = loaderData;
 
   return (
-    <div className="wrapper">
-      <HomeHeader searchValue={searchValue} onSearchChange={setSearchValue} />
-      <BookSection
-        sectionTitle="Currently Reading"
-        books={currentlyReadingBooks}
-        morePath="/books/currently-reading"
-      />
+    <div>
+      <HomeHeader />
+      {currentlyReadingBooks.length > 0 && (
+        <BookSection
+          sectionTitle="Currently Reading"
+          books={currentlyReadingBooks}
+          morePath="/books/currently-reading"
+        />
+      )}
       <BookSection
         sectionTitle="Recommended"
         books={recommendedBooks}

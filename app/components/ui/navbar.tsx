@@ -36,7 +36,7 @@ const navItems: NavItem[] = [
 
 export default function Navbar() {
   return (
-    <nav className="w-full max-w-[390px] inset-x-0 h-[60px] fixed bottom-0 mx-auto bg-secondary-eggshell border-t border-black/10 px-6 py-3">
+    <nav className="w-full max-w-[390px] h-[60px] sticky bottom-0 mx-auto bg-secondary-eggshell border-t border-black/10 px-6 py-3">
       <ul className="grid h-full grid-cols-4 items-center">
         {navItems.map((item) => (
           <li key={item.navigationPath} className="flex justify-center">

@@ -1,7 +1,7 @@
 import { Button } from "~/components/ui/button";
 import { SearchBar } from "~/components/ui/searchbar";
 import type { Genres } from "~/db/queries/genres.server";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 
 type FavoriteGenresStepProps = {
   onNext: () => void;
@@ -38,15 +38,30 @@ export default function FavoriteGenresStep({
 
   const [searchQuery, setSearchQuery] = useState("");
   const filteredGenres = useMemo(() => {
-    if (!searchQuery.trim()) return genres;
-
     const query = searchQuery.toLowerCase().trim();
-    return genres.filter((genre) => genre.name.toLowerCase().includes(query));
+
+    const displayGenres = !query
+      ? genres
+      : genres.filter((genre) => genre.name.toLowerCase().includes(query));
+
+    return displayGenres.slice(0, 15);
   }, [genres, searchQuery]);
 
+  //ref that stores the selected ids for persistence
+  const selectedIdsRef = useRef<string[]>(selectedIds);
+
   useEffect(() => {
-    sessionStorage.setItem(favoriteGenresKey, JSON.stringify(selectedIds));
+    selectedIdsRef.current = selectedIds;
   }, [selectedIds]);
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.setItem(
+        favoriteGenresKey,
+        JSON.stringify(selectedIdsRef.current),
+      );
+    };
+  }, []);
 
   return (
     <>

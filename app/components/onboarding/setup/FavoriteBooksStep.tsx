@@ -1,5 +1,6 @@
 import type { BookCovers } from "~/db/queries/books.server";
 import { SearchBar } from "~/components/ui/searchbar";
+import OnboardingBookCardGrid from "../OnboardingBookGrid";
 
 type FavoriteBooksStepProps = {
   onNext: () => void;
@@ -29,13 +30,7 @@ export default function FavoriteBooksStep({
       {/* Book covers */}
       <div className="w-full text-right mt-[clamp(14px,2vh,28px)]">
         <div className="flex justify-center flex-wrap gap-2 border-">
-          {books.map((book) => (
-            <img
-              key={book.id}
-              src={book.coverUrl}
-              className="w-24 h-32 rounded-[10px] shadow-md"
-            />
-          ))}
+          <OnboardingBookCardGrid books={books} maxBooks={9} />
         </div>
       </div>
     </>
