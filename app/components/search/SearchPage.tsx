@@ -120,16 +120,21 @@ export default function SearchPage({ genres, books }: SearchPageProps) {
               <h2 className="mb-2 text-[18px] font-semibold! leading-[22px] text-black">
                 Search by Genres:
               </h2>
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                {shownGenres.map((genre) => (
-                  <GenreCard
-                    key={genre.slug}
-                    name={genre.name}
-                    slug={genre.slug}
-                    covers={genre.urls as [string, string, string]}
-                  />
-                ))}
-              </div>
+
+              {shownGenres.length === 0 ? (
+                <p className="pt-2 text-black/70!">No genre found</p>
+              ) : (
+                <div className="grid grid-cols-2 gap-4 pt-2">
+                  {shownGenres.map((genre) => (
+                    <GenreCard
+                      key={genre.slug}
+                      name={genre.name}
+                      slug={genre.slug}
+                      covers={genre.urls as [string, string, string]}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="mt-5 w-full border-t border-primary-brown pt-5">
@@ -137,7 +142,11 @@ export default function SearchPage({ genres, books }: SearchPageProps) {
                 Search Books by Title or Author:
               </h2>
               <div className="max-w-[330px] pt-2">
-                <BookCardGrid books={filteredBooks} maxBooks={6} />
+                {filteredBooks.length === 0 ? (
+                  <p className="text-black/70!">No book found</p>
+                ) : (
+                  <BookCardGrid books={filteredBooks} maxBooks={4} />
+                )}
               </div>
             </div>
           </>
