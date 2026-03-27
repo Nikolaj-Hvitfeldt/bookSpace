@@ -59,13 +59,14 @@ export async function loader({ request, params }: Route.LoaderArgs) {
         author: author?._id,
         _id: { $ne: book.id },
       })
-        .select({ _id: 1, title: 1, coverImage: 1 })
+        .select({ _id: 1, title: 1, coverImage: 1, slug: 1 })
         .lean();
 
       authorBooks = books.map((book) => ({
         id: book._id.toString(),
         title: book.title,
         coverImage: book.coverImage?.url ?? "",
+        slug: book.slug,
       }));
     }
 
@@ -80,7 +81,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
           genres: genre?._id,
           _id: { $ne: book.id },
         })
-          .select({ _id: 1, title: 1, coverImage: 1 })
+          .select({ _id: 1, title: 1, coverImage: 1, slug: 1 })
           .limit(25)
           .lean();
 
@@ -88,6 +89,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
           id: book._id.toString(),
           title: book.title,
           coverImage: book.coverImage?.url ?? "",
+          slug: book.slug,
         }));
       }
     }
