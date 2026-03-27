@@ -19,7 +19,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function AppLayout() {
   return (
     <main className=" bg-secondary-eggshell">
-      <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[clamp(16px,4vw,24px)] pt-[clamp(32px,8vh,64px)] pb-24">
+      <div className="mx-auto flex min-h-dvh w-full max-w-[390px] flex-col px-[20px] pt-[20px] pb-24">
         <Outlet />
         <Navbar />
       </div>
