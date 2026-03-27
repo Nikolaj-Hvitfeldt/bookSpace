@@ -36,6 +36,7 @@ function SearchHeader({
         placeholder="Search..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        autoFocus={true}
       />
       <TabSlider
         items={searchTabs}
